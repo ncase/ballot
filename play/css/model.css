@@ -1,0 +1,90 @@
+body{
+	margin: 0px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 25px;
+	line-height: 1.2em;
+	color:#333;
+
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/*********************
+Preloading image assets...
+**********************/
+
+#offscreen{
+	position:absolute;
+	top:-1000px;
+	left:-1000px;
+}
+
+/*********************
+THE MAIN MODEL ITSELF
+**********************/
+
+.model{
+	overflow: hidden;
+	float:left;
+}
+.model .interactive{
+    background-image: url(../img/axis.png);
+    background-size: 100% 100%;
+    border: 2px solid #ccc;
+}
+.model .interactive[cursor=grab]{
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+	cursor: grab;
+}
+.model .interactive[cursor=grabbing]{
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+	cursor: grabbing;
+}
+#caption{
+	cursor: default;
+	margin-top:10px;
+	text-align: center;
+}
+#caption .small{
+	font-size: 0.75em;
+}
+
+/*********************
+DAT RESET BUTTON
+**********************/
+
+#reset, #save{
+	cursor: pointer;
+    background: #aaa;
+    color: #fff;
+    font-size: 25px;
+    font-weight: 100;
+    text-align: center;
+    width: 100px;
+    height: 30px;
+    letter-spacing: 2px;
+    padding: 2px 0;
+    border-radius: 5px;
+    border-bottom: 2px solid #888;
+    position: absolute;
+    margin-top:0px;
+
+    -webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    -o-transition: all 0.1s;
+    transition: all 0.1s;
+}
+#reset:hover, #save:hover{
+	margin-top:-2px;
+	background: #bbb;
+	border-bottom-color: #999;
+}
+#reset:active, #save:active{
+	margin-top:2px;
+	background: #999;
+	border-bottom-color: #777;
+}

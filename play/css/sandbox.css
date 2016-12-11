@@ -1,0 +1,47 @@
+#reset, #save{
+    background: #fff;
+    color: #888;
+    border: 1px solid #888;
+}
+#reset:hover, #save:hover{
+	margin-top:0px;
+	background: #fff;
+	color: #bbb;
+	border-color: #bbb;
+	border-bottom-color: #888;
+}
+#reset:active, #save:active{
+	margin-top:0px;
+	background: #fff;
+	border-bottom-color: #888;
+}
+
+#description_container{
+	clear: both;
+	overflow: hidden;
+	width: 800px;
+	height: 120px;
+	margin-bottom: 15px;
+}
+textarea, input{
+	display: block;
+    border: 1px solid #bbb;
+    resize: none;
+    font-family: Arial, sans-serif;
+}
+#description_container textarea{
+    width: 778px;
+    height: 97px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+#savelink{
+	position: absolute;
+    top: 471px;
+    left: 240px;
+    width: 543px;
+    height: 15px;
+    padding: 8px;
+    font-size: 12px;
+}

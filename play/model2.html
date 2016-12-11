@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/model.css">
+</head>
+<body></body>
+</html>
+
+<script src="js/helpers.js"></script>
+<script src="js/minpubsub.js"></script>
+<script src="js/Loader.js"></script>
+<script src="js/Mouse.js"></script>
+<script src="js/Draggable.js"></script>
+<script src="js/Model.js"></script>
+<script src="js/Candidate.js"></script>
+<script src="js/Voters.js"></script>
+<script src="js/Election.js"></script>
+
+<script>
+Loader.onload = function(){
+
+	// SELF CONTAINED MODEL
+	window.model = new Model();
+	document.body.appendChild(model.dom);
+	model.onInit = function(){
+
+		// Voters & Candidates
+		model.addVoters({
+			dist: GaussianVoters,
+			type: PluralityVoter,
+			x:150, y:150
+		});
+		model.addCandidate("square", 50, 125);
+		model.addCandidate("triangle", 250, 125);
+
+	};
+	model.onUpdate = function(){
+		Election.plurality(model, {verbose:true});
+	};
+	model.init();
+
+};
+Loader.load([
+	"img/voter_face.png",
+	"img/square.png",
+	"img/triangle.png",
+	"img/hexagon.png"
+]);
+</script>

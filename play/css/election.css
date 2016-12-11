@@ -1,0 +1,101 @@
+/************
+
+Election/Sandbox design:
+- buttons to the left
+- caption to the right
+
+************/
+
+#left, #center, #right{
+	float:left;
+	height: 320px;
+}
+#left{
+	width:220px;
+	padding-right: 20px;
+}
+#center{
+	width:320px;
+}
+#right{
+	width:220px;
+	padding-left: 20px;
+	overflow-y: auto;
+}
+#caption{
+	text-align: left;
+	font-size: 23px;
+	line-height: 1.0em;
+}
+#caption .small{
+	font-size: 15px;
+	line-height: 1.0em;
+}
+
+#right img{
+	height: 1em;
+	position: relative;
+	top:2px;
+}
+
+.button-group{
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+.button-group-label{
+	font-weight: bold;
+    font-size: 19px;
+    margin-bottom: 5px;
+    line-height: 1.1em;
+}
+.button{
+	float: left;
+	cursor: pointer;
+    background: #bbb;
+    color: #555;
+    font-size: 18px;
+    font-weight: 100;
+    text-align: center;
+    margin-bottom: 5px;
+    padding: 2px 0;
+    
+    position: relative;
+    top:0;
+
+	-webkit-transition: all 0.1s;
+    -moz-transition: all 0.1s;
+    -o-transition: all 0.1s;
+    transition: all 0.1s;
+}
+.button:hover{
+	background: #ddd;
+}
+.button:active{
+	background: #aaa;
+}
+.button[on=yes]{
+	background: #333;
+	color: #fff;
+}
+.button[on=yes]:hover{
+	background: #555;
+}
+.button[on=yes]:active{
+	background: #111;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+#ohno{
+	font-size: 2em;
+	position: relative;
+	top:10px;
+}

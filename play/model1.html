@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/model.css">
+</head>
+<body></body>
+</html>
+
+<script src="js/helpers.js"></script>
+<script src="js/minpubsub.js"></script>
+<script src="js/Loader.js"></script>
+<script src="js/Mouse.js"></script>
+<script src="js/Draggable.js"></script>
+<script src="js/Model.js"></script>
+<script src="js/Candidate.js"></script>
+<script src="js/Voters.js"></script>
+<script src="js/Election.js"></script>
+
+<script>
+Loader.onload = function(){
+
+	// SELF CONTAINED MODEL
+	window.model = new Model({border:2});
+	document.body.appendChild(model.dom);
+	model.onInit = function(){
+		model.addVoters({
+			dist: SingleVoter,
+			type: PluralityVoter,
+			x:125, y:200
+		});
+		model.addCandidate("square", 50, 125);
+		model.addCandidate("triangle", 250, 125);
+	};
+	model.onUpdate = function(){
+		var id = model.voters[0].ballot.vote;
+		var color = Candidate.graphics[id].fill;
+		var text = "VOTES FOR <b style='color:"+color+"'>"+id.toUpperCase()+"</b>";
+		model.caption.innerHTML = text;
+	};
+
+	// Init!
+	model.init();
+
+};
+Loader.load([
+	"img/voter_face.png",
+	"img/square.png",
+	"img/triangle.png",
+	"img/hexagon.png"
+]);
+</script>

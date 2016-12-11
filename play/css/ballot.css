@@ -1,0 +1,26 @@
+/*********************
+BALLOT DESIGN
+**********************/
+
+#ballot{
+
+	width: 375px;
+	height: 250px;
+	margin-left: 20px;
+
+	overflow: hidden;
+	float:left;
+
+	background: #F0EAD6;
+	color: #302707;
+
+	background-size: 100% 100%;
+	border: 2px solid #fff;
+
+	position: relative;
+
+}
+#ballot .ballot_sprite{
+	position: absolute;
+	background-size: 100% auto;
+}

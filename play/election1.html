@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/model.css">
+	<link rel="stylesheet" type="text/css" href="css/election.css">
+</head>
+<body>
+	<div id="left"></div>
+	<div id="center"></div>
+	<div id="right"></div>
+</body>
+</html>
+
+<script src="js/helpers.js"></script>
+<script src="js/minpubsub.js"></script>
+<script src="js/Loader.js"></script>
+<script src="js/Mouse.js"></script>
+<script src="js/Draggable.js"></script>
+<script src="js/Model.js"></script>
+<script src="js/Candidate.js"></script>
+<script src="js/Voters.js"></script>
+<script src="js/Election.js"></script>
+<script src="js/Buttons.js"></script>
+
+<script src="js/main_sandbox.js"></script>
+<script>
+main({
+	
+	system: "FPTP",
+
+	candidates: 3,
+	candidatePositions: [[50,125],[250,125],[280,280]],
+
+	voters: 1,
+	voterPositions: [[155,125]]
+
+});
+</script>
