@@ -38,7 +38,7 @@ Election.score = function(model, options){
 			text += _icon(c)+"'s score: "+(tally[c].toFixed(2))+" out of 5.00<br>";
 		}
 		text += "<br>";
-		text += _icon(winner)+" has the highest score, so...<br>";
+		text += _icon(winner)+" has the highest score, so&hellip;<br>";
 		text += "</span>";
 		text += "<br>";
 		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
@@ -75,7 +75,7 @@ Election.approval = function(model, options){
 			text += _icon(c)+" got "+tally[c]+" approvals<br>";
 		}
 		text += "<br>";
-		text += _icon(winner)+" is most approved, so...<br>";
+		text += _icon(winner)+" is most approved, so&hellip;<br>";
 		text += "</span>";
 		text += "<br>";
 		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
@@ -193,7 +193,7 @@ Election.borda = function(model, options){
 			text += _icon(c)+"'s total score: "+tally[c]+"<br>";
 		}
 		text += "<br>";
-		text += _icon(winner)+" has the <i>lowest</i> score, so...<br>";
+		text += _icon(winner)+" has the <i>lowest</i> score, so&hellip;<br>";
 		text += "</span>";
 		text += "<br>";
 		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
@@ -308,7 +308,7 @@ Election.plurality = function(model, options){
 	}
 	if(options.sidebar){
 		text += "<br>";
-		text += _icon(winner)+" has most votes, so...<br>";
+		text += _icon(winner)+" has most votes, so&hellip;<br>";
 	}
 	text += "</span>";
 	text += "<br>";
