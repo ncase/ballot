@@ -433,7 +433,7 @@ function main(config){
 		// Put it in the save link box!
 		var link = "http://ncase.me/ballot/sandbox?m="+uri;
 		var savelink = document.getElementById("savelink");
-		savelink.value = "saving...";
+		savelink.value = "saving…";
 		setTimeout(function(){
 			savelink.value = link;
 		},750);
