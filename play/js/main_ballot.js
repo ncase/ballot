@@ -1,4 +1,9 @@
+window.ONLY_ONCE = false;
 function main(ballotType){
+
+	// ONCE.
+	if(ONLY_ONCE) return;
+	ONLY_ONCE=true;
 
 	var VoterType = window[ballotType+"Voter"];
 	var BallotType = window[ballotType+"Ballot"];

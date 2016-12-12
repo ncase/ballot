@@ -171,6 +171,7 @@ li{
 	margin-bottom: 40px;
 }
 #appendix_container{
+	width: 100%;
 	overflow: hidden;
 }
 .appendix_title{

@@ -1,7 +1,13 @@
 window.FULL_SANDBOX = window.FULL_SANDBOX || false;
 window.HACK_BIG_RANGE = true;
 
+window.ONLY_ONCE = false;
+
 function main(config){
+
+	// ONCE.
+	if(ONLY_ONCE) return;
+	ONLY_ONCE=true;
 
 	///////////////////////////////////////////////////////////////
 	// ACTUALLY... IF THERE'S DATA IN THE QUERY STRING, OVERRIDE //
