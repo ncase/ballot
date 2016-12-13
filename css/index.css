@@ -173,6 +173,7 @@ li{
 #appendix_container{
 	width: 100%;
 	overflow: hidden;
+	padding-top: 2px;
 }
 .appendix_title{
 	color:#fff;
