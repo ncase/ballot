@@ -48,6 +48,69 @@ Election.score = function(model, options){
 
 };
 
+Election.star = function(model, options){
+
+	// Tally the approvals & get winner!
+	var tally = _tally(model, function(tally, ballot){
+		for(var candidate in ballot){
+			tally[candidate] += ballot[candidate];
+		}
+	});
+	for(var candidate in tally){
+		tally[candidate] /= model.getTotalVoters();
+	}
+	var frontrunners = [];
+
+	for (var i in tally) {
+	   frontrunners.push(i);
+	}
+	frontrunners.sort(function(a,b){return tally[a]-tally[b]})
+
+	var aWins = 0;
+	var bWins = 0;
+	for(var k=0; k<ballots.length; k++){
+		var ballot = ballots[k];
+		if(ballot[frontrunners[0]]>ballot[frontrunners[1]]){
+			aWins++; // a wins!
+		} else if(ballot[frontrunners[0]]<ballot[frontrunners[1]]){
+			bWins++; // b wins!
+		}
+	}
+
+	if (bWins > aWins) {
+		tally[frontrunner[1]] = tally[frontrunner[0]] + 0.5
+	}
+	var winner = _countWinner(tally);
+	var color = _colorWinner(model, winner);
+
+	// NO WINNER?! OR TIE?!?!
+	if(!winner){
+
+		var text = "<b>NOBODY WINS</b>";
+		model.caption.innerHTML = text;
+
+	}else{
+
+		// Caption
+		var text = "";
+		text += "<span class='small'>";
+		text += "<b>pairwise winner of two highest average scores wins</b><br>";
+		for(var i=0; i<model.candidates.length; i++){
+			var c = model.candidates[i].id;
+			text += _icon(c)+"'s score: "+(tally[c].toFixed(2))+" out of 5.00<br>";
+		}
+		text += "<br>";
+		text += _icon(frontrunners[0])+" and "+_icon(frontrunners[1]) +" have the highest score, and...<br>";
+		text += "...their pairwise counts are "+aWins+" to "+bWins+", so...<br>";
+		text += "</span>";
+		text += "<br>";
+		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+		model.caption.innerHTML = text;
+
+	}
+
+};
+
 Election.approval = function(model, options){
 
 	// Tally the approvals & get winner!
@@ -266,7 +329,7 @@ Election.irv = function(model, options){
 
 		// And repeat!
 		roundNum++;
-	
+
 	}
 
 	// END!
@@ -328,7 +391,7 @@ var _tally = function(model, tallyFunc){
 	for(var i=0; i<ballots.length; i++){
 		tallyFunc(tally, ballots[i]);
 	}
-	
+
 	// Return it.
 	return tally;
 

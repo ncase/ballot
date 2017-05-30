@@ -7,7 +7,7 @@ function ScoreVoter(model){
 	var self = this;
 	self.model = model;
 
-	self.radiusStep = window.HACK_BIG_RANGE ? 74 : 30; // step: x<25, 25<x<50, 50<x<75, 75<x<100, 100<x
+	self.radiusStep = window.HACK_BIG_RANGE ? 61 : 25; // step: x<25, 25<x<50, 50<x<75, 75<x<100, 100<x
 
 	self.getScore = function(x){
 		var step = self.radiusStep;
@@ -15,21 +15,36 @@ function ScoreVoter(model){
 		if(x<step*2) return 4;
 		if(x<step*3) return 3;
 		if(x<step*4) return 2;
-		if(step*4<x) return 1;
+		if(x<step*5) return 1;
+		return 0;
 	};
 
 	self.getBallot = function(x, y){
 
 		// Scores for each one!
 		var scores = {};
+		var mindist = 99;
+		var maxdist = -99;
+		var mini = null;
+		var maxi = null;
 		for(var i=0; i<self.model.candidates.length; i++){
 			var c = self.model.candidates[i];
 			var dx = c.x-x;
 			var dy = c.y-y;
 			var dist = Math.sqrt(dx*dx+dy*dy);
 			scores[c.id] = self.getScore(dist);
+			if (dist < mindist) {
+				mindist = dist;
+				mini = c.id
+			}
+			if (dist > maxdist) {
+				maxdist = dist;
+				maxi = c.id
+			}
 		}
-		
+
+		scores[maxi] = 0
+		scores[mini] = 5
 		// Scooooooore
 		return scores;
 
@@ -81,6 +96,103 @@ function ScoreVoter(model){
 
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function ThreeVoter(model){
+
+	var self = this;
+	self.model = model;
+
+	self.radiusStep = window.HACK_BIG_RANGE ? 61 : 25; // step: x<25, 25<x<50, 50<x<75, 75<x<100, 100<x
+
+	self.getScore = function(x){
+		var step = self.radiusStep;
+		if(x<step) return 2;
+		if(x<step*2) return getRandomInt(1, 2);
+		if(x<step*4) return 1;
+		return 0;
+	};
+
+	self.getBallot = function(x, y){
+
+		// Scores for each one!
+		var scores = {};
+		var mindist = 99;
+		var maxdist = -99;
+		var mini = null;
+		var maxi = null;
+		for(var i=0; i<self.model.candidates.length; i++){
+			var c = self.model.candidates[i];
+			var dx = c.x-x;
+			var dy = c.y-y;
+			var dist = Math.sqrt(dx*dx+dy*dy);
+			scores[c.id] = self.getScore(dist);
+			if (score < mindist) {
+				mindist = dist;
+				mini = c.id
+			}
+			if (score > maxdist) {
+				maxdist = dist;
+				maxi = c.id
+			}
+		}
+
+		scores[maxi] = 0
+		scores[mini] = 2
+
+		// Scooooooore
+		return scores;
+
+	};
+
+	self.drawBG = function(ctx, x, y, ballot){
+
+		// RETINA
+		x = x*2;
+		y = y*2;
+
+		// Draw big ol' circles.
+		for(var i=1;i<5;i++){
+			ctx.beginPath();
+			ctx.arc(x, y, (self.radiusStep*i)*2, 0, Math.TAU, false);
+			ctx.lineWidth = (5-i)*2;
+			ctx.strokeStyle = "#888";
+			ctx.stroke();
+		}
+
+	};
+
+	self.drawCircle = function(ctx, x, y, size, ballot){
+
+		// There are #Candidates*5 slices
+		// Fill 'em in in order -- and the rest is gray.
+		var totalSlices = self.model.candidates.length*2;
+		var leftover = totalSlices;
+		var slices = [];
+		for(var i=0; i<self.model.candidates.length; i++){
+			var c = self.model.candidates[i];
+			var cID = c.id;
+			var score = ballot[cID]-1;
+			leftover -= score;
+			slices.push({
+				num: score,
+				fill: c.fill
+			});
+		}
+		// Leftover is gray
+		slices.push({
+			num: leftover,
+			fill: "#bbb"
+		});
+		// FILL 'EM IN
+		_drawSlices(ctx, x, y, size, slices, totalSlices);
+
+	};
+
+}
+
 function ApprovalVoter(model){
 
 	var self = this;
@@ -92,6 +204,10 @@ function ApprovalVoter(model){
 
 		// Anyone close enough. If anyone.
 		var approved = [];
+		var mindist = 99;
+		var maxdist = -99;
+		var mini = null;
+		var maxi = null;
 		for(var i=0; i<self.model.candidates.length; i++){
 			var c = self.model.candidates[i];
 			var dx = c.x-x;
@@ -100,8 +216,23 @@ function ApprovalVoter(model){
 			if(dist<self.approvalRadius){
 				approved.push(c.id);
 			}
+			if (dist < mindist) {
+				mindist = dist;
+				mini = c.id
+			}
+			if (dist > maxdist) {
+				maxdist = dist;
+				maxi = approved.length - 1
+			}
 		}
-		
+
+		if(mindist>=self.approvalRadius){
+			approved.push(mini);
+		}
+		if(maxdist<self.approvalRadius){
+			approved.splice(maxi,i);
+		}
+
 		// Vote for the CLOSEST
 		return { approved: approved };
 
@@ -118,7 +249,7 @@ function ApprovalVoter(model){
 		ctx.arc(x, y, self.approvalRadius*2, 0, Math.TAU, false);
 		ctx.lineWidth = 8;
 		ctx.strokeStyle = "#888";
-		ctx.stroke();			
+		ctx.stroke();
 
 	};
 
@@ -155,7 +286,7 @@ function RankedVoter(model){
 			rank.push(self.model.candidates[i].id);
 		}
 		rank = rank.sort(function(a,b){
-			
+
 			var c1 = self.model.candidatesById[a];
 			var x1 = c1.x-x;
 			var y1 = c1.y-y;
@@ -169,7 +300,7 @@ function RankedVoter(model){
 			return d1-d2;
 
 		});
-		
+
 		// Ballot!
 		return { rank:rank };
 
@@ -199,9 +330,9 @@ function RankedVoter(model){
 			ctx.lineTo(cx,cy);
 			ctx.lineWidth = lineWidth;
 			ctx.strokeStyle = "#888";
-			ctx.stroke();			
+			ctx.stroke();
 
-		}		
+		}
 
 	};
 
@@ -243,7 +374,7 @@ function PluralityVoter(model){
 				closest = c;
 			}
 		}
-		
+
 		// Vote for the CLOSEST
 		return { vote:closest.id };
 
@@ -364,7 +495,7 @@ function GaussianVoters(config){
 	var _radius = 0,
 		_RINGS = spacings.length;
 	for(var i=1; i<_RINGS; i++){
-		
+
 		var spacing = spacings[i];
 		_radius += spacing;
 
@@ -439,7 +570,7 @@ function SingleVoter(config){
 		// Circle!
 		var size = 20;
 		self.type.drawCircle(ctx, self.x, self.y, size, self.ballot);
-		
+
 		// Face!
 		size = size*2;
 		var x = self.x*2;
