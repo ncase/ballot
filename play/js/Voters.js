@@ -77,7 +77,7 @@ function ScoreVoter(model){
 		for(var i=0; i<self.model.candidates.length; i++){
 			var c = self.model.candidates[i];
 			var cID = c.id;
-			var score = ballot[cID]-1;
+			var score = ballot[cID];
 			leftover -= score;
 			slices.push({
 				num: score,
@@ -96,10 +96,6 @@ function ScoreVoter(model){
 
 }
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 function ThreeVoter(model){
 
 	var self = this;
@@ -110,8 +106,7 @@ function ThreeVoter(model){
 	self.getScore = function(x){
 		var step = self.radiusStep;
 		if(x<step) return 2;
-		if(x<step*2) return getRandomInt(1, 2);
-		if(x<step*4) return 1;
+		if(x<step*3.5) return 1;
 		return 0;
 	};
 
@@ -129,11 +124,11 @@ function ThreeVoter(model){
 			var dy = c.y-y;
 			var dist = Math.sqrt(dx*dx+dy*dy);
 			scores[c.id] = self.getScore(dist);
-			if (score < mindist) {
+			if (dist < mindist) {
 				mindist = dist;
 				mini = c.id
 			}
-			if (score > maxdist) {
+			if (dist > maxdist) {
 				maxdist = dist;
 				maxi = c.id
 			}
@@ -174,7 +169,7 @@ function ThreeVoter(model){
 		for(var i=0; i<self.model.candidates.length; i++){
 			var c = self.model.candidates[i];
 			var cID = c.id;
-			var score = ballot[cID]-1;
+			var score = ballot[cID];
 			leftover -= score;
 			slices.push({
 				num: score,

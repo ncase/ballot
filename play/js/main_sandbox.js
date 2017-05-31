@@ -164,7 +164,7 @@ function main(config){
 			{name:"Approval", voter:ApprovalVoter, election:Election.approval, margin:4},
 			{name:"Score", voter:ScoreVoter, election:Election.score},
 			{name:"STAR", voter:ScoreVoter, election:Election.star, margin:4},
-			{name:"3-2-1", voter:ThreeVoter, election:Election.score}
+			{name:"3-2-1", voter:ThreeVoter, election:Election.three21}
 		];
 		var onChooseSystem = function(data){
 

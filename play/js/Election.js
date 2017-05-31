@@ -56,7 +56,7 @@ Election.star = function(model, options){
 			tally[candidate] += ballot[candidate];
 		}
 	});
-	for(var candidate in tally){
+	for(var candidate in model.candidatesById){
 		tally[candidate] /= model.getTotalVoters();
 	}
 	var frontrunners = [];
@@ -64,8 +64,9 @@ Election.star = function(model, options){
 	for (var i in tally) {
 	   frontrunners.push(i);
 	}
-	frontrunners.sort(function(a,b){return tally[a]-tally[b]})
+	frontrunners.sort(function(a,b){return tally[b]-tally[a]})
 
+	var ballots = model.getBallots();
 	var aWins = 0;
 	var bWins = 0;
 	for(var k=0; k<ballots.length; k++){
@@ -77,10 +78,10 @@ Election.star = function(model, options){
 		}
 	}
 
+	var winner = frontrunners[0]
 	if (bWins > aWins) {
-		tally[frontrunner[1]] = tally[frontrunner[0]] + 0.5
+		winner = frontrunners[1]
 	}
-	var winner = _countWinner(tally);
 	var color = _colorWinner(model, winner);
 
 	// NO WINNER?! OR TIE?!?!
@@ -102,6 +103,74 @@ Election.star = function(model, options){
 		text += "<br>";
 		text += _icon(frontrunners[0])+" and "+_icon(frontrunners[1]) +" have the highest score, and...<br>";
 		text += "...their pairwise counts are "+aWins+" to "+bWins+", so...<br>";
+		text += "</span>";
+		text += "<br>";
+		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+		model.caption.innerHTML = text;
+
+	}
+
+};
+
+Election.three21 = function(model, options){
+
+	var ballots = model.getBallots();
+	// Tally the approvals & get winner!
+	var tallies = _tallies(model, 3);
+
+	var semifinalists = [];
+
+	for (var i in model.candidatesById) {
+	   semifinalists.push(i);
+	}
+	semifinalists.sort(function(a,b){return tallies[2][b]-tallies[2][a]})
+
+	var finalists = semifinalists.slice(0,3);
+	finalists.sort(function(a,b){return tallies[0][a]-tallies[0][b]})
+
+	var ballots = model.getBallots();
+	var aWins = 0;
+	var bWins = 0;
+	for(var k=0; k<ballots.length; k++){
+		var ballot = ballots[k];
+		if(ballot[finalists[0]]>ballot[finalists[1]]){
+			aWins++; // a wins!
+		} else if(ballot[finalists[0]]<ballot[finalists[1]]){
+			bWins++; // b wins!
+		}
+	}
+
+	var winner = finalists[0]
+	if (bWins > aWins) {
+		winner = finalists[1]
+	}
+	var color = _colorWinner(model, winner);
+
+	// NO WINNER?! OR TIE?!?!
+	if(!winner){
+
+		var text = "<b>NOBODY WINS</b>";
+		model.caption.innerHTML = text;
+
+	}else{
+
+		// Caption
+		var text = "";
+		text += "<span class='small'>";
+		text += "<b>Semifinalists: 3 most good. Finalists: 2 least bad. Winner: more preferred.</b><br>";
+		text += "<b>Semifinalists:</b><br>";
+		for(var i=0; i<semifinalists.length; i++){
+			var c = semifinalists[i];
+			text += _icon(c)+"'s 'good': "+tallies[2][c]+"<br>";
+		}
+		text += "<b>Finalists:</b><br>";
+		for(var i=0; i<finalists.length; i++){
+			var c = finalists[i];
+			text += _icon(c)+"'s 'bad': "+tallies[0][c]+"<br>";
+		}
+		text += "<b>Winner:</b><br>";
+
+		text += _icon(finalists[0])+": "+aWins+"; "+_icon(finalists[1]) +": "+bWins+", so...<br>";
 		text += "</span>";
 		text += "<br>";
 		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
@@ -394,6 +463,30 @@ var _tally = function(model, tallyFunc){
 
 	// Return it.
 	return tally;
+
+}
+
+var _tallies = function(model, levels){
+
+	// Create the tally
+	var tallies = [];
+	for (var level=0; level<levels; level++) {
+		var tally = {};
+		for(var candidateID in model.candidatesById) tally[candidateID] = 0;
+		tallies.push(tally)
+	}
+
+	// Count 'em up
+	var ballots = model.getBallots();
+	for(var i=0; i<ballots.length; i++){
+		var ballot = ballots[i]
+		for(var candidate in ballot){
+			tallies[ballot[candidate]][candidate] += 1;
+		}
+	}
+
+	// Return it.
+	return tallies;
 
 }
 
