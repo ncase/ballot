@@ -23,8 +23,8 @@ function ScoreVoter(model){
 
 		// Scores for each one!
 		var scores = {};
-		var mindist = 99;
-		var maxdist = -99;
+		var mindist = 9999;
+		var maxdist = -9999;
 		var mini = null;
 		var maxi = null;
 		for(var i=0; i<self.model.candidates.length; i++){
@@ -119,8 +119,8 @@ function ThreeVoter(model){
 
 		// Scores for each one!
 		var scores = {};
-		var mindist = 99;
-		var maxdist = -99;
+		var mindist = 9999;
+		var maxdist = -9999;
 		var mini = null;
 		var maxi = null;
 		for(var i=0; i<self.model.candidates.length; i++){
@@ -204,8 +204,8 @@ function ApprovalVoter(model){
 
 		// Anyone close enough. If anyone.
 		var approved = [];
-		var mindist = 99;
-		var maxdist = -99;
+		var mindist = 9999;
+		var maxdist = -9999;
 		var mini = null;
 		var maxi = null;
 		for(var i=0; i<self.model.candidates.length; i++){
