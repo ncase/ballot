@@ -3,31 +3,31 @@
 <head>
 
 	<!-- Meta -->
-	<title>To Build a ...Better Ballot</title>
+	<title>To Build an Even Better Ballot?</title>
 	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
 	<meta content="utf-8" http-equiv="encoding">
 	<meta charset="utf-8">
 	<link rel="icon" type="image/png" href="favicon.png">
 
 	<!-- Schema.org markup for Google+ -->
-	<meta itemprop="name" content="To Build a Better Ballot">
-	<meta itemprop="description" content="an interactive ..guide to alternative voting methods">
+	<meta itemprop="name" content="To Build an Even Better Ballot">
+	<meta itemprop="description" content="an addendum to ncase's interactive guide to alternative voting methods">
 	<meta itemprop="image" content="http://ncase.me/ballot/social/thumbnail.png">
 
 	<!-- Twitter Card data -->
 	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:site" content="@ncasenmare">
-	<meta name="twitter:title" content="To Build a Better Ballot">
-	<meta name="twitter:description" content="an interactive ..guide to alternative voting methods">
-	<meta name="twitter:creator" content="@ncasenmare">
+	<meta name="twitter:site" content="@bettercount_us">
+	<meta name="twitter:title" content="To Build an Even Better Ballot">
+	<meta name="twitter:description" content="an addendum to @ncasenmare's interactive guide to alternative voting methods">
+	<meta name="twitter:creator" content="@bettercount_us">
 	<meta name="twitter:image" content="http://ncase.me/ballot/social/thumbnail.png">
 
 	<!-- Open Graph data -->
-	<meta property="og:title" content="To Build a Better Ballot">
+	<meta property="og:title" content="To Build an Even Better Ballot">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="http://ncase.me/ballot/">
 	<meta property="og:image" content="http://ncase.me/ballot/social/thumbnail.png">
-	<meta property="og:description" content="an interactive ..guide to alternative voting methods">
+	<meta property="og:description" content="an addendum to ncase's interactive guide to alternative voting methods">
 
 	<!-- Styles -->
 	<link rel="stylesheet" type="text/css" href="css/index.css">
@@ -60,10 +60,262 @@ THE SPOILER EFFECT
 
 <div class="words">
 
-	<p>No, this is not about the 2016 U.S. election. Not <em>just</em> that, anyway.</p>
+	<p>You read/played Nicky Case's great <a href="http://ncase.me/ballot/">explainer on voting methods</a>. And you still want more!</p>
 
-	<p>First, I need to explain a weird glitch in our voting system.
-	Let's say there's two candidates, Steven Square <img src="play/img/square.png"/> and Tracy Triangle <img src="play/img/triangle.png"/>, on a couple political axes. (for example, &ldquo;left vs. right&rdquo; and &ldquo;globalist vs. nationalist&rdquo;) Let's also say there's a voter <img src="play/img/voter.png"/> who simply votes for whoever's political position is closest. What would that look like?</p>
+	<p>Never fear. I have two more voting methods to teach you about, and I hope I can convince you that they're the best yet.</p>
+
+	<p>Who's "me"? I'm Jameson Quinn, a statistics student at Harvard and a board member of the Center for Election Science. I'm not as good a designer or interactive programmer
+	as Nicky, as you can see from the title above. But I have spent a lot of time thinking about voting methods.</p>
+
+	<p>I'm also not as cool as Nicky, but I'm going to pretend to be. If my pale imitation of their chatty tone puts you off, then... well, I guess you can wait for my peer-reviewed paper.</p>
+
+	<p>So, the story so far: FPTP voting is horrible. There's all kinds of other voting methods that would be better. We're looking for the one that's best. Some activists think that's Instant Runoff Voting (IRV), but Nicky and I both disagree; it can prematurely eliminate centrists, and requires centralized counting. Nicky says they lean towards score voting, and I can see why: it's easy to understand, and in all the simulations Nicky built, it does a great job of satisfying all the little dot-on-screen voters.</p>
+
+	<p>By the end of this interactive, you're going to understand the three methods I consider the best. One of them Nicky already showed you: approval voting, which is great because it's so simple and because it has absolutely no downsides versus FPTP. The other two are newer, but they use similar basic ideas to what you've already seen. I hope you like all three methods.</p>
+
+	<p>But before I show you the new methods, I have to show you why score voting isn't already the greatest method possible. So I have to explain strategic voting.</p>
+
+	<h1 id="postmedian>">Unstrategic voting</h1>
+
+	<p>Remember how Nicky's voters worked in Score Voting? They just gave each candidate a number based on the absolute distance. Like this:</p>
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<p>But notice something about that ballot? For many positions of the voter and candidate, the ballot doesn't include a score of 5 or a score of 0. If you actually voted like that, you'd be giving up on some of your voting power. Say Triangle is your favorite, and you give them a score of 3, which also happens to be their average score. If Square wins with a score of 3.2, you're going to feel very silly for not giving a triangle a 5, in order to pull their average up as high as you can.</p>
+
+	<h1>Digression: median systems</h1>
+
+	<a href="#postmedian">skip this digression</a>
+
+	<p>Ever watched the Olympics? In events like figure skating, there are a number of Olympic judges from different countries. In order to prevent any one judge from having too much influence, they use a "trimmed mean": they throw away the highest and lowest scores before they take the average. </p>
+
+	<p>Olympic judges are supposedly supposed to be unbiased. But for voters, there's nothing wrong with having political opinions. (I mean, obviously your opinions, dear reader, are the best, and everybody else should just listen to you. But much as I'd like to, I can't force them to.) So let's imagine voting used the olympic system.</p>
+
+	<p>Throwing away just one highest and lowest score, with thousands or millions of voters, obviously wouldn't make an appreciable difference. So we'd have to throw away some more scores. And, why not? Let's throw away a few more while we're at it.</p>
+
+	<p>When should we stop? When there's just 1 or 2 scores left to take the average. But if you do that, most people wouldn't called that a "trimmed mean" anymore; they'd just call it the median, the middle number.</p>
+
+	<p>There are several voting methods that use the median to find the winner. (It turns out that can lead to a lot of ties, so you need a tiebreaker system to avoid that.) In the 1910s, over a dozen US cities, starting with Grand Junction, CO, used "Bucklin voting", a median-based system using a hybrid ranked/rated ballot. More recently, voting theorists Balinski and Laraki have proposed Majority Judgment, a median-based method using a rated ballot that's now been used in a number of competitions.</p>
+
+	<p>Using the median reduces the incentives for a single voter to strategize. After all, unless you happen to be the exact median rating for a candidate, the only thing that matters about the rating you gave them is whether it's above or below the median.</p>
+
+	<p>Still, large groups of voters can still get a strategic advantage. The larger the voting bloc, the greater the chance is that the median rating for a given candidate happens to be a voter in that bloc.</p>
+
+	<p>I used to think that median voting methods were the best. But then I did the simulations I'll talk about below, and they were merely OK; not much better outcomes than approval voting, but without the simplicity. I still think they're hugely better than FPTP and a bit better than IRV, but I'm not sold enough on them for it to be worth my time programming them in to Nicky's simulator.</p>
+
+	<h1 id="postmedian>">Lightly-strategic voting: "normalization"</h1>
+
+	<p>As I suggested above, in the real world, in score voting and similar methods, most voters will want to make sure that their ballot contains at least one candidate each at the top rating and at the bottom rating. The simplest way to do that (even though the name sounds complicated and math-y) is "normalization". That just means that you set the top and bottom ratings to be however good your favorite and least-favorite candidates are, and then spread the rest of the ratings evenly between that.</p>
+
+	<p>Here's an example of a "normalizing" voter for you to play with:</p>
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<p>As soon as voters are using strategy in score voting — even a very slight amount of strategy, such as normalization — it is no longer fully exempt from impossibility theorems like Arrow's theorem. In particular, it no longer obeys independence of irrelevant alternatives (IIA); adding or removing a losing candidate can change how voters normalize, and thus change who wins. For instance, in the simulation below, try removing the pentagon candidate, and see what happens.</p>
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<p>But a bigger problem than IIA violation, which in the real world is relatively hard to engineer or take advantage of, is the issue of differential voting power. In the following election, one of the groups of voters normalizes, and the other one doesn't. The two groups are the same size, but the normalizing group gets a candidate they like a lot better.</p>
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<p>Is that kind of thing realistic? Perhaps not in the form above; few voters would be so unstrategic as not to normalize. But actually, normalizing as above is a pretty weak strategy. To strategize even more strongly, voters could somehow assess which two candidates were the frontrunners, and use them as the endpoints for normalization. Mostly, this means casting an approval-like ballot that gives every candidate either a 5 or a 0. For instance, in the election below, the voter believes that triangle and square are the frontrunners. Compare the strongly strategic voter below with the normalized voter in the second example above.</p>
+
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<p>Just as normalized voters can have more voting power than naive voters, strongly strategic voters can have more than normalized voters (as long as they are not too far off in guessing the frontrunners). This is a potential weakness of score voting.</p>
+
+	<p>Is approval voting immune to this kind of voting strategy? No; in fact, in the early seventies, mathematicians Gibbard and Satterthwaite both independently proved the theorem which bears their names, showing that no non-dictatorial voting method with more than 2 options is entirely immune to strategy. Unlike Arrow's theorem, which Nicky discussed, this one goes for any kind of voting method — ranked, rated, or whatever. So yes, approval voting is more resistant to strategy than score; but not immune.</p>
+
+	<p>(Note: advocates for IRV sometimes garble this point by saying that in approval voting the best strategy is to "bullet vote" for only your favorite candidate, and that this would lead it to devolve back to FPTP. That's just wrong; if voters are strategically voting for somebody other than their favorite in FPTP, then there's no way it would make sense for them to bullet vote in approval. Approval voting isn't perfect, but it simply does <strong>not</strong> break down to FPTP.)</p>
+
+	<p>One scenario where approval becomes a factor is called the "chicken dilemma". Imagine 3 groups of voters, with 25%, 30%, and 45% of the vote respectively. Say that the first two groups both prefer each other over the third, so that either of them could beat that third opponent by 55% to 45%. Whichever of the first two groups strategically gives fewer approvals to its rival will win... unless neither of them gives enough, in which case the opponent will win. This is called a "chicken dilemma" because it's like a game of chicken between the voters for the two similar rivals: they can "swerve" and let their second-favorite win, or they can "drive straight" and either win (if the other side swerves) or crash (if the other side doesn't).</p>
+
+	<p>Here's that scenario in sandbox form. The slider on the right controls the percent of the smallest group that is strongly strategic between triangle and square; all the rest of the voters use normalized strategy (that is, approve any candidate better than the average of their favorite and least-favorite).</p>
+
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+
+	<p>The "chicken dilemma" is a genuinely tough situation for almost any voting method. The motivations for the two rival factions to vote strategically are hard to minimize safely. Voting methods that go too far out of their way to punish strategic voters in this scenario tend to get the wrong answer in other, more-common scenarios like center squeeze. Look at how these various methods deal with both of these situations:</p>
+
+
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<p>So, now I've explained why strategic voting makes things tricky, I can explain my two favorite voting methods: star voting and 3-2-1 voting. </p>
+
+	<h1>Star voting</h1>
+
+	<p>"Star", or more precisely, "s+ar", stands for "score plus automatic runoff." In this method, voters use the same ballot as score voting. Between the two candidates with the highest scores, the winner is the one that comes higher on more ballots. Here's a one-voter star election. You can choose between three kinds of strategy: normalized, moderately strategic, and strongly strategic. The first and last kinds you've seen before. The third is almost like a strongly strategic voter, except that the ratings may be changed by one to avoid giving a frontrunner the same score as any other candidate. Here's a one-voter election:</p>
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<p>And here's the chicken dilemma you saw above:</p>
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<h1>3-2-1 voting</h1>
+
+	<p>In 3-2-1 voting, voters rate each candidate "Good", "OK", or "Bad". To find the winner, you first narrow it down to three semifinalists, the candidates with the most "good" ratings. Then, narrow it further to two finalists, the candidates with the fewest "bad" ratings. Finally, the winner is the one preferred on more ballots. Here's a ballot to play with:</p>
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<p>And here's the chicken dilemma. Note "moderately strategic" doesn't change the result from "normalized". So unlike in star voting, candidates wouldn't have to go negative against their nearby rivals in order to ensure that their voters would at least be moderately strategic and wouldn't just normalize.</p>
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+	<p>Putting it all together, here's a sandbox for you to try out all the different systems and to make your own scenarios:</p>
+
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+
+	</div>
+	<div class="words">
+
+
+
+
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+	<p></p>
+
+
+
 
 </div>
 <div class="sim-intro">
