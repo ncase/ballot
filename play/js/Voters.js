@@ -21,19 +21,20 @@ function ScoreVoter(model){
 
 	self.getBallot = function(x, y, strategy){
 
+		
 		// Scores for each one!
-        var scores = {};
+		var scores = {};
 		var mindist = 9999;
 		var maxdist = -9999;
 		var mini = null;
 		var maxi = null;
-        var dista = [];
+		var dista = [];
 		for(var i=0; i<self.model.candidates.length; i++){
 			var c = self.model.candidates[i];
 			var dx = c.x-x;
 			var dy = c.y-y;
 			var dist = Math.sqrt(dx*dx+dy*dy);
-            dista.push(dist)
+			dista.push(dist)
 			scores[c.id] = self.getScore(dist);
 			if (dist < mindist) {
 				mindist = dist;
@@ -44,41 +45,41 @@ function ScoreVoter(model){
 				maxi = c.id
 			}
 		}
-        self.model.idlastwinner = "square"
-        if(strategy == "justfirstandlast") {
-            scores[maxi] = 1
-            scores[mini] = 5
-        } else if (strategy == "normalized") {
-            var fnorm = 1/ (maxdist-mindist);
-            if (1) {
-                var normit = function(d) {return (d-mindist)*fnorm;}
-                var ndist = dista.map(normit);
-                var gs = function(d) { return 1+Math.round(4*(1-d)); }
-                var gd = ndist.map(gs)
-                var assignit = function(d,i) {scores[self.model.candidates[i].id] = d;}
-                gd.map(assignit);
-            } else { // equivalent loop way of doing things
-                for(var i=0; i<self.model.candidates.length; i++){
-                    var normit = (dista[i]-mindist)*fnorm;
-                    var gs = 1+Math.round(4*(1-normit));
-                    scores[self.model.candidates[i].id] = gs;
-                }
-            }
-        } else if (strategy == "threshold") {
-            var windex = 0;
-            for(var i=0; i<self.model.candidates.length; i++){
-                var c = self.model.candidates[i];
-			    if (c.id == self.model.idlastwinner) windex = i;
-		    }
-            var d_threshold = dista[windex];
-            var thresholdit = function(d) {return (d>=d_threshold) ? 1 : 5}
-            var scores2 = dista.map(thresholdit);
-            var assignit = function(d,i) {scores[self.model.candidates[i].id] = d;}
-            scores2.map(assignit)
-            scores[mini] = 5;
-            
-        } // otherwise, there is no strategy self.strategy == "nope"
-        
+		self.model.idlastwinner = "square"
+		if(strategy == "justfirstandlast") {
+			scores[maxi] = 1
+			scores[mini] = 5
+		} else if (strategy == "normalized") {
+			var fnorm = 1/ (maxdist-mindist);
+			if (1) {
+				var normit = function(d) {return (d-mindist)*fnorm;}
+				var ndist = dista.map(normit);
+				var gs = function(d) { return 1+Math.round(4*(1-d)); }
+				var gd = ndist.map(gs)
+				var assignit = function(d,i) {scores[self.model.candidates[i].id] = d;}
+				gd.map(assignit);
+			} else { // equivalent loop way of doing things
+				for(var i=0; i<self.model.candidates.length; i++){
+					var normit = (dista[i]-mindist)*fnorm;
+					var gs = 1+Math.round(4*(1-normit));
+					scores[self.model.candidates[i].id] = gs;
+				}
+			}
+		} else if (strategy == "threshold") {
+			var windex = 0;
+			for(var i=0; i<self.model.candidates.length; i++){
+				var c = self.model.candidates[i];
+				if (c.id == self.model.idlastwinner) windex = i;
+			}
+			var d_threshold = dista[windex];
+			var thresholdit = function(d) {return (d>=d_threshold) ? 1 : 5}
+			var scores2 = dista.map(thresholdit);
+			var assignit = function(d,i) {scores[self.model.candidates[i].id] = d;}
+			scores2.map(assignit)
+			scores[mini] = 5;
+
+		} // otherwise, there is no strategy self.strategy == "nope"
+
 		// Scooooooore
 		return scores;
 
