@@ -3,9 +3,13 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/model.css">
-	<link rel="stylesheet" type="text/css" href="css/ballot.css">
+	<link rel="stylesheet" type="text/css" href="css/election.css">
 </head>
-<body></body>
+<body>
+	<div id="left"></div>
+	<div id="center"></div>
+	<div id="right"></div>
+</body>
 </html>
 
 <script src="js/helpers.js"></script>
@@ -17,7 +21,20 @@
 <script src="js/Candidate.js"></script>
 <script src="js/Voters.js"></script>
 <script src="js/Election.js"></script>
-<script src="js/Ballot.js"></script>
+<script src="js/Buttons.js"></script>
 
-<script src="js/main_ballot.js"></script>
-<script>main({system: "Plurality"});</script>
+<script src="js/main_sandbox.js"></script>
+<script>
+main({
+
+	system: "Score",
+	strategy: "normalized",
+
+	candidates: 3,
+	candidatePositions: [[50,125],[250,125],[280,280]],
+
+	voters: 1,
+	voterPositions: [[155,125]]
+
+});
+</script>

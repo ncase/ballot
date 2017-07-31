@@ -44,6 +44,7 @@ function main(config){
 	// Defaults...
 	config = config || {};
 	config.system = config.system || "FPTP";
+    config.strategy = config.strategy || "nope";
 	config.candidates = config.candidates || 3;
 	config.voters = config.voters || 1;
 	config.features = config.features || 1; // 1-basic, 2-voters, 3-candidates, 4-save
@@ -68,6 +69,7 @@ function main(config){
 			model.numOfCandidates = config.candidates;
 			model.numOfVoters = config.voters;
 			model.system = config.system;
+			model.strategy = config.strategy;
 			var votingSystem = votingSystems.filter(function(system){
 				return(system.name==model.system);
 			})[0];
@@ -89,6 +91,7 @@ function main(config){
 				model.addVoters({
 					dist: GaussianVoters,
 					type: model.voterType,
+					strategy: config.strategy,
 					num:(4-num),
 					x:pos[0], y:pos[1]
 				});

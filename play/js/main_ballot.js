@@ -1,6 +1,9 @@
 window.ONLY_ONCE = false;
-function main(ballotType){
+function main(config){
 
+	ballotType = config.system;
+	strategy = config.strategy || "nope";
+	
 	// ONCE.
 	if(ONLY_ONCE) return;
 	ONLY_ONCE=true;
@@ -17,6 +20,7 @@ function main(ballotType){
 			model.addVoters({
 				dist: SingleVoter,
 				type: VoterType,
+				strategy: strategy,
 				x:81, y:92
 			});
 			model.addCandidate("square", 41, 50);

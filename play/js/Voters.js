@@ -19,7 +19,7 @@ function ScoreVoter(model){
 		return 0;
 	};
 
-	self.getBallot = function(x, y){
+	self.getBallot = function(x, y, strategy){
 
 		// Scores for each one!
         var scores = {};
@@ -44,12 +44,11 @@ function ScoreVoter(model){
 				maxi = c.id
 			}
 		}
-        self.strategy = "normalized"
         self.model.idlastwinner = "square"
-        if(self.strategy == "justfirstandlast") {
+        if(strategy == "justfirstandlast") {
             scores[maxi] = 1
             scores[mini] = 5
-        } else if (self.strategy == "normalized") {
+        } else if (strategy == "normalized") {
             var fnorm = 1/ (maxdist-mindist);
             if (1) {
                 var normit = function(d) {return (d-mindist)*fnorm;}
@@ -65,7 +64,7 @@ function ScoreVoter(model){
                     scores[self.model.candidates[i].id] = gs;
                 }
             }
-        } else if (self.strategy == "threshold") {
+        } else if (strategy == "threshold") {
             var windex = 0;
             for(var i=0; i<self.model.candidates.length; i++){
                 var c = self.model.candidates[i];
@@ -145,7 +144,7 @@ function ThreeVoter(model){
 		return 0;
 	};
 
-	self.getBallot = function(x, y){
+	self.getBallot = function(x, y, strategy){
 
 		// Scores for each one!
 		var scores = {};
@@ -230,7 +229,7 @@ function ApprovalVoter(model){
 
 	self.approvalRadius = 100; // whatever.
 
-	self.getBallot = function(x, y){
+	self.getBallot = function(x, y, strategy){
 
 		// Anyone close enough. If anyone.
 		var approved = [];
@@ -308,7 +307,7 @@ function RankedVoter(model){
 	var self = this;
 	self.model = model;
 
-	self.getBallot = function(x, y){
+	self.getBallot = function(x, y, strategy){
 
 		// Rank the peeps I'm closest to...
 		var rank = [];
@@ -389,7 +388,7 @@ function PluralityVoter(model){
 	var self = this;
 	self.model = model;
 
-	self.getBallot = function(x, y){
+	self.getBallot = function(x, y, strategy){
 
 		// Who am I closest to? Use their fill
 		var closest = null;
@@ -552,7 +551,7 @@ function GaussianVoters(config){
 			var p = points[i];
 			var x = self.x + p[0];
 			var y = self.y + p[1];
-			var ballot = self.type.getBallot(x, y);
+			var ballot = self.type.getBallot(x, y, config.strategy);
 			self.ballots.push(ballot);
 		}
 	};
@@ -588,7 +587,7 @@ function SingleVoter(config){
 	// UPDATE!
 	self.ballot = null;
 	self.update = function(){
-		self.ballot = self.type.getBallot(self.x, self.y);
+		self.ballot = self.type.getBallot(self.x, self.y, config.strategy);
 	};
 
 	// DRAW!
