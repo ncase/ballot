@@ -46,6 +46,7 @@ function main(config){
 	config.candidates = config.candidates || 3;
 	config.voters = config.voters || 1;
 	config.features = config.features || 1; // 1-basic, 2-voters, 3-candidates, 4-save
+	config.doPercentMiddle = config.doPercentMiddle || false;
 	config.frontrunners = config.frontrunners || ["square"];
 	var initialConfig = JSON.parse(JSON.stringify(config));
 
@@ -93,7 +94,8 @@ function main(config){
 				model.addVoters({
 					dist: GaussianVoters,
 					type: model.voterType,
-					strategy: voterStrategies[i],
+					strategy: config.voterStrategies[i],
+					percentStrategy: config.voterPercentStrategy[i],
 					frontrunners: config.frontrunners,
 					num:(4-num),
 					x:pos[0], y:pos[1]
@@ -258,7 +260,36 @@ function main(config){
 			document.querySelector("#left").appendChild(chooseCandidates.dom);
 
 		}
+		
+		if(initialConfig.doPercentMiddle){ // VOTERS as feature.
 
+			var strategyPercent = [
+				{name:"0", num:0, margin:4},
+				{name:"50", num:50, margin:4},
+				{name:"80", num:80, margin:4},
+				{name:"100", num:100}
+			];
+			var onChoosePercentStrategy = function(data){
+				
+				// update config...
+				config.voterPercentStrategy[1] = data.num; // only the middle percent (for the yellow triangle)
+
+				// no reset...
+				for(var i=0;i<model.voters.length;i++){
+					model.voters[i].percentStrategy = config.voterPercentStrategy[i]
+				}
+				model.update();
+				
+			};
+			window.choosePercentStrategy = new ButtonGroup({
+				label: "what percent strategy for middle?",
+				width: 52,
+				data: strategyPercent,
+				onChoose: onChoosePercentStrategy
+			});
+			document.querySelector("#left").appendChild(choosePercentStrategy.dom);
+
+		}
 
 		///////////////////////
 		//////// INIT! ////////

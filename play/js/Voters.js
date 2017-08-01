@@ -19,7 +19,7 @@ function ScoreVoter(model){
 		return 0;
 	};
 
-	self.getBallot = function(x, y, config){
+	self.getBallot = function(x, y, strategy, config){
 
 		
 		// Scores for each one!
@@ -46,10 +46,10 @@ function ScoreVoter(model){
 			}
 		}
 		self.model.idlastwinner = "square"
-		if(config.strategy == "justfirstandlast") {
+		if(strategy == "justfirstandlast") {
 			scores[maxi] = 1
 			scores[mini] = 5
-		} else if (config.strategy == "normalized") {
+		} else if (strategy == "normalized") {
 			var fnorm = 1/ (maxdist-mindist);
 			if (1) {
 				var normit = function(d) {return (d-mindist)*fnorm;}
@@ -65,8 +65,8 @@ function ScoreVoter(model){
 					scores[self.model.candidates[i].id] = gs;
 				}
 			}
-		} else if (config.strategy == "threshold" || config.strategy == "thresholdfrontrunners" || config.strategy == "normfrontrunners") {
-			if (config.strategy == "threshold") {
+		} else if (strategy == "threshold" || strategy == "thresholdfrontrunners" || strategy == "normfrontrunners") {
+			if (strategy == "threshold") {
 				var windex = 0;
 				for(var i=0; i<self.model.candidates.length; i++){
 					var c = self.model.candidates[i];
@@ -75,7 +75,7 @@ function ScoreVoter(model){
 				var d_threshold = dista[windex];
 				var thresholdit = function(d) {return (d<d_threshold) ? 5 : 1} // don't vote for the best frontrunner. just those who are better
 
-			} else if (config.strategy == "thresholdfrontrunners" || config.strategy == "normfrontrunners") {
+			} else if (strategy == "thresholdfrontrunners" || strategy == "normfrontrunners") {
 				var windex = [];
 				var maxfront = 0;
 				var imaxfront = 0;
@@ -99,10 +99,10 @@ function ScoreVoter(model){
 					}
 					 windex.push(i);
 				}
-				if (config.strategy == "thresholdfrontrunners") {
+				if (strategy == "thresholdfrontrunners") {
 					var d_threshold = minfront;
 					var thresholdit = function(d) {return (d<=d_threshold) ? 5 : 1}  // vote for the best frontrunner and everyone better
-				} else if (config.strategy == "normfrontrunners") {
+				} else if (strategy == "normfrontrunners") {
 					var fnorm = 1/ (maxfront-minfront);
 					var normit = function(d) {return (d-minfront)*fnorm;}
 					var gs = function(d) { return 1+Math.round(4*(1-normit(d))); }
@@ -114,7 +114,7 @@ function ScoreVoter(model){
 			scores2.map(assignit)
 			scores[mini] = 5;
 
-		}// otherwise, there is no strategy config.strategy == "nope"
+		}// otherwise, there is no strategy strategy == "nope"
 
 		// Scooooooore
 		return scores;
@@ -181,7 +181,7 @@ function ThreeVoter(model){
 		return 0;
 	};
 
-	self.getBallot = function(x, y, config){
+	self.getBallot = function(x, y, strategy,  config){
 
 		// Scores for each one!
 		var scores = {};
@@ -266,7 +266,7 @@ function ApprovalVoter(model){
 
 	self.approvalRadius = 100; // whatever.
 
-	self.getBallot = function(x, y, config){
+	self.getBallot = function(x, y, strategy,  config){
 
 		// Anyone close enough. If anyone.
 		var approved = [];
@@ -344,7 +344,7 @@ function RankedVoter(model){
 	var self = this;
 	self.model = model;
 
-	self.getBallot = function(x, y, config){
+	self.getBallot = function(x, y, strategy,  config){
 
 		// Rank the peeps I'm closest to...
 		var rank = [];
@@ -425,7 +425,7 @@ function PluralityVoter(model){
 	var self = this;
 	self.model = model;
 
-	self.getBallot = function(x, y, config){
+	self.getBallot = function(x, y, strategy,  config){
 
 		// Who am I closest to? Use their fill
 		var closest = null;
@@ -529,7 +529,7 @@ var _drawBlank = function(ctx, x, y, size){
 ///////// SINGLE OR GAUSSIAN ////////////
 /////////////////////////////////////////
 
-function GaussianVoters(config){
+function GaussianVoters(config){ // this config comes from addVoters in main_sandbox
 
 	var self = this;
 	Draggable.call(self, config);
@@ -542,6 +542,9 @@ function GaussianVoters(config){
 	self.setType = function(newType){
 		self.type = new newType(self.model);
 	};
+	
+	self.percentStrategy = config.percentStrategy
+	self.strategy = config.strategy
 
 	// HACK: larger grab area
 	self.radius = 50;
@@ -584,11 +587,24 @@ function GaussianVoters(config){
 	self.ballots = [];
 	self.update = function(){
 		self.ballots = [];
+		
+		//randomly assign voter strategy based on percentages, but using the same seed each time
+		// from http://davidbau.com/encode/seedrandom.js
+		Math.seedrandom('hi');
+		
 		for(var i=0; i<points.length; i++){
 			var p = points[i];
 			var x = self.x + p[0];
 			var y = self.y + p[1];
-			var ballot = self.type.getBallot(x, y, config);
+			
+			var r1 = Math.random() * 100;
+			if (r1 < self.percentStrategy) { 
+				var strategy = self.strategy // yes
+			} else {
+				var strategy = "nope";
+			}
+			
+			var ballot = self.type.getBallot(x, y, strategy, config);
 			self.ballots.push(ballot);
 		}
 	};
@@ -624,7 +640,7 @@ function SingleVoter(config){
 	// UPDATE!
 	self.ballot = null;
 	self.update = function(){
-		self.ballot = self.type.getBallot(self.x, self.y, config);
+		self.ballot = self.type.getBallot(self.x, self.y, config.strategy, config);
 	};
 
 	// DRAW!
