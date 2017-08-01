@@ -199,31 +199,18 @@ function ThreeVoter(model){
 
 		// Scores for each one!
 		var scores = {};
-		var mindist = 9999;
-		var maxdist = -9999;
-		var mini = null;
-		var maxi = null;
+		var dista = [];
 		for(var i=0; i<self.model.candidates.length; i++){
 			var c = self.model.candidates[i];
 			var dx = c.x-x;
 			var dy = c.y-y;
 			var dist = Math.sqrt(dx*dx+dy*dy);
+			dista.push(dist)
 			scores[c.id] = self.getScore(dist);
-			if (dist < mindist) {
-				mindist = dist;
-				mini = c.id
-			}
-			if (dist > maxdist) {
-				maxdist = dist;
-				maxi = c.id
-			}
 		}
-
-		scores[maxi] = 0
-		scores[mini] = 2
-
-		// Scooooooore
-		return scores;
+		self.model.idlastwinner = "square"
+		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,config.frontrunners,self.model.candidates)
+		return scores
 
 	};
 
@@ -281,36 +268,30 @@ function ApprovalVoter(model){
 	self.approvalRadius = 100; // whatever.
 
 	self.getBallot = function(x, y, strategy,  config){
-
-		// Anyone close enough. If anyone.
-		var approved = [];
-		var mindist = 9999;
-		var maxdist = -9999;
-		var mini = null;
-		var maxi = null;
+		
+		// re-use code for scores above, but with different range
+		// Scores for each one!
+		var scores = {};
+		var dista = [];
 		for(var i=0; i<self.model.candidates.length; i++){
 			var c = self.model.candidates[i];
 			var dx = c.x-x;
 			var dy = c.y-y;
 			var dist = Math.sqrt(dx*dx+dy*dy);
-			if(dist<self.approvalRadius){
+			dista.push(dist)
+			scores[c.id] = (dist<self.approvalRadius) ? 1 : 0;
+		}
+		self.model.idlastwinner = "square"
+		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,config.frontrunners,self.model.candidates)
+		
+		
+		// Anyone close enough. If anyone.
+		var approved = [];
+		for(var i=0; i<self.model.candidates.length; i++){
+			var c = self.model.candidates[i];
+			if(scores[c.id] == 1){
 				approved.push(c.id);
 			}
-			if (dist < mindist) {
-				mindist = dist;
-				mini = c.id
-			}
-			if (dist > maxdist) {
-				maxdist = dist;
-				maxi = approved.length - 1
-			}
-		}
-
-		if(mindist>=self.approvalRadius){
-			approved.push(mini);
-		}
-		if(maxdist<self.approvalRadius){
-			approved.splice(maxi,i);
 		}
 
 		// Vote for the CLOSEST
