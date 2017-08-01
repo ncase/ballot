@@ -45,7 +45,8 @@ function ScoreVoter(model){
 				maxi = c.id
 			}
 		}
-		self.model.idlastwinner = "square"
+		function dostrategy(scores,minscore,maxscore,strategy,lastwinner,frontrunners,mindist,mni,maxdist,maxi,candidates) {
+
 		if(strategy == "justfirstandlast") {
 			scores[maxi] = 1
 			scores[mini] = 5
@@ -56,21 +57,21 @@ function ScoreVoter(model){
 				var ndist = dista.map(normit);
 				var gs = function(d) { return 1+Math.round(4*(1-d)); }
 				var gd = ndist.map(gs)
-				var assignit = function(d,i) {scores[self.model.candidates[i].id] = d;}
+				var assignit = function(d,i) {scores[candidates[i].id] = d;}
 				gd.map(assignit);
 			} else { // equivalent loop way of doing things
-				for(var i=0; i<self.model.candidates.length; i++){
+				for(var i=0; i<candidates.length; i++){
 					var normit = (dista[i]-mindist)*fnorm;
 					var gs = 1+Math.round(4*(1-normit));
-					scores[self.model.candidates[i].id] = gs;
+					scores[candidates[i].id] = gs;
 				}
 			}
 		} else if (strategy == "threshold" || strategy == "thresholdfrontrunners" || strategy == "normfrontrunners") {
 			if (strategy == "threshold") {
 				var windex = 0;
-				for(var i=0; i<self.model.candidates.length; i++){
-					var c = self.model.candidates[i];
-					if (c.id == self.model.idlastwinner) windex = i;
+				for(var i=0; i<candidates.length; i++){
+					var c = candidates[i];
+					if (c.id == lastwinner) windex = i;
 				}
 				var d_threshold = dista[windex];
 				var thresholdit = function(d) {return (d<d_threshold) ? 5 : 1} // don't vote for the best frontrunner. just those who are better
@@ -81,10 +82,10 @@ function ScoreVoter(model){
 				var imaxfront = 0;
 				var minfront = 9999; // find the best frontrunner
 				var iminfront = 0;
-				for(var i=0; i<self.model.candidates.length; i++){
-					var c = self.model.candidates[i];
-					for(var j = 0; j < config.frontrunners.length; j++) {
-						var cf = config.frontrunners[j]
+				for(var i=0; i<candidates.length; i++){
+					var c = candidates[i];
+					for(var j = 0; j < frontrunners.length; j++) {
+						var cf = frontrunners[j]
 						if (c.id == cf) {
 							var testd = dista[i];
 							if(testd < minfront) {
@@ -110,7 +111,7 @@ function ScoreVoter(model){
 				}
 			}
 			var scores2 = dista.map(thresholdit);
-			var assignit = function(d,i) { scores[ self.model.candidates[i].id ] = d; }
+			var assignit = function(d,i) { scores[ candidates[i].id ] = d; }
 			scores2.map(assignit)
 			scores[mini] = 5;
 
@@ -119,6 +120,11 @@ function ScoreVoter(model){
 		// Scooooooore
 		return scores;
 
+		}
+		self.model.idlastwinner = "square"
+		scores = dostrategy(scores,1,5,strategy,self.model.idlastwinner,config.frontrunners,mindist,mini,maxdist,maxi,self.model.candidates)
+		return scores
+		
 	};
 
 	self.drawBG = function(ctx, x, y, ballot){
