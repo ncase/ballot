@@ -79,6 +79,7 @@ THE SPOILER EFFECT
 
 	<p>Remember how Nicky's voters worked in Score Voting? They just gave each candidate a number based on the absolute distance. Like this:</p>
 
+
 	</div>
 	<div class="sim-ballot">
 
@@ -89,6 +90,7 @@ THE SPOILER EFFECT
 
 	</div>
 	<div class="words">
+		<p><em>Description: this should just be an unstrategic score voter, as in ncase's thing. Allow ballot picture to show 0 scores.</em></p>
 
 	<p>But notice something about that ballot? For many positions of the voter and candidate, the ballot doesn't include a score of 5 or a score of 0. If you actually voted like that, you'd be giving up on some of your voting power. Say Triangle is your favorite, and you give them a score of 3, which also happens to be their average score. If Square wins with a score of 3.2, you're going to feel very silly for not giving a triangle a 5, in order to pull their average up as high as you can.</p>
 
@@ -128,6 +130,7 @@ THE SPOILER EFFECT
 
 	</div>
 	<div class="words">
+		<p><em>Description: this should be like ncase's "drag the voter" examples, with a normalizing score voter. This voter should have a series of circles, where the closest one intersects the closest candidate and the farthest one the farthest candidate. Thus, as you moved the voter or candidates the circles would change size.</em></p>
 
 	<p>As soon as voters are using strategy in score voting — even a very slight amount of strategy, such as normalization — it is no longer fully exempt from impossibility theorems like Arrow's theorem. In particular, it no longer obeys independence of irrelevant alternatives (IIA); adding or removing a losing candidate can change how voters normalize, and thus change who wins. For instance, in the simulation below, try moving the losing yellow traingle candidate, and see what happens.</p>
 
@@ -141,6 +144,7 @@ THE SPOILER EFFECT
 
 	</div>
 	<div class="words">
+		<p><em>This should be a score voting scenario with 100% normalizing voters. the voter median around (0,0), and candidates square (3,0), triangle (-2,0), pentagon (-4,0). Pentagon voters are not enthusiastic enough about triangle so square wins, even though triangle is higher utility. Removing penta fixes the problem.  </em></p>
 
 	<p>But a bigger problem than IIA violation, which in the real world is relatively hard to engineer or take advantage of, is the issue of differential voting power. In the following election, one of the groups of voters normalizes, and the other one doesn't. The two groups are the same size, but the normalizing group gets a candidate they like a lot better.</p>
 
@@ -154,6 +158,7 @@ THE SPOILER EFFECT
 
 	</div>
 	<div class="words">
+		<p><em>groups of voters at (-4,0)non-normalizing and (4,0)normalizing. Cands at (-2.5,.5), (-2,0), (0,0), (2,0), (2.5,.5). (2,0) wins. </em></p>
 
 	<p>Is that kind of thing realistic? Perhaps not in the form above; few voters would be so unstrategic as not to normalize. But actually, normalizing as above is a pretty weak strategy. To strategize even more strongly, voters could somehow assess which two candidates were the frontrunners, and use them as the endpoints for normalization. Mostly, this means casting an approval-like ballot that gives every candidate either a 5 or a 0. For instance, in the election below, the voter believes that the red hexagon and the blue square are the frontrunners. Compare the strongly strategic voter below with the normalized voter in the second example above.</p>
 
@@ -168,6 +173,8 @@ THE SPOILER EFFECT
 
 	</div>
 	<div class="words">
+
+			<p><em>Single-voter example with 3 candidates and a voter who normalizes based on only the  2 of them.</em></p>
 
 	<p>Just as normalized voters can have more voting power than naive voters, strongly strategic voters can have more than normalized voters (as long as they are not too far off in guessing the frontrunners). This is a potential weakness of score voting.</p>
 
@@ -191,6 +198,8 @@ THE SPOILER EFFECT
 	</div>
 	<div class="words">
 
+			<p><em>Clumps of voters at (x,y,size): (-2,1,6); (-2,-1,4)slider; (3,0,10). </em></p>
+
 
 	<p>The "chicken dilemma" is a genuinely tough situation for almost any voting method. The motivations for the two rival factions to vote strategically are hard to minimize safely. Voting methods that go too far out of their way to punish strategic voters in this scenario tend to get the wrong answer in other, more-common scenarios like center squeeze. Look at how these various methods deal with both of these situations:</p>
 
@@ -206,6 +215,8 @@ THE SPOILER EFFECT
 
 	</div>
 	<div class="words">
+
+			<p><em>two different sandboxes. One repeats chicken dilemma case from above but also lets you switch voting methods (plurality, IRV, approval, score). The other one has center squeeze.</em></p>
 
 	<p>So, now I've explained why strategic voting makes things tricky, I can explain my two favorite voting methods: star voting and 3-2-1 voting. </p>
 
@@ -224,6 +235,8 @@ THE SPOILER EFFECT
 	</div>
 	<div class="words">
 
+			<p><em>one-voter star election</em></p>
+
 	<p>And here's the chicken dilemma you saw above:</p>
 
 	</div>
@@ -236,6 +249,8 @@ THE SPOILER EFFECT
 
 	</div>
 	<div class="words">
+
+			<p><em>chicken dilemma with star</em></p>
 
 	<h1>3-2-1 voting</h1>
 
@@ -252,6 +267,8 @@ THE SPOILER EFFECT
 	</div>
 	<div class="words">
 
+			<p><em>one-voter 3-2-1</em></p>
+
 	<p>And here's the chicken dilemma. Note "moderately strategic" doesn't change the result from "normalized". So unlike in star voting, candidates wouldn't have to go negative against their nearby rivals in order to ensure that their voters would at least be moderately strategic and wouldn't just normalize.</p>
 
 	</div>
@@ -264,6 +281,8 @@ THE SPOILER EFFECT
 
 	</div>
 	<div class="words">
+
+			<p><em>chicken dilemma with 3-2-1</em></p>
 
 	<p>Putting it all together, here's a sandbox for you to try out all the different systems and to make your own scenarios:</p>
 
