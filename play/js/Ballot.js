@@ -49,7 +49,7 @@ function ThreeBallot(config){
 	self.update = function(ballot){
 		for(var cID in ballot){
 			var score = ballot[cID];
-			self.boxes[cID].gotoFrame(score-1);
+			self.boxes[cID].gotoFrame(score-1+1);
 		}
 	};
 
