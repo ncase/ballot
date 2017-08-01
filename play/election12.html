@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<base href="../play/"/>
 	<link rel="stylesheet" type="text/css" href="css/model.css">
 	<link rel="stylesheet" type="text/css" href="css/election.css">
-	<link rel="stylesheet" type="text/css" href="css/sandbox.css">
 </head>
 <body>
 	<div id="left"></div>
@@ -29,10 +27,24 @@
 <script src="js/main_sandbox.js"></script>
 <script>
 main({
-	description: "[type a description for your model here. for example...]\n\nLook, it's the whole shape gang! Steven Square, Tracy Triangle, Henry Hexagon, Percival Pentagon, and last but not least, Bob.",
-	features: 4,
-	system: "FPTP",
-	candidates: 5,
-	voters: 1
+
+	features:3,
+	doPercentMiddle:true,
+	system: "IRV",
+
+	candidates: 4,
+	candidatePositions: [[150-25,150-20],
+						 [150+20,150-20],
+						 [150,150+75],
+						 [150+0,150+10]],
+	
+	voters: 3,
+	voterPositions: [[150,150+10],
+						 [150,150-70],
+						 [150,150+90]],
+	voterStrategies: ["normfrontrunners","normfrontrunners","normfrontrunners"],
+	voterPercentStrategy: [100,100,100],
+	frontrunners: ['square','triangle','hexagon']
+	
 });
 </script>

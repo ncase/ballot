@@ -34,11 +34,11 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 		} else { // equivalent loop way of doing things
 			for(var i=0; i<candidates.length; i++){
 				var normit = (dista[i]-mindist)*fnorm;
-				var gs = minscore+Math.round((maxscore-minscore)*(1-d));
+				var gs = minscore+Math.round((maxscore-minscore)*(1-normit));
 				scores[candidates[i].id] = gs;
 			}
 		}
-	} else if (strategy == "threshold" || strategy == "thresholdfrontrunners" || strategy == "normfrontrunners") {
+	} else if (strategy == "threshold" || strategy == "thresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
 		if (strategy == "threshold") {
 			var windex = 0;
 			for(var i=0; i<candidates.length; i++){
@@ -48,7 +48,7 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 			var d_threshold = dista[windex];
 			var thresholdit = function(d) {return (d<d_threshold) ? maxscore : minscore} // don't vote for the best frontrunner. just those who are better
 
-		} else if (strategy == "thresholdfrontrunners" || strategy == "normfrontrunners") {
+		} else if (strategy == "thresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
 			var windex = [];
 			var maxfront = 0;
 			var imaxfront = 0;
@@ -75,16 +75,18 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 			if (strategy == "thresholdfrontrunners") {
 				var d_threshold = minfront;
 				var thresholdit = function(d) {return (d<=d_threshold) ? maxscore : minscore}  // vote for the best frontrunner and everyone better
-			} else if (strategy == "normfrontrunners") {
+			} else if (strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
 				var fnorm = 1/ (maxfront-minfront);
 				var normit = function(d) {return (d-minfront)*fnorm;}
-				var gs = function(d) { return minscore+Math.round((maxscore-minscore)*(1-d)); }
+				if (strategy == "starnormfrontrunners") maxscore--;
+				var gs = function(d) { return minscore+Math.round((maxscore-minscore)*(1-normit(d))); }
 				var thresholdit = function(d) {return (d<=minfront) ? maxscore : (d>=maxfront) ? minscore : gs(d)}
 			}
 		}
 		var scores2 = dista.map(thresholdit);
 		var assignit = function(d,i) { scores[ candidates[i].id ] = d; }
 		scores2.map(assignit)
+		if (strategy == "starnormfrontrunners") maxscore++;
 		scores[mini] = maxscore;
 
 	}// otherwise, there is no strategy strategy == "nope"
