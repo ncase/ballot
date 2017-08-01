@@ -40,13 +40,13 @@ function main(config){
 		};
 
 	}
-
 	// Defaults...
 	config = config || {};
 	config.system = config.system || "FPTP";
 	config.candidates = config.candidates || 3;
 	config.voters = config.voters || 1;
 	config.features = config.features || 1; // 1-basic, 2-voters, 3-candidates, 4-save
+	config.frontrunners = config.frontrunners || ["square"];
 	var initialConfig = JSON.parse(JSON.stringify(config));
 
 	Loader.onload = function(){
@@ -79,21 +79,22 @@ function main(config){
 			var voterPositions;
 			if(num==1){
 				voterPositions = [[150,150]];
-				voterStrategy = ['nope'];
+				voterStrategies = ['nope'];
 			}else if(num==2){
 				voterPositions = [[150,100],[150,200]];
-				voterStrategy = ['nope','nope'];
+				voterStrategies = ['nope','nope'];
 			}else if(num==3){
 				voterPositions = [[150,115],[115,180],[185,180]];
-				voterStrategy = ['nope','nope','nope'];
+				voterStrategies = ['nope','nope','nope'];
 			}
-			if (config.voterStrategy) voterStrategy = config.voterStrategy
+			if (config.voterStrategies) voterStrategies = config.voterStrategies
 			for(var i=0; i<num; i++){
 				var pos = voterPositions[i];
 				model.addVoters({
 					dist: GaussianVoters,
 					type: model.voterType,
-					strategy: voterStrategy[i],
+					strategy: voterStrategies[i],
+					frontrunners: config.frontrunners,
 					num:(4-num),
 					x:pos[0], y:pos[1]
 				});

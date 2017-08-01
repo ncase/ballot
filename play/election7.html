@@ -27,16 +27,15 @@
 <script>
 main({
 
-	features:3,
+	features:1,
 	system: "Score",
-	strategy: "normalized",
 
 	candidates: 3,
-	candidatePositions: [[40,150],[177,150+50],[224,150]],
+	candidatePositions: [[150-30,150],[150+130,150],[150+50,150]],
 	
-	voters: 2,
-	voterPositions: [[30,150],[300-30,150]]
-
+	voters: 1,
+	voterPositions: [[150,150]],
+	voterStrategies: ["normalized"]
 	
 });
 </script>

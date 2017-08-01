@@ -2,7 +2,8 @@ window.ONLY_ONCE = false;
 function main(config){
 
 	ballotType = config.system;
-	strategy = config.strategy || "nope";
+	config.strategy = config.strategy || "nope";
+	config.frontrunners = config.frontrunners || ["square"];
 	
 	// ONCE.
 	if(ONLY_ONCE) return;
@@ -20,7 +21,8 @@ function main(config){
 			model.addVoters({
 				dist: SingleVoter,
 				type: VoterType,
-				strategy: strategy,
+				strategy: config.strategy,
+				frontrunners: config.frontrunners,
 				x:81, y:92
 			});
 			model.addCandidate("square", 41, 50);
