@@ -123,24 +123,24 @@ THE SPOILER EFFECT
 	</div>
 	<div class="sim-ballot">
 
-		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
-		<p class="ballot_caption">Judge, don't choose.</p>
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Normalizing Voter</h2>
+		<p class="ballot_caption">Best is 5. Worst is 1.</p>
 
-		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+		<iframe src="play/ballot5.html" width="655" height="256" scrolling="no"></iframe>
 
 	</div>
 	<div class="words">
 		<p><em>Description: this should be like ncase's "drag the voter" examples, with a normalizing score voter. This voter should have a series of circles, where the closest one intersects the closest candidate and the farthest one the farthest candidate. Thus, as you moved the voter or candidates the circles would change size.</em></p>
 
-	<p>As soon as voters are using strategy in score voting — even a very slight amount of strategy, such as normalization — it is no longer fully exempt from impossibility theorems like Arrow's theorem. In particular, it no longer obeys independence of irrelevant alternatives (IIA); adding or removing a losing candidate can change how voters normalize, and thus change who wins. For instance, in the simulation below, try removing the pentagon candidate, and see what happens.</p>
+	<p>As soon as voters are using strategy in score voting — even a very slight amount of strategy, such as normalization — it is no longer fully exempt from impossibility theorems like Arrow's theorem. In particular, it no longer obeys independence of irrelevant alternatives (IIA); adding or removing a losing candidate can change how voters normalize, and thus change who wins. For instance, in the simulation below, try moving the losing yellow traingle candidate, and see what happens.</p>
 
 	</div>
-	<div class="sim-ballot">
+	<div class="sim-test">
 
-		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
-		<p class="ballot_caption">Judge, don't choose.</p>
-
-		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+		<p class="caption-test">
+		non-optimal<br>
+		</p>
+		<iframe src="play/election7.html" width="800" height="380" scrolling="no"></iframe>
 
 	</div>
 	<div class="words">
@@ -149,27 +149,27 @@ THE SPOILER EFFECT
 	<p>But a bigger problem than IIA violation, which in the real world is relatively hard to engineer or take advantage of, is the issue of differential voting power. In the following election, one of the groups of voters normalizes, and the other one doesn't. The two groups are the same size, but the normalizing group gets a candidate they like a lot better.</p>
 
 	</div>
-	<div class="sim-ballot">
+	<div class="sim-test">
 
-		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
-		<p class="ballot_caption">Judge, don't choose.</p>
-
-		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+		<p class="caption-test">
+		Strategists win<br>
+		</p>
+		<iframe src="play/election8.html" width="800" height="380" scrolling="no"></iframe>
 
 	</div>
 	<div class="words">
 		<p><em>groups of voters at (-4,0)non-normalizing and (4,0)normalizing. Cands at (-2.5,.5), (-2,0), (0,0), (2,0), (2.5,.5). (2,0) wins. </em></p>
 
-	<p>Is that kind of thing realistic? Perhaps not in the form above; few voters would be so unstrategic as not to normalize. But actually, normalizing as above is a pretty weak strategy. To strategize even more strongly, voters could somehow assess which two candidates were the frontrunners, and use them as the endpoints for normalization. Mostly, this means casting an approval-like ballot that gives every candidate either a 5 or a 0. For instance, in the election below, the voter believes that triangle and square are the frontrunners. Compare the strongly strategic voter below with the normalized voter in the second example above.</p>
+	<p>Is that kind of thing realistic? Perhaps not in the form above; few voters would be so unstrategic as not to normalize. But actually, normalizing as above is a pretty weak strategy. To strategize even more strongly, voters could somehow assess which two candidates were the frontrunners, and use them as the endpoints for normalization. Mostly, this means casting an approval-like ballot that gives every candidate either a 5 or a 0. For instance, in the election below, the voter believes that the red hexagon and the blue square are the frontrunners. Compare the strongly strategic voter below with the normalized voter in the second example above.</p>
 
 
 	</div>
 	<div class="sim-ballot">
 
-		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
-		<p class="ballot_caption">Judge, don't choose.</p>
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Strong Strategic Voter</h2>
+		<p class="ballot_caption">Almost like strategic approval.</p>
 
-		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
+		<iframe src="play/ballot8.html" width="655" height="256" scrolling="no"></iframe>
 
 	</div>
 	<div class="words">
