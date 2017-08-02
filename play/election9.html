@@ -27,15 +27,17 @@
 <script src="js/main_sandbox.js"></script>
 <script>
 main({
-	
-	features:1,
-	system: "IRV",
+
+	features:3,
+	doPercentMiddle:true,
+	system: "Score",
 
 	candidates: 3,
-	candidatePositions: [[41,271],[257,27],[159,65]],
-
-	voters: 1,
-	voterPositions: [[257,240]]
-
+	
+	voters: 2,
+	voterPositions: [[100,160],[200,160]],
+	voterStrategies: ["normalized","normalized"],
+	voterPercentStrategy: [50,50]
+	
 });
 </script>

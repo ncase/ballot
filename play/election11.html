@@ -27,15 +27,23 @@
 <script src="js/main_sandbox.js"></script>
 <script>
 main({
-	
-	features:1,
-	system: "IRV",
+
+	features:3,
+	doPercentMiddle:true,
+	system: "Approval",
 
 	candidates: 3,
-	candidatePositions: [[41,271],[257,27],[159,65]],
-
-	voters: 1,
-	voterPositions: [[257,240]]
-
+	candidatePositions: [[150-25,150-20],
+						 [150+20,150-20],
+						 [150,150+75]],
+	
+	voters: 3,
+	voterPositions: [[150,150+10],
+						 [150,150-70],
+						 [150,150+90]],
+	voterStrategies: ["normfrontrunners","normfrontrunners","normfrontrunners"],
+	voterPercentStrategy: [100,100,100],
+	frontrunners: ['square','triangle','hexagon']
+	
 });
 </script>

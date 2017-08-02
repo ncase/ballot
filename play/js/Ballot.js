@@ -35,21 +35,21 @@ function ThreeBallot(config){
 
 	var self = this;
 	config = config || {};
-	config.bg = "img/ballot_range.png";
+	config.bg = "img/ballot_range3.png";
 	Ballot.call(self, config);
 
 	// BOXES!
 	self.boxes = {
-		square: self.createRate(133, 100, 0),
-		triangle: self.createRate(133, 143, 3),
-		hexagon: self.createRate(133, 184, 1)
+		square: self.createThree(133, 100, 0),
+		triangle: self.createThree(133, 143, 3),
+		hexagon: self.createThree(133, 184, 1)
 	};
 
 	// On update...
 	self.update = function(ballot){
 		for(var cID in ballot){
 			var score = ballot[cID];
-			self.boxes[cID].gotoFrame(score-1);
+			self.boxes[cID].gotoFrame(score-1+1);
 		}
 	};
 
@@ -184,6 +184,14 @@ function Ballot(config){
 	self.createRate = function(x,y,frame){
 		return self.createSprite({
 			img: "img/ballot_rate.png",
+			x:x, y:y,
+			w:225, h:50,
+			frame:frame
+		});
+	};
+	self.createThree = function(x,y,frame){
+		return self.createSprite({
+			img: "img/ballot_three.png",
 			x:x, y:y,
 			w:225, h:50,
 			frame:frame
