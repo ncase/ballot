@@ -307,6 +307,7 @@ function main(config){
 			if(window.chooseSystem) chooseSystem.highlight("name", model.system);
 			if(window.chooseCandidates) chooseCandidates.highlight("num", model.numOfCandidates);
 			if(window.chooseVoters) chooseVoters.highlight("num", model.numOfVoters);
+			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[1].percentStrategy);
 		};
 		selectUI();
 
