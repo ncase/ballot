@@ -7,6 +7,10 @@ function main(config){
 	config.showChoiceOfStrategy = config.showChoiceOfStrategy || false
 	config.showChoiceOfFrontrunners = config.showChoiceOfFrontrunners || false
 	
+	// make a copy of the config
+	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
+	var initialConfig = JSON.parse(JSON.stringify(config));
+	
 	// ONCE.
 	if(ONLY_ONCE) return;
 	ONLY_ONCE=true;
@@ -19,8 +23,6 @@ function main(config){
 		// SELF CONTAINED MODEL
 		window.model = new Model({ size:250, border:2 });
 		document.body.appendChild(model.dom);
-		model.frontrunnerSet = config.frontrunnerSet;
-		model.strategy = config.strategy;
 		model.onInit = function(){
 			model.addVoters({
 				dist: SingleVoter,
@@ -32,6 +34,8 @@ function main(config){
 			model.addCandidate("square", 41, 50);
 			model.addCandidate("triangle", 153, 95);
 			model.addCandidate("hexagon", 216, 216);
+			model.frontrunnerSet = config.frontrunnerSet;
+			model.strategy = config.strategy;
 		};
 
 		// CREATE A BALLOT
@@ -111,6 +115,30 @@ function main(config){
 		};
 		selectUI();
 		
+		//////////////////////////
+		//////// RESET... ////////
+		//////////////////////////
+
+		// CREATE A RESET BUTTON
+		var resetDOM = document.createElement("div");
+		resetDOM.id = "reset";
+		resetDOM.innerHTML = "reset";
+		resetDOM.style.top = "240px";
+		resetDOM.style.left = "660px";
+		resetDOM.onclick = function(){
+
+			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
+			config.frontrunnerSet = new Set(config.afrontrunnerArray); // stringify a set is not good
+			// Reset manually, coz update LATER.
+			model.reset(true);
+			model.onInit();
+			//setInPosition();
+			model.update()
+			// Back to ol' UI
+			selectUI();
+			console.log(initialConfig)
+		};
+		document.body.appendChild(resetDOM);
 		
 	};
 
