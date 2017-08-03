@@ -3,7 +3,7 @@ function main(config){
 
 	ballotType = config.system;
 	config.strategy = config.strategy || "nope";
-	config.frontrunners = config.frontrunners || ["square"];
+	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
 	
 	// ONCE.
 	if(ONLY_ONCE) return;

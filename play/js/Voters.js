@@ -1,8 +1,9 @@
 // helper function for strategies
 
-function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunners,candidates) {
+function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunnerSet,candidates) {
 	
-	frontrunners = frontrunners || ["square"];
+	frontrunnerSet = frontrunnerSet || new Set(["square"]);
+	var frontrunners = Array.from(frontrunnerSet)
 	lastwinner = frontrunners[0]; // just for now hack
 	
 	var mindist = 9999;
@@ -135,7 +136,7 @@ function ScoreVoter(model){
 			scores[c.id] = self.getScore(dist);
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,1,5,strategy,self.model.idlastwinner,self.model.frontrunners,self.model.candidates)
+		scores = dostrategy(dista,scores,1,5,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates)
 		return scores
 		
 	};
@@ -216,7 +217,7 @@ function ThreeVoter(model){
 			scores[c.id] = self.getScore(dist);
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,self.model.frontrunners,self.model.candidates)
+		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates)
 		return scores
 
 	};
@@ -289,7 +290,7 @@ function ApprovalVoter(model){
 			scores[c.id] = (dist<self.approvalRadius) ? 1 : 0;
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,self.model.frontrunners,self.model.candidates)
+		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates)
 		
 		
 		// Anyone close enough. If anyone.
@@ -548,6 +549,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 	self.percentStrategy = config.percentStrategy
 	self.strategy = config.strategy
 	self.unstrategic = config.unstrategic
+	self.frontrunnerSet = config.frontrunnerSet
 
 	// HACK: larger grab area
 	self.radius = 50;

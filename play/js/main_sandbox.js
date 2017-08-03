@@ -48,8 +48,9 @@ function main(config){
 	config.features = config.features || 1; // 1-basic, 2-voters, 3-candidates, 4-save
 	config.doPercentFirst = config.doPercentFirst || false;
 	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
-	config.frontrunners = config.frontrunners || ["square"];
+	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
 	config.unstrategic = config.unstrategic || "nope";
+	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 	var initialConfig = JSON.parse(JSON.stringify(config));
 
 	Loader.onload = function(){
@@ -71,7 +72,7 @@ function main(config){
 			model.numOfCandidates = config.candidates;
 			model.numOfVoters = config.voters;
 			model.system = config.system;
-			model.frontrunners = config.frontrunners;
+			model.frontrunnerSet = config.frontrunnerSet;
 			var votingSystem = votingSystems.filter(function(system){
 				return(system.name==model.system);
 			})[0];
@@ -103,7 +104,7 @@ function main(config){
 					type: model.voterType,
 					strategy: config.voterStrategies[i],
 					percentStrategy: config.voterPercentStrategy[i],
-					frontrunners: config.frontrunners,
+					frontrunnerSet: config.frontrunnerSet,
 					unstrategic: config.unstrategic,
 					num:(4-num),
 					x:pos[0], y:pos[1]
@@ -382,21 +383,26 @@ function main(config){
 				
 				// update config...
 				// no reset...
-				config.frontrunners = [data.name]; 
-				model.frontrunners = config.frontrunners
+				if (data.isOn) {
+					config.frontrunnerSet.add(data.name)
+				} else {
+					config.frontrunnerSet.delete(data.name)
+				} 
+				model.frontrunnerSet = config.frontrunnerSet
 				model.update();
 				
 			};
 			window.chooseFrun = new ButtonGroup({
-				label: "which candidate is the frontrunner?",
+				label: "which candidates are the frontrunners?",
 				width: 52,
 				data: frun,
-				onChoose: onChooseFrun
+				onChoose: onChooseFrun,
+				isCheckbox: true
 			});
 			document.querySelector("#left").appendChild(chooseFrun.dom);
 
 		}
-
+		
 		///////////////////////
 		//////// INIT! ////////
 		///////////////////////
@@ -412,7 +418,7 @@ function main(config){
 			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[0].percentStrategy);
 			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
 			if(window.chooseVoterStrategyOff) chooseVoterStrategyOff.highlight("realname", model.voters[0].unstrategic);
-			if(window.chooseFrun) chooseFrun.highlight("name", model.frontrunners[0]);
+			if(window.chooseFrun) chooseFrun.highlight("name", model.frontrunnerSet);
 		};
 		selectUI();
 
@@ -430,7 +436,7 @@ function main(config){
 		resetDOM.onclick = function(){
 
 			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
-
+			config.frontrunnerSet = new Set(config.afrontrunnerArray); // stringify a set is not good
 			// Reset manually, coz update LATER.
 			model.reset(true);
 			model.onInit();

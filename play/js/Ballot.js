@@ -22,7 +22,6 @@ function ScoreBallot(config){
 
 	// On update...
 	self.update = function(ballot){
-		console.log(ballot)
 		for(var cID in ballot){
 			var score = ballot[cID];
 			self.boxes[cID].gotoFrame(score-1);
