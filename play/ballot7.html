@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/model.css">
+	<link rel="stylesheet" type="text/css" href="css/election.css">
 	<link rel="stylesheet" type="text/css" href="css/ballot.css">
 </head>
 <body></body>
@@ -17,10 +18,13 @@
 <script src="js/Candidate.js"></script>
 <script src="js/Voters.js"></script>
 <script src="js/Election.js"></script>
+<script src="js/Buttons.js"></script>
 <script src="js/Ballot.js"></script>
 
 <script src="js/main_ballot.js"></script>
 <script>main({
 	system: "Score",
-	strategy: "threshold"
+	strategy: "threshold",
+	showChoiceOfFrontrunners: true,
+	showChoiceOfStrategy: true
 });</script>

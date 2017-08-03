@@ -648,7 +648,7 @@ function SingleVoter(config){
 	// UPDATE!
 	self.ballot = null;
 	self.update = function(){
-		self.ballot = self.type.getBallot(self.x, self.y, config.strategy, config);
+		self.ballot = self.type.getBallot(self.x, self.y, self.model.strategy, config);
 	};
 
 	// DRAW!
