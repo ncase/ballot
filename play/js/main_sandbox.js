@@ -373,6 +373,7 @@ function main(config){
 				{name:"T", realname:"threshold", margin:4},
 				{name:"TF", realname:"thresholdfrontrunners", margin:4},
 				{name:"NTF", realname:"normfrontrunners", margin:4},
+				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
 				{name:"SNTF", realname:"starnormfrontrunners"}
 			];
 			var onChooseVoterStrategyOff = function(data){
