@@ -540,14 +540,14 @@ function main(config){
 
 			// Move that reset button
 			resetDOM.style.top = "470px";
-			resetDOM.style.left = "0px";
+			resetDOM.style.left = "235px";
 
 			// Create a "save" button
 			var saveDOM = document.createElement("div");
 			saveDOM.id = "save";
 			saveDOM.innerHTML = "save:";
 			saveDOM.style.top = "470px";
-			saveDOM.style.left = "120px";
+			saveDOM.style.left = "350px";
 			saveDOM.onclick = function(){
 				_saveModel();
 			};
