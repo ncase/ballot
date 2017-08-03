@@ -162,7 +162,7 @@ function ScoreVoter(model){
 		// There are #Candidates*5 slices
 		// Fill 'em in in order -- and the rest is gray.
 		var maxscore = 5;
-		var minscore = 1;
+		var minscore = 0;
 		var totalSlices = self.model.candidates.length*(maxscore-minscore);
 		var leftover = totalSlices;
 		var slices = [];
