@@ -46,7 +46,7 @@ function main(config){
 	config.candidates = config.candidates || 3;
 	config.voters = config.voters || 1;
 	config.features = config.features || 1; // 1-basic, 2-voters, 3-candidates, 4-save
-	config.doPercentMiddle = config.doPercentMiddle || false;
+	config.doPercentFirst = config.doPercentFirst || false;
 	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
 	config.frontrunners = config.frontrunners || ["square"];
 	var initialConfig = JSON.parse(JSON.stringify(config));
@@ -266,7 +266,7 @@ function main(config){
 
 		}
 		
-		if(initialConfig.doPercentMiddle){ // VOTERS as feature.
+		if(initialConfig.doPercentFirst){ // VOTERS as feature.
 
 			var strategyPercent = [
 				{name:"0", num:0, margin:4},
@@ -277,7 +277,7 @@ function main(config){
 			var onChoosePercentStrategy = function(data){
 				
 				// update config...
-				config.voterPercentStrategy[1] = data.num; // only the middle percent (for the yellow triangle)
+				config.voterPercentStrategy[0] = data.num; // only the middle percent (for the yellow triangle)
 
 				// no reset...
 				for(var i=0;i<model.voters.length;i++){
@@ -345,7 +345,7 @@ function main(config){
 			if(window.chooseSystem) chooseSystem.highlight("name", model.system);
 			if(window.chooseCandidates) chooseCandidates.highlight("num", model.numOfCandidates);
 			if(window.chooseVoters) chooseVoters.highlight("num", model.numOfVoters);
-			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[1].percentStrategy);
+			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[0].percentStrategy);
 			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
 		};
 		selectUI();
