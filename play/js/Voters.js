@@ -2,6 +2,9 @@
 
 function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunners,candidates) {
 	
+	frontrunners = frontrunners || ["square"];
+	lastwinner = frontrunners[0]; // just for now hack
+	
 	var mindist = 9999;
 	var maxdist = -9999;
 	var mini = null;
@@ -132,7 +135,7 @@ function ScoreVoter(model){
 			scores[c.id] = self.getScore(dist);
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,1,5,strategy,self.model.idlastwinner,config.frontrunners,self.model.candidates)
+		scores = dostrategy(dista,scores,1,5,strategy,self.model.idlastwinner,self.model.frontrunners,self.model.candidates)
 		return scores
 		
 	};
@@ -213,7 +216,7 @@ function ThreeVoter(model){
 			scores[c.id] = self.getScore(dist);
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,config.frontrunners,self.model.candidates)
+		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,self.model.frontrunners,self.model.candidates)
 		return scores
 
 	};
@@ -286,7 +289,7 @@ function ApprovalVoter(model){
 			scores[c.id] = (dist<self.approvalRadius) ? 1 : 0;
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,config.frontrunners,self.model.candidates)
+		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,self.model.frontrunners,self.model.candidates)
 		
 		
 		// Anyone close enough. If anyone.

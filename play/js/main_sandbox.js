@@ -70,6 +70,7 @@ function main(config){
 			model.numOfCandidates = config.candidates;
 			model.numOfVoters = config.voters;
 			model.system = config.system;
+			model.frontrunners = config.frontrunners;
 			var votingSystem = votingSystems.filter(function(system){
 				return(system.name==model.system);
 			})[0];
@@ -318,7 +319,6 @@ function main(config){
 					config.voterStrategies[i] = data.realname; 
 					model.voters[i].strategy = config.voterStrategies[i]
 				}
-				console.log(data.realname)
 				model.update();
 				
 			};
@@ -332,6 +332,33 @@ function main(config){
 
 		}
 		
+		if(initialConfig.doFullStrategyConfig){ 
+
+			var frun = [
+				{name:"square",margin:4},
+				{name:"triangle",margin:4},
+				{name:"hexagon",margin:4},
+				{name:"pentagon",margin:4},
+				{name:"bob"}
+			];
+			var onChooseFrun = function(data){
+				
+				// update config...
+				// no reset...
+				config.frontrunners = [data.name]; 
+				model.frontrunners = config.frontrunners
+				model.update();
+				
+			};
+			window.chooseFrun = new ButtonGroup({
+				label: "which candidate is the frontrunner?",
+				width: 52,
+				data: frun,
+				onChoose: onChooseFrun
+			});
+			document.querySelector("#left").appendChild(chooseFrun.dom);
+
+		}
 
 		///////////////////////
 		//////// INIT! ////////
@@ -347,6 +374,8 @@ function main(config){
 			if(window.chooseVoters) chooseVoters.highlight("num", model.numOfVoters);
 			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[0].percentStrategy);
 			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
+			if(window.chooseFrun) chooseFrun.highlight("name", model.frontrunners);
+			if(window.chooseFrun) chooseFrun.highlight("name", model.frontrunners[0]);
 		};
 		selectUI();
 
