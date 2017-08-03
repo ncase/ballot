@@ -42,7 +42,7 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 				scores[candidates[i].id] = gs;
 			}
 		}
-	} else if (strategy == "threshold" || strategy == "thresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
+	} else if (strategy == "threshold" || strategy == "morethresholdfrontrunners" || strategy == "thresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
 		if (strategy == "threshold") {
 			var windex = 0;
 			for(var i=0; i<candidates.length; i++){
@@ -52,7 +52,7 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 			var d_threshold = dista[windex];
 			var thresholdit = function(d) {return (d<d_threshold) ? maxscore : minscore} // don't vote for the best frontrunner. just those who are better
 
-		} else if (strategy == "thresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
+		} else if (strategy == "thresholdfrontrunners" || strategy == "morethresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
 			var windex = [];
 			var maxfront = 0;
 			var imaxfront = 0;
@@ -79,6 +79,9 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 			if (strategy == "thresholdfrontrunners") {
 				var d_threshold = minfront;
 				var thresholdit = function(d) {return (d<=d_threshold) ? maxscore : minscore}  // vote for the best frontrunner and everyone better
+			} else if (strategy == "morethresholdfrontrunners") {
+				var d_threshold = maxfront;
+				var thresholdit = function(d) {return (d<d_threshold) ? maxscore : minscore}  // vote for everyone better than the worst frontrunner
 			} else if (strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
 				var fnorm = 1/ (maxfront-minfront);
 				var normit = function(d) {return (d-minfront)*fnorm;}
