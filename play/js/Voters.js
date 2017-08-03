@@ -547,6 +547,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 	
 	self.percentStrategy = config.percentStrategy
 	self.strategy = config.strategy
+	self.unstrategic = config.unstrategic
 
 	// HACK: larger grab area
 	self.radius = 50;
@@ -603,7 +604,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 			if (r1 < self.percentStrategy) { 
 				var strategy = self.strategy // yes
 			} else {
-				var strategy = "nope";
+				var strategy = self.unstrategic; // no e.g. "nope"
 			}
 			
 			var ballot = self.type.getBallot(x, y, strategy, config);
