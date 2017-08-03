@@ -2,6 +2,9 @@
 
 function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunners,candidates) {
 	
+	frontrunners = frontrunners || ["square"];
+	lastwinner = frontrunners[0]; // just for now hack
+	
 	var mindist = 9999;
 	var maxdist = -9999;
 	var mini = null;
@@ -132,7 +135,7 @@ function ScoreVoter(model){
 			scores[c.id] = self.getScore(dist);
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,1,5,strategy,self.model.idlastwinner,config.frontrunners,self.model.candidates)
+		scores = dostrategy(dista,scores,1,5,strategy,self.model.idlastwinner,self.model.frontrunners,self.model.candidates)
 		return scores
 		
 	};
@@ -158,13 +161,15 @@ function ScoreVoter(model){
 
 		// There are #Candidates*5 slices
 		// Fill 'em in in order -- and the rest is gray.
-		var totalSlices = self.model.candidates.length*4;
+		var maxscore = 5;
+		var minscore = 1;
+		var totalSlices = self.model.candidates.length*(maxscore-minscore);
 		var leftover = totalSlices;
 		var slices = [];
 		for(var i=0; i<self.model.candidates.length; i++){
 			var c = self.model.candidates[i];
 			var cID = c.id;
-			var score = ballot[cID];
+			var score = ballot[cID] - minscore;
 			leftover -= score;
 			slices.push({
 				num: score,
@@ -211,7 +216,7 @@ function ThreeVoter(model){
 			scores[c.id] = self.getScore(dist);
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,config.frontrunners,self.model.candidates)
+		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,self.model.frontrunners,self.model.candidates)
 		return scores
 
 	};
@@ -284,7 +289,7 @@ function ApprovalVoter(model){
 			scores[c.id] = (dist<self.approvalRadius) ? 1 : 0;
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,config.frontrunners,self.model.candidates)
+		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,self.model.frontrunners,self.model.candidates)
 		
 		
 		// Anyone close enough. If anyone.
@@ -542,6 +547,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 	
 	self.percentStrategy = config.percentStrategy
 	self.strategy = config.strategy
+	self.unstrategic = config.unstrategic
 
 	// HACK: larger grab area
 	self.radius = 50;
@@ -598,7 +604,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 			if (r1 < self.percentStrategy) { 
 				var strategy = self.strategy // yes
 			} else {
-				var strategy = "nope";
+				var strategy = self.unstrategic; // no e.g. "nope"
 			}
 			
 			var ballot = self.type.getBallot(x, y, strategy, config);

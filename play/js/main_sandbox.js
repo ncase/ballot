@@ -46,8 +46,10 @@ function main(config){
 	config.candidates = config.candidates || 3;
 	config.voters = config.voters || 1;
 	config.features = config.features || 1; // 1-basic, 2-voters, 3-candidates, 4-save
-	config.doPercentMiddle = config.doPercentMiddle || false;
+	config.doPercentFirst = config.doPercentFirst || false;
+	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
 	config.frontrunners = config.frontrunners || ["square"];
+	config.unstrategic = config.unstrategic || "nope";
 	var initialConfig = JSON.parse(JSON.stringify(config));
 
 	Loader.onload = function(){
@@ -69,6 +71,7 @@ function main(config){
 			model.numOfCandidates = config.candidates;
 			model.numOfVoters = config.voters;
 			model.system = config.system;
+			model.frontrunners = config.frontrunners;
 			var votingSystem = votingSystems.filter(function(system){
 				return(system.name==model.system);
 			})[0];
@@ -91,16 +94,17 @@ function main(config){
 				voterStrategies = ['nope','nope','nope'];
 				voterPercentStrategy = [100,100,100];
 			}
-			if (config.voterStrategies) voterStrategies = config.voterStrategies
-			if (config.voterPercentStrategy) voterPercentStrategy = config.voterPercentStrategy
+			config.voterStrategies = config.voterStrategies || voterStrategies;
+			config.voterPercentStrategy = config.voterPercentStrategy || voterPercentStrategy;
 			for(var i=0; i<num; i++){
 				var pos = voterPositions[i];
 				model.addVoters({
 					dist: GaussianVoters,
 					type: model.voterType,
-					strategy: voterStrategies[i],
-					percentStrategy: voterPercentStrategy[i],
+					strategy: config.voterStrategies[i],
+					percentStrategy: config.voterPercentStrategy[i],
 					frontrunners: config.frontrunners,
+					unstrategic: config.unstrategic,
 					num:(4-num),
 					x:pos[0], y:pos[1]
 				});
@@ -265,7 +269,7 @@ function main(config){
 
 		}
 		
-		if(initialConfig.doPercentMiddle){ // VOTERS as feature.
+		if(initialConfig.doPercentFirst){ // VOTERS as feature.
 
 			var strategyPercent = [
 				{name:"0", num:0, margin:4},
@@ -276,7 +280,7 @@ function main(config){
 			var onChoosePercentStrategy = function(data){
 				
 				// update config...
-				config.voterPercentStrategy[1] = data.num; // only the middle percent (for the yellow triangle)
+				config.voterPercentStrategy[0] = data.num; // only the middle percent (for the yellow triangle)
 
 				// no reset...
 				for(var i=0;i<model.voters.length;i++){
@@ -286,12 +290,110 @@ function main(config){
 				
 			};
 			window.choosePercentStrategy = new ButtonGroup({
-				label: "what percent strategy for middle?",
+				label: "what % strategy for first group of voters?",
 				width: 52,
 				data: strategyPercent,
 				onChoose: onChoosePercentStrategy
 			});
 			document.querySelector("#left").appendChild(choosePercentStrategy.dom);
+
+		}
+		
+		if(initialConfig.doFullStrategyConfig){ // VOTERS as feature.
+
+			
+			var strategyOn = [
+				{name:"NO", realname:"nope", margin:4},
+				{name:"FL", realname:"justfirstandlast", margin:4},
+				{name:"NR", realname:"normalized", margin:4},
+				{name:"T", realname:"threshold", margin:4},
+				{name:"TF", realname:"thresholdfrontrunners", margin:4},
+				{name:"NTF", realname:"normfrontrunners", margin:4},
+				{name:"SNTF", realname:"starnormfrontrunners"}
+			];
+			var onChooseVoterStrategyOn = function(data){
+				
+				// update config...
+				// only the middle percent (for the yellow triangle)
+
+				// no reset...
+				for(var i=0;i<model.voters.length;i++){
+					config.voterStrategies[i] = data.realname; 
+					model.voters[i].strategy = config.voterStrategies[i]
+				}
+				model.update();
+				
+			};
+			window.chooseVoterStrategyOn = new ButtonGroup({
+				label: "which strategy?",
+				width: 52,
+				data: strategyOn,
+				onChoose: onChooseVoterStrategyOn
+			});
+			document.querySelector("#left").appendChild(chooseVoterStrategyOn.dom);
+
+		}
+		
+		if(initialConfig.doFullStrategyConfig){ 
+
+			
+			var strategyOff = [
+				{name:"NO", realname:"nope", margin:4},
+				{name:"FL", realname:"justfirstandlast", margin:4},
+				{name:"NR", realname:"normalized", margin:4},
+				{name:"T", realname:"threshold", margin:4},
+				{name:"TF", realname:"thresholdfrontrunners", margin:4},
+				{name:"NTF", realname:"normfrontrunners", margin:4},
+				{name:"SNTF", realname:"starnormfrontrunners"}
+			];
+			var onChooseVoterStrategyOff = function(data){
+				
+				// update config...
+				// only the middle percent (for the yellow triangle)
+
+				// no reset...
+				for(var i=0;i<model.voters.length;i++){
+					config.unstrategic = data.realname; 
+					model.voters[i].unstrategic = config.unstrategic
+				}
+				model.update();
+				
+			};
+			window.chooseVoterStrategyOff = new ButtonGroup({
+				label: "what do unstrategic voters do?",
+				width: 52,
+				data: strategyOff,
+				onChoose: onChooseVoterStrategyOff
+			});
+			document.querySelector("#left").appendChild(chooseVoterStrategyOff.dom);
+
+		}
+		
+		if(initialConfig.doFullStrategyConfig){ 
+
+			var frun = [
+				{name:"square",margin:4},
+				{name:"triangle",margin:4},
+				{name:"hexagon",margin:4},
+				{name:"pentagon",margin:4},
+				{name:"bob"}
+			];
+			var onChooseFrun = function(data){
+				
+				// update config...
+				// no reset...
+				config.frontrunners = [data.name]; 
+				model.frontrunners = config.frontrunners
+				model.update();
+				
+			};
+			window.chooseFrun = new ButtonGroup({
+				label: "which candidate is the frontrunner?",
+				width: 52,
+				data: frun,
+				onChoose: onChooseFrun
+			});
+			document.querySelector("#left").appendChild(chooseFrun.dom);
 
 		}
 
@@ -307,6 +409,10 @@ function main(config){
 			if(window.chooseSystem) chooseSystem.highlight("name", model.system);
 			if(window.chooseCandidates) chooseCandidates.highlight("num", model.numOfCandidates);
 			if(window.chooseVoters) chooseVoters.highlight("num", model.numOfVoters);
+			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[0].percentStrategy);
+			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
+			if(window.chooseVoterStrategyOff) chooseVoterStrategyOff.highlight("realname", model.voters[0].unstrategic);
+			if(window.chooseFrun) chooseFrun.highlight("name", model.frontrunners[0]);
 		};
 		selectUI();
 

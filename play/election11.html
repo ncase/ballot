@@ -28,8 +28,8 @@
 <script>
 main({
 
-	features:3,
-	doPercentMiddle:true,
+	features:1,
+	doPercentFirst:true,
 	system: "Approval",
 
 	candidates: 3,
@@ -38,12 +38,14 @@ main({
 						 [150,150+75]],
 	
 	voters: 3,
-	voterPositions: [[150,150+10],
-						 [150,150-70],
+	voterPositions: [[150,150-70],
+						 [150,150+10],
 						 [150,150+90]],
-	voterStrategies: ["normfrontrunners","normfrontrunners","normfrontrunners"],
-	voterPercentStrategy: [100,100,100],
-	frontrunners: ['square','triangle','hexagon']
+	voterStrategies: ["thresholdfrontrunners","thresholdfrontrunners","thresholdfrontrunners"],
+	voterPercentStrategy: [0,100,100],
+	frontrunners: ['square','triangle','hexagon'],
+	doFullStrategyConfig: true,
+	unstrategic: "normalized"
 	
 });
 </script>
