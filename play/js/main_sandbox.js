@@ -281,7 +281,7 @@ function main(config){
 			var onChoosePercentStrategy = function(data){
 				
 				// update config...
-				config.voterPercentStrategy[0] = data.num; // only the middle percent (for the yellow triangle)
+				config.voterPercentStrategy[0] = data.num;
 
 				// no reset...
 				for(var i=0;i<model.voters.length;i++){
@@ -300,6 +300,33 @@ function main(config){
 
 		}
 		
+		if(initialConfig.doPercentFirst){
+			var makeslider = function(chtext,chid,chfn,containchecks) {
+				var slider = document.createElement("input");
+				slider.type = "range";
+				slider.max = "100";
+				slider.min = "0";
+				slider.value = "50";
+				slider.id = chid;
+				slider.class = "slider";
+				slider.addEventListener('input', function() {chfn(slider)}, true);
+				var label = document.createElement('label')
+				label.htmlFor = chid;
+				label.appendChild(document.createTextNode(chtext));
+				containchecks.appendChild(slider);
+				containchecks.appendChild(label);
+			} // https://stackoverflow.com/a/866249/8210071
+
+			var containchecks = document.querySelector("#left").appendChild(document.createElement('div'));
+			var slfn = function(slider) {
+				// update config...
+					config.voterPercentStrategy[0] = slider.value;
+					model.voters[0].percentStrategy = config.voterPercentStrategy[0]
+					model.update();
+			}
+			makeslider("","choosepercent",slfn,containchecks)
+		}
+
 		if(initialConfig.doFullStrategyConfig){ // VOTERS as feature.
 
 			
