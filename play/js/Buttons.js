@@ -13,6 +13,7 @@ function ButtonGroup(config){
 	self.buttonConfigs = config.data;
 	self.onChoose = config.onChoose;
 	self.isCheckbox = config.isCheckbox || false;
+	self.justButton = config.justButton || false;
 
 	// DOM!
 	self.dom = document.createElement("div");
@@ -33,7 +34,7 @@ function ButtonGroup(config){
 			} else {
 				button.turnOn();
 			}
-		} else {
+		} else if (! self.justButton) { // justButton means it doesn't get selected
 			// Turn all off
 			for(var i=0;i<self.buttons.length;i++) self.buttons[i].turnOff();
 			button.turnOn(); // except one

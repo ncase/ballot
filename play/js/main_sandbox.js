@@ -433,6 +433,29 @@ function main(config){
 
 		}
 		
+		if(initialConfig.doFullStrategyConfig){ 
+			
+			var poll = [
+				{name:"Poll"}
+			];
+			var onChoosePoll = function(data){
+				var won = model.winners
+				config.frontrunnerSet = new Set(won)
+				model.frontrunnerSet = config.frontrunnerSet
+				if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
+				model.update();
+				
+			};
+			window.choosePoll = new ButtonGroup({
+				label: "Poll to find new frontrunner:",
+				width: 52,
+				data: poll,
+				onChoose: onChoosePoll,
+				justButton: true
+			});
+			document.querySelector("#left").appendChild(choosePoll.dom);
+		}
+		
 		///////////////////////
 		//////// INIT! ////////
 		///////////////////////
