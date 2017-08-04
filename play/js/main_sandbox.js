@@ -448,7 +448,7 @@ function main(config){
 			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[0].percentStrategy);
 			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
 			if(window.chooseVoterStrategyOff) chooseVoterStrategyOff.highlight("realname", model.voters[0].unstrategic);
-			if(window.chooseFrun) chooseFrun.highlight("name", model.frontrunnerSet);
+			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
 		};
 		selectUI();
 

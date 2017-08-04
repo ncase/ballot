@@ -112,7 +112,7 @@ function main(config){
 		
 		var selectUI = function(){
 			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.strategy);
-			if(window.chooseFrun) chooseFrun.highlight("name", model.frontrunnerSet);
+			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
 		};
 		selectUI();
 		
