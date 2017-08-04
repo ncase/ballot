@@ -48,8 +48,18 @@ function main(config){
 	config.features = config.features || 1; // 1-basic, 2-voters, 3-candidates, 4-save
 	config.doPercentFirst = config.doPercentFirst || false;
 	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
-	config.frontrunners = config.frontrunners || ["square"];
+	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
+	config.voterStrategies = config.voterStrategies || []
+	for (i in [0,1,2]) {
+		config.voterStrategies[i] = config.voterStrategies[i] || "nope"
+	}
+	config.voterPercentStrategy = config.voterPercentStrategy || []
+	for (i in [0,1,2]) {
+		config.voterPercentStrategy[i] = config.voterPercentStrategy[i] || 0
+	}
+	
 	config.unstrategic = config.unstrategic || "nope";
+	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 	var initialConfig = JSON.parse(JSON.stringify(config));
 
 	Loader.onload = function(){
@@ -71,7 +81,7 @@ function main(config){
 			model.numOfCandidates = config.candidates;
 			model.numOfVoters = config.voters;
 			model.system = config.system;
-			model.frontrunners = config.frontrunners;
+			model.frontrunnerSet = config.frontrunnerSet;
 			var votingSystem = votingSystems.filter(function(system){
 				return(system.name==model.system);
 			})[0];
@@ -83,19 +93,11 @@ function main(config){
 			var voterPositions;
 			if(num==1){
 				voterPositions = [[150,150]];
-				voterStrategies = ['nope'];
-				voterPercentStrategy = [100];
 			}else if(num==2){
 				voterPositions = [[150,100],[150,200]];
-				voterStrategies = ['nope','nope'];
-				voterPercentStrategy = [100,100];
 			}else if(num==3){
 				voterPositions = [[150,115],[115,180],[185,180]];
-				voterStrategies = ['nope','nope','nope'];
-				voterPercentStrategy = [100,100,100];
 			}
-			config.voterStrategies = config.voterStrategies || voterStrategies;
-			config.voterPercentStrategy = config.voterPercentStrategy || voterPercentStrategy;
 			for(var i=0; i<num; i++){
 				var pos = voterPositions[i];
 				model.addVoters({
@@ -103,7 +105,7 @@ function main(config){
 					type: model.voterType,
 					strategy: config.voterStrategies[i],
 					percentStrategy: config.voterPercentStrategy[i],
-					frontrunners: config.frontrunners,
+					frontrunnerSet: config.frontrunnerSet,
 					unstrategic: config.unstrategic,
 					num:(4-num),
 					x:pos[0], y:pos[1]
@@ -269,8 +271,8 @@ function main(config){
 
 		}
 		
-		if(initialConfig.doPercentFirst){ // VOTERS as feature.
-
+		if(0){ // VOTERS as feature.
+			
 			var strategyPercent = [
 				{name:"0", num:0, margin:4},
 				{name:"50", num:50, margin:4},
@@ -280,7 +282,7 @@ function main(config){
 			var onChoosePercentStrategy = function(data){
 				
 				// update config...
-				config.voterPercentStrategy[0] = data.num; // only the middle percent (for the yellow triangle)
+				config.voterPercentStrategy[0] = data.num;
 
 				// no reset...
 				for(var i=0;i<model.voters.length;i++){
@@ -299,6 +301,49 @@ function main(config){
 
 		}
 		
+		if(initialConfig.doPercentFirst){
+			
+			var aba = document.createElement('div')
+			aba.className = "button-group"
+			document.querySelector("#left").appendChild(aba)
+			var aba2 = document.createElement('div')
+			aba2.className = "button-group-label"
+			aba2.innerHTML = "How strategic is each group of voters (%)";
+			aba.appendChild(aba2)
+			
+			var makeslider = function(chtext,chid,chfn,containchecks,n) {
+				var slider = document.createElement("input");
+				slider.type = "range";
+				slider.max = "100";
+				slider.min = "0";
+				slider.value = "50";
+				slider.id = chid;
+				slider.class = "slider";
+				slider.addEventListener('input', function() {chfn(slider,n)}, true);
+				var label = document.createElement('label')
+				label.htmlFor = chid;
+				label.appendChild(document.createTextNode(chtext));
+				containchecks.appendChild(slider);
+				//containchecks.appendChild(label);
+				slider.innerHTML = chtext;
+				return slider
+			} // https://stackoverflow.com/a/866249/8210071
+
+			var containchecks = document.querySelector("#left").appendChild(document.createElement('div'));
+			var slfn = function(slider,n) {
+				// update config...
+					config.voterPercentStrategy[n] = slider.value;
+					if (n<model.numOfVoters) {
+						model.voters[n].percentStrategy = config.voterPercentStrategy[n]
+						model.update();
+					}
+			}
+			var stratsliders = []
+			stratsliders.push(makeslider("","choosepercent",slfn,containchecks,0))
+			stratsliders.push(makeslider("","choosepercent",slfn,containchecks,1))
+			stratsliders.push(makeslider("","choosepercent",slfn,containchecks,2))
+		}
+
 		if(initialConfig.doFullStrategyConfig){ // VOTERS as feature.
 
 			
@@ -309,6 +354,7 @@ function main(config){
 				{name:"T", realname:"threshold", margin:4},
 				{name:"TF", realname:"thresholdfrontrunners", margin:4},
 				{name:"NTF", realname:"normfrontrunners", margin:4},
+				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
 				{name:"SNTF", realname:"starnormfrontrunners"}
 			];
 			var onChooseVoterStrategyOn = function(data){
@@ -344,6 +390,7 @@ function main(config){
 				{name:"T", realname:"threshold", margin:4},
 				{name:"TF", realname:"thresholdfrontrunners", margin:4},
 				{name:"NTF", realname:"normfrontrunners", margin:4},
+				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
 				{name:"SNTF", realname:"starnormfrontrunners"}
 			];
 			var onChooseVoterStrategyOff = function(data){
@@ -371,32 +418,61 @@ function main(config){
 		
 		if(initialConfig.doFullStrategyConfig){ 
 
+			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>"}
 			var frun = [
-				{name:"square",margin:4},
-				{name:"triangle",margin:4},
-				{name:"hexagon",margin:4},
-				{name:"pentagon",margin:4},
-				{name:"bob"}
+				{name:h1("square"),realname:"square",margin:4},
+				{name:h1("triangle"),realname:"triangle",margin:4},
+				{name:h1("hexagon"),realname:"hexagon",margin:4},
+				{name:h1("pentagon"),realname:"pentagon",margin:4},
+				{name:h1("bob"),realname:"bob"}
 			];
 			var onChooseFrun = function(data){
 				
 				// update config...
 				// no reset...
-				config.frontrunners = [data.name]; 
-				model.frontrunners = config.frontrunners
+				if (data.isOn) {
+					config.frontrunnerSet.add(data.realname)
+				} else {
+					config.frontrunnerSet.delete(data.realname)
+				} 
+				model.frontrunnerSet = config.frontrunnerSet
 				model.update();
 				
 			};
 			window.chooseFrun = new ButtonGroup({
-				label: "which candidate is the frontrunner?",
+				label: "which candidates are the frontrunners?",
 				width: 52,
 				data: frun,
-				onChoose: onChooseFrun
+				onChoose: onChooseFrun,
+				isCheckbox: true
 			});
 			document.querySelector("#left").appendChild(chooseFrun.dom);
 
 		}
-
+		
+		if(initialConfig.doFullStrategyConfig){ 
+			
+			var poll = [
+				{name:"Poll"}
+			];
+			var onChoosePoll = function(data){
+				var won = model.winners
+				config.frontrunnerSet = new Set(won)
+				model.frontrunnerSet = config.frontrunnerSet
+				if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
+				model.update();
+				
+			};
+			window.choosePoll = new ButtonGroup({
+				label: "Poll to find new frontrunner:",
+				width: 52,
+				data: poll,
+				onChoose: onChoosePoll,
+				justButton: true
+			});
+			document.querySelector("#left").appendChild(choosePoll.dom);
+		}
+		
 		///////////////////////
 		//////// INIT! ////////
 		///////////////////////
@@ -412,7 +488,12 @@ function main(config){
 			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[0].percentStrategy);
 			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
 			if(window.chooseVoterStrategyOff) chooseVoterStrategyOff.highlight("realname", model.voters[0].unstrategic);
-			if(window.chooseFrun) chooseFrun.highlight("name", model.frontrunners[0]);
+			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
+			if(stratsliders) {
+				for (i in stratsliders) {
+					stratsliders[i].value = config.voterPercentStrategy[i]
+				}
+			}
 		};
 		selectUI();
 
@@ -430,7 +511,7 @@ function main(config){
 		resetDOM.onclick = function(){
 
 			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
-
+			config.frontrunnerSet = new Set(config.afrontrunnerArray); // stringify a set is not good
 			// Reset manually, coz update LATER.
 			model.reset(true);
 			model.onInit();
@@ -505,14 +586,14 @@ function main(config){
 
 			// Move that reset button
 			resetDOM.style.top = "470px";
-			resetDOM.style.left = "0px";
+			resetDOM.style.left = "235px";
 
 			// Create a "save" button
 			var saveDOM = document.createElement("div");
 			saveDOM.id = "save";
 			saveDOM.innerHTML = "save:";
 			saveDOM.style.top = "470px";
-			saveDOM.style.left = "120px";
+			saveDOM.style.left = "350px";
 			saveDOM.onclick = function(){
 				_saveModel();
 			};

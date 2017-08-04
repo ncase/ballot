@@ -531,5 +531,6 @@ var _countLoser = function(tally){
 var _colorWinner = function(model, winner){
 	var color = (winner) ? Candidate.graphics[winner].fill : "";
 	model.canvas.style.borderColor = color;
+	model.winners = [winner];
 	return color;
 }

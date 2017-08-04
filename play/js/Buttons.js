@@ -12,6 +12,8 @@ function ButtonGroup(config){
 
 	self.buttonConfigs = config.data;
 	self.onChoose = config.onChoose;
+	self.isCheckbox = config.isCheckbox || false;
+	self.justButton = config.justButton || false;
 
 	// DOM!
 	self.dom = document.createElement("div");
@@ -26,11 +28,17 @@ function ButtonGroup(config){
 	// Toggle buttons
 	self.buttons = [];
 	self.onToggle = function(button, buttonData){
-
-		// Turn all off
-		for(var i=0;i<self.buttons.length;i++) self.buttons[i].turnOff();
-		button.turnOn(); // except one
-
+		if (self.isCheckbox) {
+			if (button.isOn) {
+				button.turnOff();
+			} else {
+				button.turnOn();
+			}
+		} else if (! self.justButton) { // justButton means it doesn't get selected
+			// Turn all off
+			for(var i=0;i<self.buttons.length;i++) self.buttons[i].turnOff();
+			button.turnOn(); // except one
+		}
 		// And send the data up
 		self.onChoose(buttonData);
 
@@ -38,17 +46,25 @@ function ButtonGroup(config){
 
 	// Highlight based on data...
 	self.highlight = function(propName, propValue){
-
+		
 		// Turn all off
 		for(var i=0;i<self.buttons.length;i++) self.buttons[i].turnOff();
-
-		// Find the one...
-		var theButton =self.buttons.filter(function(button){
-			var config = button.config;
-			return (config[propName]==propValue);
-		})[0];
-		theButton.turnOn();
-
+		
+		if (self.isCheckbox) {
+			for (ibu in self.buttons) {
+				var bu = self.buttons[ibu]
+				if (propValue.has(bu.config[propName])) {
+					bu.turnOn();
+				}
+			}
+		} else {
+			// Find the one...
+			var theButton =self.buttons.filter(function(button){
+				var config = button.config;
+				return (config[propName]==propValue);
+			})[0];
+			theButton.turnOn();
+		}
 	};
 
 	// Create & place buttons!
@@ -87,12 +103,15 @@ function Button(buttonConfig, onChoose){
 		onChoose(self, buttonConfig);
 	};
 	self.dom.onclick = self.onClick;
-
 	// Turn on or off!
 	self.turnOff = function(){
+		self.isOn = false;
+		self.config.isOn = false;
 		self.dom.setAttribute("on", "no");
 	};
 	self.turnOn = function(){
+		self.isOn = true;
+		self.config.isOn = true;
 		self.dom.setAttribute("on", "yes");
 	};
 	self.turnOff();

@@ -3,7 +3,13 @@ function main(config){
 
 	ballotType = config.system;
 	config.strategy = config.strategy || "nope";
-	config.frontrunners = config.frontrunners || ["square"];
+	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
+	config.showChoiceOfStrategy = config.showChoiceOfStrategy || false
+	config.showChoiceOfFrontrunners = config.showChoiceOfFrontrunners || false
+	
+	// make a copy of the config
+	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
+	var initialConfig = JSON.parse(JSON.stringify(config));
 	
 	// ONCE.
 	if(ONLY_ONCE) return;
@@ -28,6 +34,8 @@ function main(config){
 			model.addCandidate("square", 41, 50);
 			model.addCandidate("triangle", 153, 95);
 			model.addCandidate("hexagon", 216, 216);
+			model.frontrunnerSet = config.frontrunnerSet;
+			model.strategy = config.strategy;
 		};
 
 		// CREATE A BALLOT
@@ -37,9 +45,102 @@ function main(config){
 			ballot.update(model.voters[0].ballot);
 		};
 
+
+		
 		// Init!
 		model.init();
+		
+		if(config.showChoiceOfStrategy) {
+			
+			var strategyOn = [
+				{name:"NO", realname:"nope", margin:4},
+				{name:"FL", realname:"justfirstandlast", margin:4},
+				{name:"NR", realname:"normalized", margin:4},
+				{name:"T", realname:"threshold", margin:4},
+				{name:"TF", realname:"thresholdfrontrunners", margin:4},
+				{name:"NTF", realname:"normfrontrunners", margin:4},
+				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
+				{name:"SNTF", realname:"starnormfrontrunners"}
+			];
+			var onChooseVoterStrategyOn = function(data){
+				config.strategy = data.realname; 
+				model.strategy = config.strategy; 
+				model.update();
+				
+			};
+			window.chooseVoterStrategyOn = new ButtonGroup({
+				label: "which strategy?",
+				width: 52,
+				data: strategyOn,
+				onChoose: onChooseVoterStrategyOn
+			});
+			document.body.appendChild(chooseVoterStrategyOn.dom);
+		}
+			
+		if(config.showChoiceOfFrontrunners) {
+			
+			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>";};
+			var frun = [
+				{name:h1("square"),realname:"square",margin:4},
+				{name:h1("triangle"),realname:"triangle",margin:4},
+				{name:h1("hexagon"),realname:"hexagon",margin:4},
+				{name:h1("pentagon"),realname:"pentagon",margin:4},
+				{name:h1("bob"),realname:"bob"}
+			];
+			var onChooseFrun = function(data){
+				
+				// update config...
+				// no reset...
+				if (data.isOn) {
+					config.frontrunnerSet.add(data.realname)
+				} else {
+					config.frontrunnerSet.delete(data.realname)
+				} 
+				model.frontrunnerSet = config.frontrunnerSet
+				model.update();
+				
+			};
+			window.chooseFrun = new ButtonGroup({
+				label: "which candidates are the frontrunners?",
+				width: 52,
+				data: frun,
+				onChoose: onChooseFrun,
+				isCheckbox: true
+			});
+			document.body.appendChild(chooseFrun.dom);
+		}
+		
+		var selectUI = function(){
+			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.strategy);
+			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
+		};
+		selectUI();
+		
+		//////////////////////////
+		//////// RESET... ////////
+		//////////////////////////
 
+		// CREATE A RESET BUTTON
+		var resetDOM = document.createElement("div");
+		resetDOM.id = "reset";
+		resetDOM.innerHTML = "reset";
+		resetDOM.style.top = "240px";
+		resetDOM.style.left = "660px";
+		resetDOM.onclick = function(){
+
+			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
+			config.frontrunnerSet = new Set(config.afrontrunnerArray); // stringify a set is not good
+			// Reset manually, coz update LATER.
+			model.reset(true);
+			model.onInit();
+			//setInPosition();
+			model.update()
+			// Back to ol' UI
+			selectUI();
+			console.log(initialConfig)
+		};
+		document.body.appendChild(resetDOM);
+		
 	};
 
 	Loader.load([

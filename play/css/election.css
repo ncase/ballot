@@ -31,6 +31,12 @@ Election/Sandbox design:
 	font-size: 15px;
 	line-height: 1.0em;
 }
+.buttonshape img{
+	height: 1em;
+	position: relative;
+	top:0px;
+}
+
 
 #right img{
 	height: 1em;
@@ -40,12 +46,12 @@ Election/Sandbox design:
 
 .button-group{
 	overflow: hidden;
-	margin-bottom: 10px;
+	margin-bottom: 5px;
 }
 .button-group-label{
 	font-weight: bold;
-    font-size: 19px;
-    margin-bottom: 5px;
+    font-size: 15px;
+    margin-bottom: 2px;
     line-height: 1.1em;
 }
 .button{
@@ -53,11 +59,13 @@ Election/Sandbox design:
 	cursor: pointer;
     background: #bbb;
     color: #555;
-    font-size: 18px;
+	height: 20px;
+	line-height: 20px;
+    font-size: 20px;
     font-weight: 300;
     text-align: center;
-    margin-bottom: 5px;
-    padding: 2px 0;
+    margin-bottom: 3px;
+    padding: 1px 0;
     
     position: relative;
     top:0;
