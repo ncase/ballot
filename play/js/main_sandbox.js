@@ -49,6 +49,15 @@ function main(config){
 	config.doPercentFirst = config.doPercentFirst || false;
 	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
 	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
+	config.voterStrategies = config.voterStrategies || []
+	for (i in [0,1,2]) {
+		config.voterStrategies[i] = config.voterStrategies[i] || "nope"
+	}
+	config.voterPercentStrategy = config.voterPercentStrategy || []
+	for (i in [0,1,2]) {
+		config.voterPercentStrategy[i] = config.voterPercentStrategy[i] || 0
+	}
+	
 	config.unstrategic = config.unstrategic || "nope";
 	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 	var initialConfig = JSON.parse(JSON.stringify(config));
@@ -84,19 +93,11 @@ function main(config){
 			var voterPositions;
 			if(num==1){
 				voterPositions = [[150,150]];
-				voterStrategies = ['nope'];
-				voterPercentStrategy = [100];
 			}else if(num==2){
 				voterPositions = [[150,100],[150,200]];
-				voterStrategies = ['nope','nope'];
-				voterPercentStrategy = [100,100];
 			}else if(num==3){
 				voterPositions = [[150,115],[115,180],[185,180]];
-				voterStrategies = ['nope','nope','nope'];
-				voterPercentStrategy = [100,100,100];
 			}
-			config.voterStrategies = config.voterStrategies || voterStrategies;
-			config.voterPercentStrategy = config.voterPercentStrategy || voterPercentStrategy;
 			for(var i=0; i<num; i++){
 				var pos = voterPositions[i];
 				model.addVoters({
@@ -270,8 +271,8 @@ function main(config){
 
 		}
 		
-		if(initialConfig.doPercentFirst){ // VOTERS as feature.
-
+		if(0){ // VOTERS as feature.
+			
 			var strategyPercent = [
 				{name:"0", num:0, margin:4},
 				{name:"50", num:50, margin:4},
@@ -301,7 +302,16 @@ function main(config){
 		}
 		
 		if(initialConfig.doPercentFirst){
-			var makeslider = function(chtext,chid,chfn,containchecks) {
+			
+			var aba = document.createElement('div')
+			aba.className = "button-group"
+			document.querySelector("#left").appendChild(aba)
+			var aba2 = document.createElement('div')
+			aba2.className = "button-group-label"
+			aba2.innerHTML = "How strategic is each group of voters (%)";
+			aba.appendChild(aba2)
+			
+			var makeslider = function(chtext,chid,chfn,containchecks,n) {
 				var slider = document.createElement("input");
 				slider.type = "range";
 				slider.max = "100";
@@ -309,22 +319,29 @@ function main(config){
 				slider.value = "50";
 				slider.id = chid;
 				slider.class = "slider";
-				slider.addEventListener('input', function() {chfn(slider)}, true);
+				slider.addEventListener('input', function() {chfn(slider,n)}, true);
 				var label = document.createElement('label')
 				label.htmlFor = chid;
 				label.appendChild(document.createTextNode(chtext));
 				containchecks.appendChild(slider);
-				containchecks.appendChild(label);
+				//containchecks.appendChild(label);
+				slider.innerHTML = chtext;
+				return slider
 			} // https://stackoverflow.com/a/866249/8210071
 
 			var containchecks = document.querySelector("#left").appendChild(document.createElement('div'));
-			var slfn = function(slider) {
+			var slfn = function(slider,n) {
 				// update config...
-					config.voterPercentStrategy[0] = slider.value;
-					model.voters[0].percentStrategy = config.voterPercentStrategy[0]
-					model.update();
+					config.voterPercentStrategy[n] = slider.value;
+					if (n<model.numOfVoters) {
+						model.voters[n].percentStrategy = config.voterPercentStrategy[n]
+						model.update();
+					}
 			}
-			makeslider("","choosepercent",slfn,containchecks)
+			var stratsliders = []
+			stratsliders.push(makeslider("","choosepercent",slfn,containchecks,0))
+			stratsliders.push(makeslider("","choosepercent",slfn,containchecks,1))
+			stratsliders.push(makeslider("","choosepercent",slfn,containchecks,2))
 		}
 
 		if(initialConfig.doFullStrategyConfig){ // VOTERS as feature.
@@ -472,6 +489,11 @@ function main(config){
 			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
 			if(window.chooseVoterStrategyOff) chooseVoterStrategyOff.highlight("realname", model.voters[0].unstrategic);
 			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
+			if(stratsliders) {
+				for (i in stratsliders) {
+					stratsliders[i].value = config.voterPercentStrategy[i]
+				}
+			}
 		};
 		selectUI();
 
