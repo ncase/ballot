@@ -1,6 +1,6 @@
 // helper function for strategies
 
-function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunnerSet,candidates) {
+function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunnerSet,candidates,radiusStep) {
 	
 	frontrunnerSet = frontrunnerSet || new Set(["square"]);
 	var frontrunners = Array.from(frontrunnerSet)
@@ -22,7 +22,14 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 			maxi = c.id
 		}
 	}
-
+	
+	// set the circle radii
+	// starnormfrontrunners and justfirstandlast don't have good representations yet
+	// defaults for no strategy
+	var radiusFirst = radiusStep * .5
+	var radiusLast = radiusStep * 4.5
+	var dottedCircle = false;
+	
 	if(strategy == "justfirstandlast") {
 		scores[maxi] = minscore
 		scores[mini] = maxscore
@@ -42,6 +49,8 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 				scores[candidates[i].id] = gs;
 			}
 		}
+		radiusFirst = mindist;
+		radiusLast = maxdist; 
 	} else if (strategy == "threshold" || strategy == "morethresholdfrontrunners" || strategy == "thresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
 		if (strategy == "threshold") {
 			var windex = 0;
@@ -51,7 +60,9 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 			}
 			var d_threshold = dista[windex];
 			var thresholdit = function(d) {return (d<d_threshold) ? maxscore : minscore} // don't vote for the best frontrunner. just those who are better
-
+			radiusFirst = d_threshold;
+			radiusLast = d_threshold;
+			dottedCircle = true;
 		} else if (strategy == "thresholdfrontrunners" || strategy == "morethresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
 			var windex = [];
 			var maxfront = 0;
@@ -79,15 +90,22 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 			if (strategy == "thresholdfrontrunners") {
 				var d_threshold = minfront;
 				var thresholdit = function(d) {return (d<=d_threshold) ? maxscore : minscore}  // vote for the best frontrunner and everyone better
+				radiusFirst = d_threshold;
+				radiusLast = d_threshold;
 			} else if (strategy == "morethresholdfrontrunners") {
 				var d_threshold = maxfront;
 				var thresholdit = function(d) {return (d<d_threshold) ? maxscore : minscore}  // vote for everyone better than the worst frontrunner
+				radiusFirst = d_threshold;
+				radiusLast = d_threshold;
+				dottedCircle = true;
 			} else if (strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
 				var fnorm = 1/ (maxfront-minfront);
 				var normit = function(d) {return (d-minfront)*fnorm;}
 				if (strategy == "starnormfrontrunners") maxscore--;
 				var gs = function(d) { return minscore+Math.round((maxscore-minscore)*(1-normit(d))); }
 				var thresholdit = function(d) {return (d<=minfront) ? maxscore : (d>=maxfront) ? minscore : gs(d)}
+				radiusFirst = minfront;
+				radiusLast = maxfront; 
 			}
 		}
 		var scores2 = dista.map(thresholdit);
@@ -97,9 +115,10 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 		scores[mini] = maxscore;
 
 	}// otherwise, there is no strategy strategy == "nope"
-
+		
 	// Scooooooore
-	return scores;
+	var scoresfirstlast = {scores:scores, radiusFirst:radiusFirst , radiusLast:radiusLast, dottedCircle:dottedCircle}
+	return scoresfirstlast;
 	
 }
 
@@ -139,7 +158,12 @@ function ScoreVoter(model){
 			scores[c.id] = self.getScore(dist);
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,1,5,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates)
+		var scoresfirstlast = dostrategy(dista,scores,1,5,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
+		
+		self.radiusFirst = scoresfirstlast.radiusFirst
+		self.radiusLast = scoresfirstlast.radiusLast
+		self.dottedCircle = scoresfirstlast.dottedCircle
+		scores = scoresfirstlast.scores
 		return scores
 		
 	};
@@ -149,13 +173,16 @@ function ScoreVoter(model){
 		// RETINA
 		x = x*2;
 		y = y*2;
-
+		
+		var step = (self.radiusLast - self.radiusFirst)/4;
 		// Draw big ol' circles.
 		for(var i=1;i<5;i++){
 			ctx.beginPath();
-			ctx.arc(x, y, (self.radiusStep*i)*2, 0, Math.TAU, false);
+			ctx.arc(x, y, (step*(i-.5) + self.radiusFirst)*2, 0, Math.TAU, false);
 			ctx.lineWidth = (5-i)*2;
 			ctx.strokeStyle = "#888";
+			ctx.setLineDash([]);
+			if (self.dottedCircle) ctx.setLineDash([5, 15]);
 			ctx.stroke();
 		}
 
@@ -220,7 +247,7 @@ function ThreeVoter(model){
 			scores[c.id] = self.getScore(dist);
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates)
+		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
 		return scores
 
 	};
@@ -293,7 +320,7 @@ function ApprovalVoter(model){
 			scores[c.id] = (dist<self.approvalRadius) ? 1 : 0;
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates)
+		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
 		
 		
 		// Anyone close enough. If anyone.
