@@ -247,7 +247,8 @@ function ThreeVoter(model){
 			scores[c.id] = self.getScore(dist);
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
+		var scoresfirstlast = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
+		scores = scoresfirstlast.scores
 		return scores
 
 	};
@@ -320,7 +321,8 @@ function ApprovalVoter(model){
 			scores[c.id] = (dist<self.approvalRadius) ? 1 : 0;
 		}
 		self.model.idlastwinner = "square"
-		scores = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
+		var scoresfirstlast = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
+		scores = scoresfirstlast.scores
 		
 		
 		// Anyone close enough. If anyone.
