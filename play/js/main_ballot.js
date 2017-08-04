@@ -79,21 +79,22 @@ function main(config){
 			
 		if(config.showChoiceOfFrontrunners) {
 			
+			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>";};
 			var frun = [
-				{name:"square",margin:4},
-				{name:"triangle",margin:4},
-				{name:"hexagon",margin:4},
-				{name:"pentagon",margin:4},
-				{name:"bob"}
+				{name:h1("square"),realname:"square",margin:4},
+				{name:h1("triangle"),realname:"triangle",margin:4},
+				{name:h1("hexagon"),realname:"hexagon",margin:4},
+				{name:h1("pentagon"),realname:"pentagon",margin:4},
+				{name:h1("bob"),realname:"bob"}
 			];
 			var onChooseFrun = function(data){
 				
 				// update config...
 				// no reset...
 				if (data.isOn) {
-					config.frontrunnerSet.add(data.name)
+					config.frontrunnerSet.add(data.realname)
 				} else {
-					config.frontrunnerSet.delete(data.name)
+					config.frontrunnerSet.delete(data.realname)
 				} 
 				model.frontrunnerSet = config.frontrunnerSet
 				model.update();

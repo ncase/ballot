@@ -31,6 +31,12 @@ Election/Sandbox design:
 	font-size: 15px;
 	line-height: 1.0em;
 }
+.buttonshape img{
+	height: 1em;
+	position: relative;
+	top:0px;
+}
+
 
 #right img{
 	height: 1em;
