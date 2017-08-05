@@ -556,6 +556,11 @@ function main(config){
 
 		window.jsave = function(log){
 			var sofar = window.save()
+			
+			// Description
+			var description = document.getElementById("description_text");
+			config.description = description.value;
+			
 			var logtext = ''
 			for (i in sofar) logtext += i + ": " +JSON.stringify(sofar[i]) + ',\n'
 			for (i in config) {
@@ -645,6 +650,7 @@ function main(config){
 		jsave(1)  // updates config with positions and gives a log of settings to copy and paste
 		
 		// URI ENCODE!
+		config.afrontrunnerArray = Array.from(config.frontrunnerSet); // stringify a set is not good
 		var uri = encodeURIComponent(JSON.stringify(config));
 
 		// ALSO TURN IT INTO INITIAL CONFIG. _parseModel
