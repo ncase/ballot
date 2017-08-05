@@ -28,16 +28,8 @@ function main(config){
 		// Parse!
 		var data = JSON.parse(modelData);
 
-		// Turn into initial config
-		config = {
-			features: 4,
-			system: data.s,
-			candidates: data.c.length,
-			candidatePositions: data.c,
-			voters: data.v.length,
-			voterPositions: data.v,
-			description: data.d
-		};
+		config = data;
+		config.frontrunnerSet = new Set(config.afrontrunnerArray) // stringify a set is not good
 
 	}
 	// Defaults...
@@ -524,7 +516,6 @@ function main(config){
 		document.body.appendChild(resetDOM);
 
 
-
 		///////////////////////////
 		////// SAVE POSITION //////
 		///////////////////////////
@@ -578,6 +569,9 @@ function main(config){
 			}
 			console.log(logtext)
 			if (log==2) console.log(JSON.stringify(config))
+			
+			for (i in sofar) config[i] = sofar[i]  // for some weird reason config doesn't have the correct positions, hope i'm not introducing a bug
+			return config
 		}
 
 
@@ -644,40 +638,29 @@ function main(config){
 
 	// SAVE & PARSE
 	// ?m={s:[system], v:[voterPositions], c:[candidatePositions], d:[description]}
+	
+	
 	var _saveModel = function(){
 
-		// Data!
-		var data = {};
-
-		// System?
-		data.s = config.system;
-		console.log("voting system: "+data.s);
-
-		// Positions...
-		var positions = save(true);
-		data.v = positions.voterPositions;
-		data.c = positions.candidatePositions;
-
-		// Description
-		var description = document.getElementById("description_text");
-		data.d = description.value;
-		console.log("description: "+data.d);
-
+		jsave(1)  // updates config with positions and gives a log of settings to copy and paste
+		
 		// URI ENCODE!
-		var uri = encodeURIComponent(JSON.stringify(data));
+		var uri = encodeURIComponent(JSON.stringify(config));
 
 		// ALSO TURN IT INTO INITIAL CONFIG. _parseModel
-		initialConfig = {
-			features: 4,
-			system: data.s,
-			candidates: data.c.length,
-			candidatePositions: data.c,
-			voters: data.v.length,
-			voterPositions: data.v
-		};
-
+		
+		initialConfig = JSON.parse(JSON.stringify(config)); // RESTORE IT!
+		initialConfig.frontrunnerSet = new Set(initialConfig.afrontrunnerArray); // stringify a set is not good
+		
 		// Put it in the save link box!
-		var link = "http://ncase.me/ballot/sandbox?m="+uri;
+		
+		// make link string
+		var getUrl = window.location;
+		var baseUrl = getUrl.protocol + "//" + getUrl.host; //http://ncase.me/ballot
+		var restofurl = getUrl.pathname.split('/')
+		for (var i=1; i < restofurl.length - 2; i++) {baseUrl += "/" + restofurl[i];}
+		var link = baseUrl + "/sandbox/?m="+uri;
+		
 		var savelink = document.getElementById("savelink");
 		savelink.value = "saving...";
 		setTimeout(function(){
