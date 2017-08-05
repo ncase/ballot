@@ -107,3 +107,14 @@ Election/Sandbox design:
 	position: relative;
 	top:10px;
 }
+
+input[type=range]{
+    border: 0px solid white; 
+    width: 22%;
+	display:inline;
+	margin-left:10%
+}
+
+#containsliders{
+	
+}

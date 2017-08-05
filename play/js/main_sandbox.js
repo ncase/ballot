@@ -209,10 +209,10 @@ function main(config){
 		if(initialConfig.features>=2){ // CANDIDATES as feature.
 
 			var voters = [
-				{name:"one", num:1, margin:5},
-				{name:"two", num:2, margin:5},
-				{name:"three", num:3, margin:5},
-				{name:"snoman", num:3, snowman:true},
+				{name:"one", num:1, margin:4},
+				{name:"two", num:2, margin:4},
+				{name:"three", num:3, margin:4},
+				{name:"snow", num:3, snowman:true},
 			];
 			var onChooseVoters = function(data){
 
@@ -231,7 +231,7 @@ function main(config){
 			};
 			window.chooseVoters = new ButtonGroup({
 				label: "how many groups of voters?",
-				width: 70,
+				width: 52,
 				data: voters,
 				onChoose: onChooseVoters
 			});
@@ -318,6 +318,7 @@ function main(config){
 				slider.max = "100";
 				slider.min = "0";
 				slider.value = "50";
+				//slider.setAttribute("width","20px");
 				slider.id = chid;
 				slider.class = "slider";
 				slider.addEventListener('input', function() {chfn(slider,n)}, true);
@@ -331,6 +332,7 @@ function main(config){
 			} // https://stackoverflow.com/a/866249/8210071
 
 			var containchecks = document.querySelector("#left").appendChild(document.createElement('div'));
+			containchecks.id="containsliders"
 			var slfn = function(slider,n) {
 				// update config...
 					config.voterPercentStrategy[n] = slider.value;
@@ -352,7 +354,7 @@ function main(config){
 				{name:"NO", realname:"nope", margin:4},
 				{name:"FL", realname:"justfirstandlast", margin:4},
 				{name:"NR", realname:"normalized", margin:4},
-				{name:"T", realname:"threshold", margin:4},
+				{name:"T", realname:"threshold"},
 				{name:"TF", realname:"thresholdfrontrunners", margin:4},
 				{name:"NTF", realname:"normfrontrunners", margin:4},
 				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
@@ -388,7 +390,7 @@ function main(config){
 				{name:"NO", realname:"nope", margin:4},
 				{name:"FL", realname:"justfirstandlast", margin:4},
 				{name:"NR", realname:"normalized", margin:4},
-				{name:"T", realname:"threshold", margin:4},
+				{name:"T", realname:"threshold"},
 				{name:"TF", realname:"thresholdfrontrunners", margin:4},
 				{name:"NTF", realname:"normfrontrunners", margin:4},
 				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
@@ -421,10 +423,10 @@ function main(config){
 
 			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>"}
 			var frun = [
-				{name:h1("square"),realname:"square",margin:4},
-				{name:h1("triangle"),realname:"triangle",margin:4},
-				{name:h1("hexagon"),realname:"hexagon",margin:4},
-				{name:h1("pentagon"),realname:"pentagon",margin:4},
+				{name:h1("square"),realname:"square",margin:5},
+				{name:h1("triangle"),realname:"triangle",margin:5},
+				{name:h1("hexagon"),realname:"hexagon",margin:5},
+				{name:h1("pentagon"),realname:"pentagon",margin:5},
 				{name:h1("bob"),realname:"bob"}
 			];
 			var onChooseFrun = function(data){
@@ -442,7 +444,7 @@ function main(config){
 			};
 			window.chooseFrun = new ButtonGroup({
 				label: "which candidates are the frontrunners?",
-				width: 52,
+				width: 40,
 				data: frun,
 				onChoose: onChooseFrun,
 				isCheckbox: true
