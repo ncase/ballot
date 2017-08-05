@@ -50,6 +50,7 @@ function main(config){
 	for (i in [0,1,2]) {
 		config.voterPercentStrategy[i] = config.voterPercentStrategy[i] || 0
 	}
+	config.snowman = config.snowman || false;
 	
 	config.unstrategic = config.unstrategic || "nope";
 	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
@@ -100,6 +101,8 @@ function main(config){
 					percentStrategy: config.voterPercentStrategy[i],
 					frontrunnerSet: config.frontrunnerSet,
 					unstrategic: config.unstrategic,
+					vid: i,
+					snowman: config.snowman,
 					num:(4-num),
 					x:pos[0], y:pos[1]
 				});
@@ -205,13 +208,15 @@ function main(config){
 			var voters = [
 				{name:"one", num:1, margin:5},
 				{name:"two", num:2, margin:5},
-				{name:"three", num:3},
+				{name:"three", num:3, margin:5},
+				{name:"snoman", num:3, snowman:true},
 			];
 			var onChooseVoters = function(data){
 
 				// update config...
 				config.voters = data.num;
-
+				
+				config.snowman = data.snowman || false;
 				// save candidates before switching!
 				config.candidatePositions = save().candidatePositions;
 

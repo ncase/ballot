@@ -571,6 +571,8 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 
 	// NUM
 	self.num = config.num || 3;
+	self.vid = config.vid || 0;
+	self.snowman = config.snowman || false;
 
 	// WHAT TYPE?
 	self.type = new config.type(self.model);
@@ -588,10 +590,11 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 
 	// SPACINGS, dependent on NUM
 	var spacings = [0, 10, 11, 12, 15, 20, 30, 50, 100];
-	if(self.num==1){
+	if (self.snowman) {
+		spacings.splice(2+self.vid)
+	} else if(self.num==1){
 		spacings.splice(4);
-	}
-	if(self.num==2){
+	} else if(self.num==2){
 		spacings.splice(5);
 	}
 
