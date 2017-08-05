@@ -42,6 +42,7 @@ function main(config){
 	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
 	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
 	config.voterStrategies = config.voterStrategies || []
+	config.description = config.description || ""
 	for (i in [0,1,2]) {
 		config.voterStrategies[i] = config.voterStrategies[i] || "nope"
 	}
@@ -558,7 +559,7 @@ function main(config){
 			var sofar = window.save()
 			
 			// Description
-			var description = document.getElementById("description_text");
+			var description = document.getElementById("description_text") || {value:""};
 			config.description = description.value;
 			
 			var logtext = ''
@@ -585,30 +586,41 @@ function main(config){
 		//////////////////////////////////
 
 		var descText, linkText;
-		if(initialConfig.features>=4){ // SAVE & SHARE as feature.
+		if(1){ // SAVE & SHARE as feature.
 
-			// Create a description up top
-			var descDOM = document.createElement("div");
-			descDOM.id = "description_container";
-			var refNode = document.getElementById("left");
-			document.body.insertBefore(descDOM, refNode);
-			descText = document.createElement("textarea");
-			descText.id = "description_text";
-			descDOM.appendChild(descText);
+			
+			if (config.features >= 4) {
+				// Create a description up top
+				var descDOM = document.createElement("div");
+				descDOM.id = "description_container";
+				var refNode = document.getElementById("left");
+				document.body.insertBefore(descDOM, refNode);
+				descText = document.createElement("textarea");
+				descText.id = "description_text";
+				descDOM.appendChild(descText);
 
-			// yay.
-			descText.value = initialConfig.description;
-
+				// yay.
+				descText.value = initialConfig.description;
+			}
 			// Move that reset button
-			resetDOM.style.top = "470px";
-			resetDOM.style.left = "235px";
-
+			if (config.features >= 4) {
+				resetDOM.style.top = "470px";
+				resetDOM.style.left = "235px";
+			} else {
+				resetDOM.style.top = "330px";
+				resetDOM.style.left = "235px";
+			}
 			// Create a "save" button
 			var saveDOM = document.createElement("div");
 			saveDOM.id = "save";
 			saveDOM.innerHTML = "save:";
-			saveDOM.style.top = "470px";
-			saveDOM.style.left = "350px";
+			if (config.features >= 4) {
+				saveDOM.style.top = "470px";
+				saveDOM.style.left = "350px";
+			} else {
+				saveDOM.style.top = "330px";
+				saveDOM.style.left = "350px";
+			}
 			saveDOM.onclick = function(){
 				_saveModel();
 			};
@@ -622,6 +634,13 @@ function main(config){
 			linkText.onclick = function(){
 				linkText.select();
 			};
+			if (config.features >= 4) {
+				//skip
+			} else {
+				linkText.style.position = "absolute";
+				linkText.style.top = "330px";
+				linkText.style.left = "460px";
+			}
 			document.body.appendChild(linkText);
 
 			// Create a URL... (later, PARSE!)
