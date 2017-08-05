@@ -563,6 +563,22 @@ function main(config){
 
 		};
 
+		window.jsave = function(log){
+			var sofar = window.save()
+			var logtext = ''
+			for (i in sofar) logtext += i + ": " +JSON.stringify(sofar[i]) + ',\n'
+			for (i in config) {
+				if (i == "frontrunnerSet"){
+					logtext += i + ": new Set(" +JSON.stringify(Array.from(config[i])) + '),\n'
+				} else if (i == "afrontrunnerArray" || i == "candidatePositions" || i == "voterPositions") {
+					// skip
+				} else {
+					logtext += i + ": " +JSON.stringify(config[i]) + ',\n'
+				}
+			}
+			console.log(logtext)
+			if (log==2) console.log(JSON.stringify(config))
+		}
 
 
 		//////////////////////////////////
