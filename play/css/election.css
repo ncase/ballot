@@ -112,7 +112,10 @@ input[type=range]{
     border: 0px solid white; 
     width: 22%;
 	display:inline;
-	margin-left:10%
+	margin-left:10%;
+	margin-top: 20px;
+	margin-bottom: 25px;
+	transform: rotate(270deg);
 }
 
 #containsliders{
