@@ -90,7 +90,10 @@ function main(config){
 			}else if(num==2){
 				voterPositions = [[150,100],[150,200]];
 			}else if(num==3){
-				voterPositions = [[150,115],[115,180],[185,180]];
+				voterPositions = [[150,65],[150,150],[150,235]];
+				if (config.snowman) {
+					voterPositions =  [[150,83],[150,150],[150,195]]
+				}
 			}
 			for(var i=0; i<num; i++){
 				var pos = voterPositions[i];
