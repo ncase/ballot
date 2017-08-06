@@ -483,6 +483,45 @@ function main(config){
 			document.querySelector("#left").appendChild(choosePoll.dom);
 		}
 		
+		if(initialConfig.doFullStrategyConfig){ 
+
+			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>"}
+			var yeeobject = [
+				{name:h1("square"),realname:"square",kinda:"can",iobj:0,margin:4},
+				{name:h1("triangle"),realname:"triangle",kinda:"can",iobj:1,margin:4},
+				{name:h1("hexagon"),realname:"hexagon",kinda:"can",iobj:2,margin:4},
+				{name:h1("pentagon"),realname:"pentagon",kinda:"can",iobj:3,margin:4},
+				{name:h1("bob"),realname:"bob",kinda:"can",iobj:4,margin:4},
+				{name:"1",realname:"first voter group",kinda:"voter",vid:0,margin:4},
+				{name:"2",realname:"second voter group",kinda:"voter",vid:1,margin:4},
+				{name:"3",realname:"third voter group",kinda:"voter",vid:2,margin:4},
+				{name:"off",realname:"turn off",kinda:"off"}
+			];
+			var onChooseyeeobject = function(data){
+				
+				if (data.kinda == "can") {
+					model.yeeobject = model.candidatesById[data.realname]
+				} else if (data.kinda=="voter") {
+					model.yeeobject = model.voters[data.vid]
+				} else if (data.kinda=="off") {
+					model.yeeobject = undefined
+				}
+				if (model.yeeobject) {model.yeeon = true} else {model.yeeon = false}
+				config.yeeobjectrealname = data.realname
+				model.chooseYeeObject()
+				model.update();
+				
+			};
+			window.chooseyeeobject = new ButtonGroup({
+				label: "which object for yee?",
+				width: 20,
+				data: yeeobject,
+				onChoose: onChooseyeeobject
+			});
+			document.querySelector("#left").appendChild(chooseyeeobject.dom);
+
+		}
+		
 		///////////////////////
 		//////// INIT! ////////
 		///////////////////////
