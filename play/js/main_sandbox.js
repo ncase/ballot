@@ -42,6 +42,7 @@ function main(config){
 	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
 	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
 	config.voterStrategies = config.voterStrategies || []
+	config.description = config.description || ""
 	for (i in [0,1,2]) {
 		config.voterStrategies[i] = config.voterStrategies[i] || "nope"
 	}
@@ -49,8 +50,10 @@ function main(config){
 	for (i in [0,1,2]) {
 		config.voterPercentStrategy[i] = config.voterPercentStrategy[i] || 0
 	}
+	config.snowman = config.snowman || false;
 	
 	config.unstrategic = config.unstrategic || "nope";
+	config.keyyee = config.keyyee || "off";
 	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 	var initialConfig = JSON.parse(JSON.stringify(config));
 
@@ -88,7 +91,10 @@ function main(config){
 			}else if(num==2){
 				voterPositions = [[150,100],[150,200]];
 			}else if(num==3){
-				voterPositions = [[150,115],[115,180],[185,180]];
+				voterPositions = [[150,65],[150,150],[150,235]];
+				if (config.snowman) {
+					voterPositions =  [[150,83],[150,150],[150,195]]
+				}
 			}
 			for(var i=0; i<num; i++){
 				var pos = voterPositions[i];
@@ -99,6 +105,8 @@ function main(config){
 					percentStrategy: config.voterPercentStrategy[i],
 					frontrunnerSet: config.frontrunnerSet,
 					unstrategic: config.unstrategic,
+					vid: i,
+					snowman: config.snowman,
 					num:(4-num),
 					x:pos[0], y:pos[1]
 				});
@@ -121,6 +129,16 @@ function main(config){
 				model.addCandidate(id, x, y);
 				angle += Math.TAU/num;
 			}
+			
+			// Yee diagram
+			if (config.kindayee == "can") {
+				model.yeeobject = model.candidatesById[config.keyyee]
+			} else if (config.kindayee=="voter") {
+				model.yeeobject = model.voters[config.keyyee]
+			} else if (config.kindayee=="off") {
+				model.yeeobject = undefined
+			}
+			if (model.yeeobject) {model.yeeon = true} else {model.yeeon = false}
 
 		};
 		model.election = Election.plurality;
@@ -202,15 +220,17 @@ function main(config){
 		if(initialConfig.features>=2){ // CANDIDATES as feature.
 
 			var voters = [
-				{name:"one", num:1, margin:5},
-				{name:"two", num:2, margin:5},
-				{name:"three", num:3},
+				{name:"one", num:1, margin:4},
+				{name:"two", num:2, margin:4},
+				{name:"three", num:3, margin:4},
+				{name:"snow", num:3, snowman:true},
 			];
 			var onChooseVoters = function(data){
 
 				// update config...
 				config.voters = data.num;
-
+				
+				config.snowman = data.snowman || false;
 				// save candidates before switching!
 				config.candidatePositions = save().candidatePositions;
 
@@ -222,7 +242,7 @@ function main(config){
 			};
 			window.chooseVoters = new ButtonGroup({
 				label: "how many groups of voters?",
-				width: 70,
+				width: 52,
 				data: voters,
 				onChoose: onChooseVoters
 			});
@@ -263,6 +283,45 @@ function main(config){
 
 		}
 		
+		
+		
+		if(initialConfig.doFullStrategyConfig){ // VOTERS as feature.
+
+			
+			var strategyOn = [
+				{name:"NO", realname:"nope", margin:4},
+				{name:"FL", realname:"justfirstandlast", margin:4},
+				{name:"NR", realname:"normalized", margin:4},
+				{name:"T", realname:"threshold"},
+				{name:"TF", realname:"thresholdfrontrunners", margin:4},
+				{name:"NTF", realname:"normfrontrunners", margin:4},
+				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
+				{name:"SNTF", realname:"starnormfrontrunners"}
+			];
+			var onChooseVoterStrategyOn = function(data){
+				
+				// update config...
+				// only the middle percent (for the yellow triangle)
+
+				// no reset...
+				for(var i=0;i<model.voters.length;i++){
+					config.voterStrategies[i] = data.realname; 
+					model.voters[i].strategy = config.voterStrategies[i]
+				}
+				model.update();
+				
+			};
+			window.chooseVoterStrategyOn = new ButtonGroup({
+				label: "do voters strategize?",
+				width: 52,
+				data: strategyOn,
+				onChoose: onChooseVoterStrategyOn
+			});
+			document.querySelector("#left").appendChild(chooseVoterStrategyOn.dom);
+
+		}
+		
+		
 		if(0){ // VOTERS as feature.
 			
 			var strategyPercent = [
@@ -284,7 +343,7 @@ function main(config){
 				
 			};
 			window.choosePercentStrategy = new ButtonGroup({
-				label: "what % strategy for first group of voters?",
+				label: "how many strategize? %",
 				width: 52,
 				data: strategyPercent,
 				onChoose: onChoosePercentStrategy
@@ -300,7 +359,7 @@ function main(config){
 			document.querySelector("#left").appendChild(aba)
 			var aba2 = document.createElement('div')
 			aba2.className = "button-group-label"
-			aba2.innerHTML = "How strategic is each group of voters (%)";
+			aba2.innerHTML = "how many voters strategize?";
 			aba.appendChild(aba2)
 			
 			var makeslider = function(chtext,chid,chfn,containchecks,n) {
@@ -309,6 +368,7 @@ function main(config){
 				slider.max = "100";
 				slider.min = "0";
 				slider.value = "50";
+				//slider.setAttribute("width","20px");
 				slider.id = chid;
 				slider.class = "slider";
 				slider.addEventListener('input', function() {chfn(slider,n)}, true);
@@ -322,6 +382,7 @@ function main(config){
 			} // https://stackoverflow.com/a/866249/8210071
 
 			var containchecks = document.querySelector("#left").appendChild(document.createElement('div'));
+			containchecks.id="containsliders"
 			var slfn = function(slider,n) {
 				// update config...
 					config.voterPercentStrategy[n] = slider.value;
@@ -336,41 +397,7 @@ function main(config){
 			stratsliders.push(makeslider("","choosepercent",slfn,containchecks,2))
 		}
 
-		if(initialConfig.doFullStrategyConfig){ // VOTERS as feature.
-
-			
-			var strategyOn = [
-				{name:"NO", realname:"nope", margin:4},
-				{name:"FL", realname:"justfirstandlast", margin:4},
-				{name:"NR", realname:"normalized", margin:4},
-				{name:"T", realname:"threshold", margin:4},
-				{name:"TF", realname:"thresholdfrontrunners", margin:4},
-				{name:"NTF", realname:"normfrontrunners", margin:4},
-				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
-				{name:"SNTF", realname:"starnormfrontrunners"}
-			];
-			var onChooseVoterStrategyOn = function(data){
-				
-				// update config...
-				// only the middle percent (for the yellow triangle)
-
-				// no reset...
-				for(var i=0;i<model.voters.length;i++){
-					config.voterStrategies[i] = data.realname; 
-					model.voters[i].strategy = config.voterStrategies[i]
-				}
-				model.update();
-				
-			};
-			window.chooseVoterStrategyOn = new ButtonGroup({
-				label: "which strategy?",
-				width: 52,
-				data: strategyOn,
-				onChoose: onChooseVoterStrategyOn
-			});
-			document.querySelector("#left").appendChild(chooseVoterStrategyOn.dom);
-
-		}
+		
 		
 		if(initialConfig.doFullStrategyConfig){ 
 
@@ -379,7 +406,7 @@ function main(config){
 				{name:"NO", realname:"nope", margin:4},
 				{name:"FL", realname:"justfirstandlast", margin:4},
 				{name:"NR", realname:"normalized", margin:4},
-				{name:"T", realname:"threshold", margin:4},
+				{name:"T", realname:"threshold"},
 				{name:"TF", realname:"thresholdfrontrunners", margin:4},
 				{name:"NTF", realname:"normfrontrunners", margin:4},
 				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
@@ -399,7 +426,7 @@ function main(config){
 				
 			};
 			window.chooseVoterStrategyOff = new ButtonGroup({
-				label: "what do unstrategic voters do?",
+				label: "what do the rest do?",
 				width: 52,
 				data: strategyOff,
 				onChoose: onChooseVoterStrategyOff
@@ -408,14 +435,16 @@ function main(config){
 
 		}
 		
+		
+		
 		if(initialConfig.doFullStrategyConfig){ 
 
 			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>"}
 			var frun = [
-				{name:h1("square"),realname:"square",margin:4},
-				{name:h1("triangle"),realname:"triangle",margin:4},
-				{name:h1("hexagon"),realname:"hexagon",margin:4},
-				{name:h1("pentagon"),realname:"pentagon",margin:4},
+				{name:h1("square"),realname:"square",margin:5},
+				{name:h1("triangle"),realname:"triangle",margin:5},
+				{name:h1("hexagon"),realname:"hexagon",margin:5},
+				{name:h1("pentagon"),realname:"pentagon",margin:5},
 				{name:h1("bob"),realname:"bob"}
 			];
 			var onChooseFrun = function(data){
@@ -432,8 +461,8 @@ function main(config){
 				
 			};
 			window.chooseFrun = new ButtonGroup({
-				label: "which candidates are the frontrunners?",
-				width: 52,
+				label: "who are the frontrunners?",
+				width: 40,
 				data: frun,
 				onChoose: onChooseFrun,
 				isCheckbox: true
@@ -465,6 +494,45 @@ function main(config){
 			document.querySelector("#left").appendChild(choosePoll.dom);
 		}
 		
+		if(initialConfig.doFullStrategyConfig){ 
+
+			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>"}
+			var yeeobject = [
+				{name:h1("square"),realname:"square",keyyee:"square",kindayee:"can",margin:4},
+				{name:h1("triangle"),realname:"triangle",keyyee:"triangle",kindayee:"can",margin:4},
+				{name:h1("hexagon"),realname:"hexagon",keyyee:"hexagon",kindayee:"can",margin:4},
+				{name:h1("pentagon"),realname:"pentagon",keyyee:"pentagon",kindayee:"can",margin:4},
+				{name:h1("bob"),realname:"bob",keyyee:"bob",kindayee:"can",margin:4},
+				{name:"1",realname:"first voter group",kindayee:"voter",keyyee:0,margin:4},
+				{name:"2",realname:"second voter group",kindayee:"voter",keyyee:1,margin:4},
+				{name:"3",realname:"third voter group",kindayee:"voter",keyyee:2,margin:4},
+				{name:"off",realname:"turn off",keyyee:"off",kindayee:"off"}
+			];
+			var onChooseyeeobject = function(data){
+				
+				config.kindayee = data.kindayee
+				if (data.kindayee == "can") {
+					model.yeeobject = model.candidatesById[data.keyyee]
+				} else if (data.kindayee=="voter") {
+					model.yeeobject = model.voters[data.keyyee]
+				} else if (data.kindayee=="off") {
+					model.yeeobject = undefined
+				}
+				if (model.yeeobject) {model.yeeon = true} else {model.yeeon = false}
+				config.keyyee = data.keyyee
+				model.update();
+				
+			};
+			window.chooseyeeobject = new ButtonGroup({
+				label: "which object for yee?",
+				width: 20,
+				data: yeeobject,
+				onChoose: onChooseyeeobject
+			});
+			document.querySelector("#left").appendChild(chooseyeeobject.dom);
+
+		}
+		
 		///////////////////////
 		//////// INIT! ////////
 		///////////////////////
@@ -486,6 +554,7 @@ function main(config){
 					stratsliders[i].value = config.voterPercentStrategy[i]
 				}
 			}
+			if(window.chooseyeeobject) chooseyeeobject.highlight("keyyee", config.keyyee);
 		};
 		selectUI();
 
@@ -558,7 +627,7 @@ function main(config){
 			var sofar = window.save()
 			
 			// Description
-			var description = document.getElementById("description_text");
+			var description = document.getElementById("description_text") || {value:""};
 			config.description = description.value;
 			
 			var logtext = ''
@@ -585,30 +654,41 @@ function main(config){
 		//////////////////////////////////
 
 		var descText, linkText;
-		if(initialConfig.features>=4){ // SAVE & SHARE as feature.
+		if(1){ // SAVE & SHARE as feature.
 
-			// Create a description up top
-			var descDOM = document.createElement("div");
-			descDOM.id = "description_container";
-			var refNode = document.getElementById("left");
-			document.body.insertBefore(descDOM, refNode);
-			descText = document.createElement("textarea");
-			descText.id = "description_text";
-			descDOM.appendChild(descText);
+			
+			if (config.features >= 4) {
+				// Create a description up top
+				var descDOM = document.createElement("div");
+				descDOM.id = "description_container";
+				var refNode = document.getElementById("left");
+				document.body.insertBefore(descDOM, refNode);
+				descText = document.createElement("textarea");
+				descText.id = "description_text";
+				descDOM.appendChild(descText);
 
-			// yay.
-			descText.value = initialConfig.description;
-
+				// yay.
+				descText.value = initialConfig.description;
+			}
 			// Move that reset button
-			resetDOM.style.top = "470px";
-			resetDOM.style.left = "235px";
-
+			if (config.features >= 4) {
+				resetDOM.style.top = "470px";
+				resetDOM.style.left = "235px";
+			} else {
+				resetDOM.style.top = "330px";
+				resetDOM.style.left = "235px";
+			}
 			// Create a "save" button
 			var saveDOM = document.createElement("div");
 			saveDOM.id = "save";
 			saveDOM.innerHTML = "save:";
-			saveDOM.style.top = "470px";
-			saveDOM.style.left = "350px";
+			if (config.features >= 4) {
+				saveDOM.style.top = "470px";
+				saveDOM.style.left = "350px";
+			} else {
+				saveDOM.style.top = "330px";
+				saveDOM.style.left = "350px";
+			}
 			saveDOM.onclick = function(){
 				_saveModel();
 			};
@@ -622,6 +702,13 @@ function main(config){
 			linkText.onclick = function(){
 				linkText.select();
 			};
+			if (config.features >= 4) {
+				//skip
+			} else {
+				linkText.style.position = "absolute";
+				linkText.style.top = "330px";
+				linkText.style.left = "460px";
+			}
 			document.body.appendChild(linkText);
 
 			// Create a URL... (later, PARSE!)
@@ -641,6 +728,8 @@ function main(config){
 		"img/bob.png"
 	]);
 
+	//if(config.features >= 4) resetDOM.onclick();
+	
 	// SAVE & PARSE
 	// ?m={s:[system], v:[voterPositions], c:[candidatePositions], d:[description]}
 	

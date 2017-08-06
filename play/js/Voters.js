@@ -510,11 +510,14 @@ function PluralityVoter(model){
 		// What fill?
 		var fill = Candidate.graphics[ballot.vote].fill;
 		ctx.fillStyle = fill;
+		ctx.strokeStyle = 'rgb(0,0,0)';
+		ctx.lineWidth = 1; // border
 
 		// Just draw a circle.
 		ctx.beginPath();
 		ctx.arc(x, y, size, 0, Math.TAU, true);
 		ctx.fill();
+		if (self.model.yeeon) {ctx.stroke();}
 
 	};
 
@@ -552,6 +555,16 @@ var _drawSlices = function(ctx, x, y, size, slices, totalSlices){
 		startingAngle = endingAngle;
 
 	}
+	
+	if (self.model.yeeon) {
+		// Just draw a circle.		
+		ctx.strokeStyle = 'rgb(0,0,0)';
+		ctx.lineWidth = 1; // border
+		ctx.beginPath();
+		ctx.arc(x, y, size, 0, Math.TAU, true);
+		ctx.closePath();
+		ctx.stroke();
+	}
 
 };
 var _drawBlank = function(ctx, x, y, size){
@@ -571,6 +584,8 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 
 	// NUM
 	self.num = config.num || 3;
+	self.vid = config.vid || 0;
+	self.snowman = config.snowman || false;
 
 	// WHAT TYPE?
 	self.type = new config.type(self.model);
@@ -587,14 +602,24 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 	self.radius = 50;
 
 	// SPACINGS, dependent on NUM
-	var spacings = [0, 10, 11, 12, 15, 20, 30, 50, 100];
-	if(self.num==1){
+	var spacings = [0, 12, 12, 12, 12, 20, 30, 50, 100];
+	if (self.snowman) {
+		if (self.vid == 0) {
+			spacings.splice(3)
+		} else if (self.vid == 1) {
+			spacings = [0,12,12,12]
+		} else if (self.vid == 2) {
+			spacings.splice(4)
+		}
+		//spacings.splice(2+self.vid)
+	} else if(self.num==1){
 		spacings.splice(4);
-	}
-	if(self.num==2){
+	} else if(self.num==2){
 		spacings.splice(5);
+	} else if (self.num==3){
+		spacings = [0, 10, 11, 12, 15, 20, 30, 50, 100];
 	}
-
+	
 	// Create 100+ points, in a Gaussian-ish distribution!
 	var points = [[0,0]];
 	self.points = points;
@@ -606,10 +631,13 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 		_radius += spacing;
 
 		var circum = Math.TAU*_radius;
-		var num = Math.floor(circum/spacing);
+		var num = Math.floor(circum/(spacing-1));
+		if (self.snowman && self.vid == 1 && i==3){
+			num = 10
+		}
 
 		// HACK TO MAKE IT PRIME - 137 VOTERS
-		if(i==_RINGS-1) num += 3;
+		//if(i==_RINGS-1) num += 3;
 
 		var err = 0.01; // yeah whatever
 		for(var angle=0; angle<Math.TAU-err; angle+=Math.TAU/num){

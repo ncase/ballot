@@ -99,6 +99,7 @@ function Button(buttonConfig, onChoose){
 
 	// Click!
 	self.dom.innerHTML = buttonConfig.name;
+	self.dom.setAttribute("title", buttonConfig.realname || "");
 	self.onClick = function(){
 		onChoose(self, buttonConfig);
 	};

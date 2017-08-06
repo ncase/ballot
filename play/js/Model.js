@@ -86,8 +86,46 @@ function Model(config){
 
 	// Update!
 	self.onUpdate = function(){}; // TO IMPLEMENT
-	self.update = function(){
+	
+	self.calculateYee = function(){
+		self.density= 40.0;
+		var density = self.density;
+		WIDTH = ctx.canvas.width;
+		HEIGHT = ctx.canvas.height;
+		self.gridx = [];
+		self.gridy = [];
+		self.gridl = []; 
+		self.gridb = []; 
+		saveo = {}
+		saveo.x = self.yeeobject.x;
+		saveo.y = self.yeeobject.y;
+		var i=0
+		for(var x=0.0, cx=0; x<=WIDTH; x+= density, cx++) {
+			for(var y=0.0, cy=0; y<=HEIGHT; y+= density, cy++) {
+				self.yeeobject.x = x * .5;
+				self.yeeobject.y = y * .5;
+				for(var j=0; j<self.voters.length; j++){
+					self.voters[j].update();
+				}
+				self.election(self, {sidebar:false});
 
+				var a = self.color; // updated color
+				if (a == "#ccc") {self.gridb[i] = self.colors;}
+				self.gridx.push(x);
+				self.gridy.push(y);
+				self.gridl.push(a);
+				// model.caption.innerHTML = "Calculating " + Math.round(x/WIDTH*100) + "%"; // doesn't work yet 
+				i++
+			}
+		}
+		self.yeeobject.x = saveo.x;
+		self.yeeobject.y = saveo.y;
+	}
+	
+	self.update = function(){
+		// calculate yee if its turned on and we haven't already calculated it ( we aren't dragging the yee object)
+		if (self.yeeon && Mouse.dragging != self.yeeobject) self.calculateYee()
+		
 		// Clear it all!
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -98,6 +136,48 @@ function Model(config){
 
 		// DRAW 'EM ALL.
 		// Draw voters' BG first, then candidates, then voters.
+
+		// Draw axes
+		//var background = new Image();
+		//background.src = "../play/img/axis.png";
+		//ctx.drawImage(background,0,0);
+		
+		if(self.yeeon){
+			var density = self.density;
+			for(var k=0;k<self.gridx.length;k++) {
+				var ca = self.gridl[k]
+				if (ca=="#ccc") { // make stripes instead of gray
+					var cb = self.gridb[k]
+					var xb = self.gridx[k]-density*.5-1
+					var yb = self.gridy[k]-density*.5-1
+					var wb = density
+					var hb = density
+					var hh = 4; // height of stripe
+					for (var j=0; j< density/hh; j++) {
+						ctx.fillStyle = cb[j % cb.length]
+						ctx.fillRect(xb,yb+j*hh,wb,hh);
+					}
+				} else {
+					ctx.fillStyle = self.gridl[k];
+					ctx.fillRect(self.gridx[k]-density*.5-1, self.gridy[k]-density*.5-1, density+2, density+2);
+				}
+			}
+			// Draw axes
+			//var background = new Image();
+			//background.src = "../play/img/axis.png";
+			// ctx.drawImage(background,0,0);  // eh, I don't like the axis.
+		}
+
+		// make the candidate that is moving say "yee-yee!"
+		if(self.yeeon){
+			var x = self.yeeobject.x;
+			var y = self.yeeobject.y;
+			ctx.beginPath();
+			ctx.arc(x*2, y*2, 50, 0, Math.TAU, true);
+			ctx.strokeStyle = "white";
+			ctx.stroke();
+		}
+		
 		for(var i=0; i<self.voters.length; i++){
 			var voter = self.voters[i];
 			voter.update();
@@ -107,6 +187,13 @@ function Model(config){
 			var c = self.candidates[i];
 			c.update();
 			c.draw(ctx);
+		}
+		
+		if(self.yeeon){
+			ctx.font = "25px Arial";
+			ctx.fillStyle = "white";
+			ctx.textAlign = "center";
+			ctx.fillText("yee-yee!",x*2,y*2);		
 		}
 
 		// Update!
