@@ -53,6 +53,7 @@ function main(config){
 	config.snowman = config.snowman || false;
 	
 	config.unstrategic = config.unstrategic || "nope";
+	config.yeeobjectrealname = config.yeeobjectrealname || "turn off";
 	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 	var initialConfig = JSON.parse(JSON.stringify(config));
 
@@ -543,6 +544,7 @@ function main(config){
 					stratsliders[i].value = config.voterPercentStrategy[i]
 				}
 			}
+			if(window.chooseyeeobject) chooseyeeobject.highlight("realname", config.yeeobjectrealname);
 		};
 		selectUI();
 
