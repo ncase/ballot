@@ -87,15 +87,6 @@ function Model(config){
 	// Update!
 	self.onUpdate = function(){}; // TO IMPLEMENT
 	
-	self.chooseYeeObject = function(){
-		// figure out if the we need to recalculate the yee diagram
-		// todo
-		if (self.yeeobject) {
-			// we have an object
-		} else {
-			self.yeeon = false;
-		}
-	}
 	self.calculateYee = function(){
 		self.density= 40.0;
 		var density = self.density;
@@ -147,9 +138,9 @@ function Model(config){
 		// Draw voters' BG first, then candidates, then voters.
 
 		// Draw axes
-		var background = new Image();
-		background.src = "../play/img/axis.png";
-		ctx.drawImage(background,0,0);
+		//var background = new Image();
+		//background.src = "../play/img/axis.png";
+		//ctx.drawImage(background,0,0);
 		
 		if(self.yeeon){
 			var density = self.density;
@@ -172,8 +163,8 @@ function Model(config){
 				}
 			}
 			// Draw axes
-			var background = new Image();
-			background.src = "../play/img/axis.png";
+			//var background = new Image();
+			//background.src = "../play/img/axis.png";
 			// ctx.drawImage(background,0,0);  // eh, I don't like the axis.
 		}
 

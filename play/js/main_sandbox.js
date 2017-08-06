@@ -53,7 +53,7 @@ function main(config){
 	config.snowman = config.snowman || false;
 	
 	config.unstrategic = config.unstrategic || "nope";
-	config.yeeobjectrealname = config.yeeobjectrealname || "turn off";
+	config.keyyee = config.keyyee || "off";
 	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 	var initialConfig = JSON.parse(JSON.stringify(config));
 
@@ -129,6 +129,16 @@ function main(config){
 				model.addCandidate(id, x, y);
 				angle += Math.TAU/num;
 			}
+			
+			// Yee diagram
+			if (config.kindayee == "can") {
+				model.yeeobject = model.candidatesById[config.keyyee]
+			} else if (config.kindayee=="voter") {
+				model.yeeobject = model.voters[config.keyyee]
+			} else if (config.kindayee=="off") {
+				model.yeeobject = undefined
+			}
+			if (model.yeeobject) {model.yeeon = true} else {model.yeeon = false}
 
 		};
 		model.election = Election.plurality;
@@ -488,28 +498,28 @@ function main(config){
 
 			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>"}
 			var yeeobject = [
-				{name:h1("square"),realname:"square",kinda:"can",iobj:0,margin:4},
-				{name:h1("triangle"),realname:"triangle",kinda:"can",iobj:1,margin:4},
-				{name:h1("hexagon"),realname:"hexagon",kinda:"can",iobj:2,margin:4},
-				{name:h1("pentagon"),realname:"pentagon",kinda:"can",iobj:3,margin:4},
-				{name:h1("bob"),realname:"bob",kinda:"can",iobj:4,margin:4},
-				{name:"1",realname:"first voter group",kinda:"voter",vid:0,margin:4},
-				{name:"2",realname:"second voter group",kinda:"voter",vid:1,margin:4},
-				{name:"3",realname:"third voter group",kinda:"voter",vid:2,margin:4},
-				{name:"off",realname:"turn off",kinda:"off"}
+				{name:h1("square"),realname:"square",keyyee:"square",kindayee:"can",margin:4},
+				{name:h1("triangle"),realname:"triangle",keyyee:"triangle",kindayee:"can",margin:4},
+				{name:h1("hexagon"),realname:"hexagon",keyyee:"hexagon",kindayee:"can",margin:4},
+				{name:h1("pentagon"),realname:"pentagon",keyyee:"pentagon",kindayee:"can",margin:4},
+				{name:h1("bob"),realname:"bob",keyyee:"bob",kindayee:"can",margin:4},
+				{name:"1",realname:"first voter group",kindayee:"voter",keyyee:0,margin:4},
+				{name:"2",realname:"second voter group",kindayee:"voter",keyyee:1,margin:4},
+				{name:"3",realname:"third voter group",kindayee:"voter",keyyee:2,margin:4},
+				{name:"off",realname:"turn off",keyyee:"off",kindayee:"off"}
 			];
 			var onChooseyeeobject = function(data){
 				
-				if (data.kinda == "can") {
-					model.yeeobject = model.candidatesById[data.realname]
-				} else if (data.kinda=="voter") {
-					model.yeeobject = model.voters[data.vid]
-				} else if (data.kinda=="off") {
+				config.kindayee = data.kindayee
+				if (data.kindayee == "can") {
+					model.yeeobject = model.candidatesById[data.keyyee]
+				} else if (data.kindayee=="voter") {
+					model.yeeobject = model.voters[data.keyyee]
+				} else if (data.kindayee=="off") {
 					model.yeeobject = undefined
 				}
 				if (model.yeeobject) {model.yeeon = true} else {model.yeeon = false}
-				config.yeeobjectrealname = data.realname
-				model.chooseYeeObject()
+				config.keyyee = data.keyyee
 				model.update();
 				
 			};
@@ -544,7 +554,7 @@ function main(config){
 					stratsliders[i].value = config.voterPercentStrategy[i]
 				}
 			}
-			if(window.chooseyeeobject) chooseyeeobject.highlight("realname", config.yeeobjectrealname);
+			if(window.chooseyeeobject) chooseyeeobject.highlight("keyyee", config.keyyee);
 		};
 		selectUI();
 
@@ -718,6 +728,8 @@ function main(config){
 		"img/bob.png"
 	]);
 
+	//if(config.features >= 4) resetDOM.onclick();
+	
 	// SAVE & PARSE
 	// ?m={s:[system], v:[voterPositions], c:[candidatePositions], d:[description]}
 	
