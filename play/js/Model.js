@@ -97,16 +97,18 @@ function Model(config){
 		}
 	}
 	self.calculateYee = function(){
-		self.density= 20.0;
+		self.density= 40.0;
 		var density = self.density;
 		WIDTH = ctx.canvas.width;
 		HEIGHT = ctx.canvas.height;
 		self.gridx = [];
 		self.gridy = [];
 		self.gridl = []; 
+		self.gridb = []; 
 		saveo = {}
 		saveo.x = self.yeeobject.x;
 		saveo.y = self.yeeobject.y;
+		var i=0
 		for(var x=0.0, cx=0; x<=WIDTH; x+= density, cx++) {
 			for(var y=0.0, cy=0; y<=HEIGHT; y+= density, cy++) {
 				self.yeeobject.x = x * .5;
@@ -117,10 +119,12 @@ function Model(config){
 				self.election(self, {sidebar:false});
 
 				var a = self.color; // updated color
+				if (a == "#ccc") {self.gridb[i] = self.colors;}
 				self.gridx.push(x);
 				self.gridy.push(y);
 				self.gridl.push(a);
 				// model.caption.innerHTML = "Calculating " + Math.round(x/WIDTH*100) + "%"; // doesn't work yet 
+				i++
 			}
 		}
 		self.yeeobject.x = saveo.x;
@@ -150,8 +154,22 @@ function Model(config){
 		if(self.yeeon){
 			var density = self.density;
 			for(var k=0;k<self.gridx.length;k++) {
-				ctx.fillStyle = self.gridl[k];
-				ctx.fillRect(self.gridx[k]-density*.5-1, self.gridy[k]-density*.5-1, density+2, density+2);
+				var ca = self.gridl[k]
+				if (ca=="#ccc") { // make stripes instead of gray
+					var cb = self.gridb[k]
+					var xb = self.gridx[k]-density*.5-1
+					var yb = self.gridy[k]-density*.5-1
+					var wb = density
+					var hb = density
+					var hh = 4; // height of stripe
+					for (var j=0; j< density/hh; j++) {
+						ctx.fillStyle = cb[j % cb.length]
+						ctx.fillRect(xb,yb+j*hh,wb,hh);
+					}
+				} else {
+					ctx.fillStyle = self.gridl[k];
+					ctx.fillRect(self.gridx[k]-density*.5-1, self.gridy[k]-density*.5-1, density+2, density+2);
+				}
 			}
 			// Draw axes
 			var background = new Image();
