@@ -524,7 +524,7 @@ function main(config){
 				
 			};
 			window.chooseyeeobject = new ButtonGroup({
-				label: "which object for yee?",
+				label: "which object for yee map?",
 				width: 20,
 				data: yeeobject,
 				onChoose: onChooseyeeobject
