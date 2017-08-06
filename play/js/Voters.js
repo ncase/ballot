@@ -1,27 +1,9 @@
 // helper function for strategies
 
-function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunnerSet,candidates,radiusStep) {
+function dostrategy(x,y,minscore,maxscore,strategy,lastwinner,frontrunnerSet,candidates,radiusStep,getScore) {
 	
-	frontrunnerSet = frontrunnerSet || new Set(["square"]);
-	var frontrunners = Array.from(frontrunnerSet)
-	lastwinner = frontrunners[0]; // just for now hack
+
 	
-	var mindist = 9999;
-	var maxdist = -9999;
-	var mini = null;
-	var maxi = null;
-	for(var i=0; i<candidates.length; i++){
-		var c = candidates[i];
-		var dist = dista[i];
-		if (dist < mindist) {
-			mindist = dist;
-			mini = c.id
-		}
-		if (dist > maxdist) {
-			maxdist = dist;
-			maxi = c.id
-		}
-	}
 	
 	// set the circle radii
 	// starnormfrontrunners and justfirstandlast don't have good representations yet
@@ -30,10 +12,63 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 	var radiusLast = radiusStep * 4.5
 	var dottedCircle = false;
 	
+	if (strategy == 'nope') {
+		var scores = {};
+		var dist2a = [];
+		for(var i=0; i<candidates.length; i++){
+			var c = candidates[i];
+			var dx = c.x-x;
+			var dy = c.y-y;
+			var dist2 = dx*dx+dy*dy;
+			dist2a.push(dist2)
+			scores[c.id] = getScore(dist2);
+		}
+		
+		var scoresfirstlast = {scores:scores, radiusFirst:radiusFirst , radiusLast:radiusLast, dottedCircle:dottedCircle}
+		return scoresfirstlast;
+	}
+	
+	
+	frontrunnerSet = frontrunnerSet || new Set(["square"]);
+	var frontrunners = Array.from(frontrunnerSet)
+	lastwinner = frontrunners[0]; // just for now hack
+	
+	var mindist2 = 999999999;
+	var maxdist2 = -99999999;
+	var mini = null;
+	var maxi = null;
+	var scores = {};
+	var dist2a = [];
+	for(var i=0; i<candidates.length; i++){
+		
+		var c = candidates[i];
+		var dx = c.x-x;
+		var dy = c.y-y;
+		var dist2 = dx*dx+dy*dy;
+		dist2a.push(dist2)
+		scores[c.id] = getScore(dist2);
+		
+		if (dist2 < mindist2) {
+			mindist2 = dist2;
+			mini = c.id
+		}
+		if (dist2 > maxdist2) {
+			maxdist2 = dist2;
+			maxi = c.id
+		}
+	}
+	
+	
+	
+	
 	if(strategy == "justfirstandlast") {
 		scores[maxi] = minscore
 		scores[mini] = maxscore
 	} else if (strategy == "normalized") {
+		var dista = []
+		for (i in dist2a) dista[i] = Math.sqrt(dist2a[i])
+		var maxdist = Math.sqrt(maxdist2)
+		var mindist = Math.sqrt(mindist2)
 		var fnorm = 1/ (maxdist-mindist);
 		if (1) {
 			var normit = function(d) {return (d-mindist)*fnorm;}
@@ -52,6 +87,8 @@ function dostrategy(dista,scores,minscore,maxscore,strategy,lastwinner,frontrunn
 		radiusFirst = mindist;
 		radiusLast = maxdist; 
 	} else if (strategy == "threshold" || strategy == "morethresholdfrontrunners" || strategy == "thresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
+		var dista = []
+		for (i in dist2a) dista[i] = Math.sqrt(dist2a[i])
 		if (strategy == "threshold") {
 			var windex = 0;
 			for(var i=0; i<candidates.length; i++){
@@ -133,37 +170,26 @@ function ScoreVoter(model){
 
 	self.radiusStep = window.HACK_BIG_RANGE ? 61 : 25; // step: x<25, 25<x<50, 50<x<75, 75<x<100, 100<x
 
-	self.getScore = function(x){
+	self.getScore = function(x2){
 		var step = self.radiusStep;
-		if(x<step) return 5;
-		if(x<step*2) return 4;
-		if(x<step*3) return 3;
-		if(x<step*4) return 2;
-		if(x<step*5) return 1;
+		if(x2<step*step) return 5;
+		if(x2<(step*2)*(step*2)) return 4;
+		if(x2<(step*3)*(step*3)) return 3;
+		if(x2<(step*4)*(step*4)) return 2;
+		if(x2<(step*5)*(step*5)) return 1;
 		return 0;
 	};
 
 	self.getBallot = function(x, y, strategy, config){
 
 		
-		// Scores for each one!
-		var scores = {};
-		var dista = [];
-		for(var i=0; i<self.model.candidates.length; i++){
-			var c = self.model.candidates[i];
-			var dx = c.x-x;
-			var dy = c.y-y;
-			var dist = Math.sqrt(dx*dx+dy*dy);
-			dista.push(dist)
-			scores[c.id] = self.getScore(dist);
-		}
 		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(dista,scores,1,5,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
+		var scoresfirstlast = dostrategy(x,y,1,5,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
 		
 		self.radiusFirst = scoresfirstlast.radiusFirst
 		self.radiusLast = scoresfirstlast.radiusLast
 		self.dottedCircle = scoresfirstlast.dottedCircle
-		scores = scoresfirstlast.scores
+		var scores = scoresfirstlast.scores
 		return scores
 		
 	};
@@ -226,29 +252,18 @@ function ThreeVoter(model){
 
 	self.radiusStep = window.HACK_BIG_RANGE ? 61 : 25; // step: x<25, 25<x<50, 50<x<75, 75<x<100, 100<x
 
-	self.getScore = function(x){
+	self.getScore = function(x2){
 		var step = self.radiusStep;
-		if(x<step) return 2;
-		if(x<step*3.5) return 1;
+		if(x2<step*step) return 2;
+		if(x2<step*3.5*step*3.5) return 1;
 		return 0;
 	};
 
 	self.getBallot = function(x, y, strategy,  config){
 
-		// Scores for each one!
-		var scores = {};
-		var dista = [];
-		for(var i=0; i<self.model.candidates.length; i++){
-			var c = self.model.candidates[i];
-			var dx = c.x-x;
-			var dy = c.y-y;
-			var dist = Math.sqrt(dx*dx+dy*dy);
-			dista.push(dist)
-			scores[c.id] = self.getScore(dist);
-		}
 		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(dista,scores,0,2,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
-		scores = scoresfirstlast.scores
+		var scoresfirstlast = dostrategy(x,y,0,2,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
+		var scores = scoresfirstlast.scores
 		return scores
 
 	};
@@ -305,24 +320,16 @@ function ApprovalVoter(model){
 	self.model = model;
 
 	self.approvalRadius = 100; // whatever.
+	
+	self.getScore = function(x2){
+		return (x2<self.approvalRadius**2) ? 1 : 0
+	};
 
 	self.getBallot = function(x, y, strategy,  config){
 		
-		// re-use code for scores above, but with different range
-		// Scores for each one!
-		var scores = {};
-		var dista = [];
-		for(var i=0; i<self.model.candidates.length; i++){
-			var c = self.model.candidates[i];
-			var dx = c.x-x;
-			var dy = c.y-y;
-			var dist = Math.sqrt(dx*dx+dy*dy);
-			dista.push(dist)
-			scores[c.id] = (dist<self.approvalRadius) ? 1 : 0;
-		}
 		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(dista,scores,0,1,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep)
-		scores = scoresfirstlast.scores
+		var scoresfirstlast = dostrategy(x,y,0,1,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
+		var scores = scoresfirstlast.scores
 		
 		
 		// Anyone close enough. If anyone.
