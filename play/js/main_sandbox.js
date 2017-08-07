@@ -52,11 +52,12 @@ function main(config){
 	if (config.doFullStrategyConfig) config.featurelist = config.featurelist.concat(["strategy","percentstrategy","unstrategic","frontrunners","poll","yee"])
 	var allnames = ["systems","voters","candidates","strategy","percentstrategy","unstrategic","frontrunners","poll","yee"]
 	var doms = {}  // for hiding menus, later
+	var stratsliders = [] // for hiding sliders, later
 	// clear the grandfathered config settings
 	config.doPercentFirst = undefined
 	config.features = undefined
 	config.doFullStrategyConfig = undefined
-	
+	config.hidegearconfig = config.hidegearconfig || false;
 	
 	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
 	config.voterStrategies = config.voterStrategies || []
@@ -147,6 +148,8 @@ function main(config){
 				model.addCandidate(id, x, y);
 				angle += Math.TAU/num;
 			}
+			
+			for (i in [0,1,2]) stratsliders[i].setAttribute("style",(i<config.voters) ?  "display:inline": "display:none")
 			
 			// Yee diagram
 			if (config.kindayee == "can") {
@@ -242,10 +245,10 @@ function main(config){
 		
 		// How many voters?
 		var voters = [
-			{name:"one", num:1, margin:4},
-			{name:"two", num:2, margin:4},
-			{name:"three", num:3, margin:4},
-			{name:"snow", num:3, snowman:true},
+			{name:"1", num:1, margin:4},
+			{name:"2", num:2, margin:4},
+			{name:"3", num:3, margin:4},
+			{name:"&#x2603;", num:3, snowman:true},
 		];
 		var onChooseVoters = function(data){
 
@@ -260,6 +263,9 @@ function main(config){
 			config.voterPositions = null;
 			model.reset();
 			setInPosition();
+			
+			
+			for (i in [0,1,2]) stratsliders[i].setAttribute("style",(i<data.num) ?  "display:inline": "display:none")
 
 		};
 		window.chooseVoters = new ButtonGroup({
@@ -409,7 +415,6 @@ function main(config){
 					model.update();
 				}
 		}
-		var stratsliders = []
 		stratsliders.push(makeslider("","choosepercent",slfn,containchecks,0))
 		stratsliders.push(makeslider("","choosepercent",slfn,containchecks,1))
 		stratsliders.push(makeslider("","choosepercent",slfn,containchecks,2))
@@ -490,11 +495,20 @@ function main(config){
 		// do a poll to find frontrunner
 		
 		var poll = [
-			{name:"Poll"}
+			{name:"Poll",margin:5},
+			{name:"Poll 2",realname:"Find the top 2 frontrunners."}
 		];
 		var onChoosePoll = function(data){
-			var won = model.winners
-			config.frontrunnerSet = new Set(won)
+			if (data.name == "Poll") {
+				var won = model.winners
+				config.frontrunnerSet = new Set(won)
+			} else {
+				model.dotop2 = true // not yet implemented
+				model.update()
+				model.dotop2 = false
+				config.frontrunnerSet = new Set(model.top2)
+			}
+			
 			model.frontrunnerSet = config.frontrunnerSet
 			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
 			model.update();
@@ -520,10 +534,10 @@ function main(config){
 			{name:h1("triangle"),realname:"triangle",keyyee:"triangle",kindayee:"can",margin:4},
 			{name:h1("hexagon"),realname:"hexagon",keyyee:"hexagon",kindayee:"can",margin:4},
 			{name:h1("pentagon"),realname:"pentagon",keyyee:"pentagon",kindayee:"can",margin:4},
-			{name:h1("bob"),realname:"bob",keyyee:"bob",kindayee:"can",margin:4},
+			{name:h1("bob"),realname:"bob",keyyee:"bob",kindayee:"can",margin:8},
 			{name:"1",realname:"first voter group",kindayee:"voter",keyyee:0,margin:4},
 			{name:"2",realname:"second voter group",kindayee:"voter",keyyee:1,margin:4},
-			{name:"3",realname:"third voter group",kindayee:"voter",keyyee:2,margin:4},
+			{name:"3",realname:"third voter group",kindayee:"voter",keyyee:2,margin:8},
 			{name:"off",realname:"turn off",keyyee:"off",kindayee:"off"}
 		];
 		var onChooseyeeobject = function(data){
@@ -580,6 +594,8 @@ function main(config){
 			isCheckbox: true
 		});
 		choosegearconfig.dom.hidden = true
+		document.querySelector("#left").insertBefore(choosegearconfig.dom,doms["systems"]);
+		
 		
 		// gear button (combines with above)
 		
@@ -598,9 +614,9 @@ function main(config){
 			onChoose: onChoosegearicon,
 			isCheckbox: true
 		});
-		document.querySelector("#left").appendChild(choosegearicon.dom);
-		document.querySelector("#left").appendChild(choosegearconfig.dom);
+		document.querySelector("#left").insertBefore(choosegearicon.dom,choosegearconfig.dom);
 		
+		if(config.hidegearconfig) choosegearicon.dom.hidden = true
 		
 		// hide some menus
 		for (i in allnames) if(config.featurelist.includes(allnames[i])) {doms[allnames[i]].hidden = false} else {doms[allnames[i]].hidden = true}
