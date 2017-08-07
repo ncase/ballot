@@ -27,7 +27,25 @@ function makeScoreScale(rangescore,mindist,maxdist){
 	return scorescale
 }
 
-function makeGetScore(rangescore,mindist,maxdist) {return makeGetScore1(makeScoreScale(rangescore,mindist,maxdist))}
+function makeScoreScale2(rangescore,n2,m2){
+	var Linv = 1/(rangescore.length-1)
+	var r = Math.sqrt(m2/n2)
+	var j = .5
+	var scorescale = {};
+	var i;
+	for (i in rangescore) {
+		var t2 = (m2 - 2 * n2 * r + n2) * Linv
+		var s2 = m2 - n2 * 2 * j * r * (r-1) * Linv + t2 * j * j
+		scorescale[rangescore[i]] = s2; // use squares of distance for scale
+		j++;
+	}
+	scorescale[rangescore[i]] = 0; // last one is 0
+	return scorescale
+}
+
+
+function makeGetScore( rangescore,mindist ,maxdist ) {return makeGetScore1(makeScoreScale( rangescore,mindist ,maxdist ))}
+function makeGetScore2(rangescore,mindist2,maxdist2) {return makeGetScore1(makeScoreScale2(rangescore,mindist2,maxdist2))}
 // just a composition of two functions above
 
 function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontrunnerSet,candidates,radiusStep,getScore) {
@@ -89,24 +107,29 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 		}
 	}
 	
-	
-	
-	
 	if(strategy == "justfirstandlast") {
 		scores[maxi] = minscore
 		scores[mini] = maxscore
 	} else if (strategy == "normalized") {
 		
-		var maxdist = Math.sqrt(maxdist2)
-		var mindist = Math.sqrt(mindist2)
-		
-		if (1) {
+		if (0) { 
+			// doens't work yet
+			getScore = makeGetScore2(rangescore,mindist2,maxdist2)
+			//scores = dist2ac.map(getScore) // this doesn't work so instead we use a much longer code:
+			Object.keys(dist2ac).map(function(key, index) {
+			   scores[key] = getScore(dist2ac[key]); 
+			});
+		} else if (0) {
+			var maxdist = Math.sqrt(maxdist2)
+			var mindist = Math.sqrt(mindist2)
 			getScore = makeGetScore(rangescore,mindist,maxdist)
 			//scores = dist2ac.map(getScore) // this doesn't work so instead we use a much longer code:
 			Object.keys(dist2ac).map(function(key, index) {
 			   scores[key] = getScore(dist2ac[key]); 
 			});
 		} else if (1) {
+			var maxdist = Math.sqrt(maxdist2)
+			var mindist = Math.sqrt(mindist2)
 			var dista = []
 			for (i in dist2a) dista[i] = Math.sqrt(dist2a[i])
 			var fnorm = 1/ (maxdist-mindist);
