@@ -2,7 +2,7 @@ window.ONLY_ONCE = false;
 function main(config){
 
 	ballotType = config.system;
-	config.strategy = config.strategy || "nope";
+	config.strategy = config.strategy || "no strategy. judge on an absolute scale.";
 	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
 	config.showChoiceOfStrategy = config.showChoiceOfStrategy || false
 	config.showChoiceOfFrontrunners = config.showChoiceOfFrontrunners || false
@@ -53,15 +53,16 @@ function main(config){
 		if(config.showChoiceOfStrategy) {
 			
 			var strategyOn = [
-				{name:"NO", realname:"nope", margin:4},
-				{name:"FL", realname:"justfirstandlast", margin:4},
-				{name:"NR", realname:"normalized", margin:4},
-				{name:"T", realname:"threshold", margin:4},
-				{name:"TF", realname:"thresholdfrontrunners", margin:4},
-				{name:"NTF", realname:"normfrontrunners", margin:4},
-				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
-				{name:"SNTF", realname:"starnormfrontrunners"}
+				{name:"NO", realname:"no strategy. judge on an absolute scale.", margin:4},
+				{name:"N", realname:"normalize", margin:4},
+				{name:"BF", realname:"best frontrunner", margin:4},
+				{name:"F", realname:"normalize frontrunners only", margin:4},
+				{name:"NWF", realname:"not the worst frontrunner"}
 			];
+			// old ones
+			// {name:"FL", realname:"justfirstandlast", margin:4},
+			// {name:"T", realname:"threshold"},
+			// {name:"SNTF", realname:"starnormfrontrunners"}
 			var onChooseVoterStrategyOn = function(data){
 				config.strategy = data.realname; 
 				model.strategy = config.strategy; 

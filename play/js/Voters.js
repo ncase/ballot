@@ -6,7 +6,7 @@ function makeGetScore1(scorescale) {
 	getScore = function(dist) {
 		var score
 		for (score in scorescale) {
-			if (dist > scorescale[score]) break;
+			if (dist > scorescale[score]) break;  // need to use array instead, I think.
 		}
 		return score
 	}
@@ -29,7 +29,7 @@ function makeScoreScale(rangescore,mindist,maxdist){
 
 function makeScoreScale2(rangescore,n2,m2){
 	var Linv = 1/(rangescore.length-1)
-	var r = Math.sqrt(m2/n2)
+	var r = Math.sqrt(m2/n2) // only one sqrt needed! (per voter) awesome.
 	var j = .5
 	var scorescale = {};
 	var i;
@@ -110,7 +110,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 	if(strategy == "justfirstandlast") {
 		scores[maxi] = minscore
 		scores[mini] = maxscore
-	} else if (strategy == "normalized") {
+	} else if (strategy == "normalize") {
 		
 		if (0) { 
 			// doesn't work yet
@@ -150,7 +150,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 		}
 		radiusFirst = mindist;
 		radiusLast = maxdist; 
-	} else if (strategy == "threshold" || strategy == "morethresholdfrontrunners" || strategy == "thresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
+	} else if (strategy == "threshold" || strategy == "not the worst frontrunner" || strategy == "best frontrunner" || strategy == "normalize frontrunners only" || strategy == "starnormfrontrunners") {
 		var dista = []
 		for (i in dist2a) dista[i] = Math.sqrt(dist2a[i])
 		if (strategy == "threshold") {
@@ -164,7 +164,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 			radiusFirst = d_threshold;
 			radiusLast = d_threshold;
 			dottedCircle = true;
-		} else if (strategy == "thresholdfrontrunners" || strategy == "morethresholdfrontrunners" || strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
+		} else if (strategy == "best frontrunner" || strategy == "not the worst frontrunner" || strategy == "normalize frontrunners only" || strategy == "starnormfrontrunners") {
 			var windex = [];
 			var maxfront = 0;
 			var imaxfront = 0;
@@ -188,18 +188,18 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 				}
 				 windex.push(i);
 			}
-			if (strategy == "thresholdfrontrunners") {
+			if (strategy == "best frontrunner") {
 				var d_threshold = minfront;
 				var thresholdit = function(d) {return (d<=d_threshold) ? maxscore : minscore}  // vote for the best frontrunner and everyone better
 				radiusFirst = d_threshold;
 				radiusLast = d_threshold;
-			} else if (strategy == "morethresholdfrontrunners") {
+			} else if (strategy == "not the worst frontrunner") {
 				var d_threshold = maxfront;
 				var thresholdit = function(d) {return (d<d_threshold) ? maxscore : minscore}  // vote for everyone better than the worst frontrunner
 				radiusFirst = d_threshold;
 				radiusLast = d_threshold;
 				dottedCircle = true;
-			} else if (strategy == "normfrontrunners" || strategy == "starnormfrontrunners") {
+			} else if (strategy == "normalize frontrunners only" || strategy == "starnormfrontrunners") {
 				var fnorm = 1/ (maxfront-minfront);
 				var normit = function(d) {return (d-minfront)*fnorm;}
 				if (strategy == "starnormfrontrunners") maxscore--;
@@ -215,7 +215,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 		if (strategy == "starnormfrontrunners") maxscore++;
 		scores[mini] = maxscore;
 
-	}// otherwise, there is no strategy strategy == "nope"
+	}// otherwise, there is no strategy strategy == "no strategy. judge on an absolute scale."
 		
 	// Scooooooore
 	var scoresfirstlast = {scores:scores, radiusFirst:radiusFirst , radiusLast:radiusLast, dottedCircle:dottedCircle}
@@ -737,7 +737,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 			if (r1 < self.percentStrategy) { 
 				var strategy = self.strategy // yes
 			} else {
-				var strategy = self.unstrategic; // no e.g. "nope"
+				var strategy = self.unstrategic; // no e.g. "no strategy. judge on an absolute scale."
 			}
 			
 			var ballot = self.type.getBallot(x, y, strategy, config);
