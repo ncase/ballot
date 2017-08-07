@@ -102,7 +102,7 @@ function main(config){
 				
 			};
 			window.chooseFrun = new ButtonGroup({
-				label: "which candidates are the frontrunners?",
+				label: "who are the frontrunners?",
 				width: 42,
 				data: frun,
 				onChoose: onChooseFrun,
@@ -125,8 +125,6 @@ function main(config){
 		var resetDOM = document.createElement("div");
 		resetDOM.id = "reset";
 		resetDOM.innerHTML = "reset";
-		resetDOM.style.top = "240px";
-		resetDOM.style.left = "660px";
 		resetDOM.onclick = function(){
 
 			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!

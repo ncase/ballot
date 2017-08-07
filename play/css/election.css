@@ -13,9 +13,11 @@ Election/Sandbox design:
 #left{
 	width:220px;
 	padding-right: 20px;
+	height: 371px;
 }
 #center{
 	width:320px;
+	height: 370px;
 }
 #right{
 	width:220px;

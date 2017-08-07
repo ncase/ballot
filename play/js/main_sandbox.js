@@ -736,6 +736,8 @@ function main(config){
 					logtext += i + ": " +JSON.stringify(config[i]) + ',\n'
 				}
 			}
+			var aloc = window.location.pathname.split('/')
+			logtext += "\n\npaste this JSON into" + aloc[aloc.length-2] + "/" + aloc[aloc.length-1]
 			console.log(logtext)
 			if (log==2) console.log(JSON.stringify(config))
 			
@@ -770,8 +772,8 @@ function main(config){
 				resetDOM.style.top = "470px";
 				resetDOM.style.left = "235px";
 			} else {
-				resetDOM.style.top = "330px";
-				resetDOM.style.left = "235px";
+				resetDOM.style.top = "340px";
+				resetDOM.style.left = "245px";
 			}
 			// Create a "save" button
 			var saveDOM = document.createElement("div");
@@ -781,7 +783,7 @@ function main(config){
 				saveDOM.style.top = "470px";
 				saveDOM.style.left = "350px";
 			} else {
-				saveDOM.style.top = "330px";
+				saveDOM.style.top = "340px";
 				saveDOM.style.left = "350px";
 			}
 			saveDOM.onclick = function(){
@@ -801,8 +803,10 @@ function main(config){
 				//skip
 			} else {
 				linkText.style.position = "absolute";
-				linkText.style.top = "330px";
+				linkText.style.top = "340px";
 				linkText.style.left = "460px";
+				linkText.style.height = "30px";
+				linkText.style.width = "90px";
 			}
 			document.body.appendChild(linkText);
 
@@ -858,15 +862,5 @@ function main(config){
 		},750);
 
 	};
-
-	// FUNNY HACK.
-	setInterval(function(){
-		var ohno = document.getElementById("ohno");
-		if(!ohno) return;
-		var x = Math.round(Math.random()*10-5);
-		var y = Math.round(Math.random()*10)+10;
-		ohno.style.top = y+"px";
-		ohno.style.left = x+"px";
-	},10);
 
 };
