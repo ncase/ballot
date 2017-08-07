@@ -113,7 +113,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 	} else if (strategy == "normalized") {
 		
 		if (0) { 
-			// doens't work yet
+			// doesn't work yet
 			getScore = makeGetScore2(rangescore,mindist2,maxdist2)
 			//scores = dist2ac.map(getScore) // this doesn't work so instead we use a much longer code:
 			Object.keys(dist2ac).map(function(key, index) {

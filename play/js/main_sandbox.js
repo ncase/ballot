@@ -38,8 +38,14 @@ function main(config){
 	config.candidates = config.candidates || 3;
 	config.voters = config.voters || 1;
 	config.features = config.features || 1; // 1-basic, 2-voters, 3-candidates, 4-save
+	if (       config.features == 1) {config.featurelist = ["systems"]
+	} else if (config.features == 2) {config.featurelist = ["systems","voters"]
+	} else if (config.features == 3) {config.featurelist = ["systems","voters","candidates"]
+	} else if (config.features == 4) {config.featurelist = ["systems","voters","candidates","save"]}
+	config.featurelist = config.featurelist || ["systems"]
 	config.doPercentFirst = config.doPercentFirst || false;
 	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
+	if (config.doFullStrategyConfig) config.featurelist.concat(["strategy","percentstrategy","unstrategic","frontrunners","poll","yee"])
 	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
 	config.voterStrategies = config.voterStrategies || []
 	config.description = config.description || ""
@@ -184,40 +190,42 @@ function main(config){
 		//////////////////////////////////
 
 		// Which voting system?
-		var votingSystems = [
-			{name:"FPTP", voter:PluralityVoter, election:Election.plurality, margin:4},
-			{name:"IRV", voter:RankedVoter, election:Election.irv},
-			{name:"Borda", voter:RankedVoter, election:Election.borda, margin:4},
-			{name:"Condorcet", voter:RankedVoter, election:Election.condorcet},
-			{name:"Approval", voter:ApprovalVoter, election:Election.approval, margin:4},
-			{name:"Score", voter:ScoreVoter, election:Election.score},
-			{name:"STAR", voter:ScoreVoter, election:Election.star, margin:4},
-			{name:"3-2-1", voter:ThreeVoter, election:Election.three21}
-		];
-		var onChooseSystem = function(data){
+		if (initialConfig.featurelist.includes("systems")) {
+			var votingSystems = [
+				{name:"FPTP", voter:PluralityVoter, election:Election.plurality, margin:4},
+				{name:"IRV", voter:RankedVoter, election:Election.irv},
+				{name:"Borda", voter:RankedVoter, election:Election.borda, margin:4},
+				{name:"Condorcet", voter:RankedVoter, election:Election.condorcet},
+				{name:"Approval", voter:ApprovalVoter, election:Election.approval, margin:4},
+				{name:"Score", voter:ScoreVoter, election:Election.score},
+				{name:"STAR", voter:ScoreVoter, election:Election.star, margin:4},
+				{name:"3-2-1", voter:ThreeVoter, election:Election.three21}
+			];
+			var onChooseSystem = function(data){
 
-			// update config...
-			config.system = data.name;
+				// update config...
+				config.system = data.name;
 
-			// no reset...
-			model.voterType = data.voter;
-			for(var i=0;i<model.voters.length;i++){
-				model.voters[i].setType(data.voter);
-			}
-			model.election = data.election;
-			model.update();
+				// no reset...
+				model.voterType = data.voter;
+				for(var i=0;i<model.voters.length;i++){
+					model.voters[i].setType(data.voter);
+				}
+				model.election = data.election;
+				model.update();
 
-		};
-		window.chooseSystem = new ButtonGroup({
-			label: "what voting system?",
-			width: 108,
-			data: votingSystems,
-			onChoose: onChooseSystem
-		});
-		document.querySelector("#left").appendChild(chooseSystem.dom);
-
+			};
+			window.chooseSystem = new ButtonGroup({
+				label: "what voting system?",
+				width: 108,
+				data: votingSystems,
+				onChoose: onChooseSystem
+			});
+			document.querySelector("#left").appendChild(chooseSystem.dom);
+		}
+		
 		// How many voters?
-		if(initialConfig.features>=2){ // CANDIDATES as feature.
+		if(initialConfig.featurelist.includes("voters")){ // CANDIDATES as feature.
 
 			var voters = [
 				{name:"one", num:1, margin:4},
@@ -251,7 +259,7 @@ function main(config){
 		}
 
 		// How many candidates?
-		if(initialConfig.features>=3){ // VOTERS as feature.
+		if(initialConfig.featurelist.includes("candidates")){ // VOTERS as feature.
 
 			var candidates = [
 				{name:"two", num:2, margin:4},
@@ -285,7 +293,7 @@ function main(config){
 		
 		
 		
-		if(initialConfig.doFullStrategyConfig){ // VOTERS as feature.
+		if(initialConfig.featurelist.includes("strategy")){
 
 			
 			var strategyOn = [
@@ -322,7 +330,7 @@ function main(config){
 		}
 		
 		
-		if(0){ // VOTERS as feature.
+		if(0){
 			
 			var strategyPercent = [
 				{name:"0", num:0, margin:4},
@@ -352,7 +360,7 @@ function main(config){
 
 		}
 		
-		if(initialConfig.doPercentFirst){
+		if(initialConfig.featurelist.includes("percentstrategy")){
 			
 			var aba = document.createElement('div')
 			aba.className = "button-group"
@@ -399,7 +407,7 @@ function main(config){
 
 		
 		
-		if(initialConfig.doFullStrategyConfig){ 
+		if(initialConfig.featurelist.includes("unstrategic")){ 
 
 			
 			var strategyOff = [
@@ -437,7 +445,7 @@ function main(config){
 		
 		
 		
-		if(initialConfig.doFullStrategyConfig){ 
+		if(initialConfig.featurelist.includes("frontrunners")){ 
 
 			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>"}
 			var frun = [
@@ -471,7 +479,7 @@ function main(config){
 
 		}
 		
-		if(initialConfig.doFullStrategyConfig){ 
+		if(initialConfig.featurelist.includes("poll")){ 
 			
 			var poll = [
 				{name:"Poll"}
@@ -494,7 +502,7 @@ function main(config){
 			document.querySelector("#left").appendChild(choosePoll.dom);
 		}
 		
-		if(initialConfig.doFullStrategyConfig){ 
+		if(initialConfig.featurelist.includes("yee")){ 
 
 			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>"}
 			var yeeobject = [
