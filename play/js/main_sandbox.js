@@ -108,9 +108,9 @@ function main(config){
 			if(num==1){
 				voterPositions = [[150,150]];
 			}else if(num==2){
-				voterPositions = [[150,100],[150,200]];
+				voterPositions = [[95,150],[205,150]];
 			}else if(num==3){
-				voterPositions = [[150,65],[150,150],[150,235]];
+				voterPositions = [[65,150],[150,150],[235,150]];
 				if (config.snowman) {
 					voterPositions =  [[150,83],[150,150],[150,195]]
 				}

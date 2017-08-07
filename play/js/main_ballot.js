@@ -32,7 +32,7 @@ function main(config){
 				x:81, y:92
 			});
 			model.addCandidate("square", 41, 50);
-			model.addCandidate("triangle", 153, 95);
+			model.addCandidate("triangle", 173, 95);
 			model.addCandidate("hexagon", 216, 216);
 			model.frontrunnerSet = config.frontrunnerSet;
 			model.strategy = config.strategy;

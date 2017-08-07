@@ -28,6 +28,7 @@
 <script>
 main({
 
+	/*
 	features:3,
 	system: "Score",
 
@@ -38,6 +39,26 @@ main({
 	voterPositions: [[100,150],[300-100,150]],
 	voterStrategies: ["normalize","no strategy. judge on an absolute scale."],
 	frontrunnerSet: new Set(["square","hexagon"])
+	*/
+	
+candidatePositions: [[50,150],[250,150]],
+voterPositions: [[100,150],[200,150]],
+system: "Score",
+candidates: 2,
+voters: 2,
+voterStrategies: ["normalize","normalize","no strategy. judge on an absolute scale."],
+frontrunnerSet: new Set(["square","hexagon"]),
+featurelist: ["percentstrategy"],
+sandboxsave: false,
+hidegearconfig: false,
+description: "",
+voterPercentStrategy: ["70","49",0],
+snowman: false,
+unstrategic: "no strategy. judge on an absolute scale.",
+keyyee: "off",
+features: undefined,
+doPercentFirst: undefined,
+doFullStrategyConfig: undefined,
 	
 });
 </script>

@@ -50,7 +50,6 @@ function makeGetScore2(rangescore,mindist2,maxdist2) {return makeGetScore1(makeS
 
 function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontrunnerSet,candidates,radiusStep,getScore) {
 	
-
 	
 	// set the circle radii
 	// starnormfrontrunners and justfirstandlast don't have good representations yet
