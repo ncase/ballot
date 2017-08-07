@@ -55,9 +55,9 @@ function main(config){
 			var strategyOn = [
 				{name:"NO", realname:"no strategy. judge on an absolute scale.", margin:4},
 				{name:"N", realname:"normalize", margin:4},
-				{name:"BF", realname:"best frontrunner", margin:4},
 				{name:"F", realname:"normalize frontrunners only", margin:4},
-				{name:"NWF", realname:"not the worst frontrunner"}
+				{name:"BF", realname:"best frontrunner", margin:4},
+				{name:"NwF", realname:"not the worst frontrunner"}
 			];
 			// old ones
 			// {name:"FL", realname:"justfirstandlast", margin:4},
@@ -71,7 +71,7 @@ function main(config){
 			};
 			window.chooseVoterStrategyOn = new ButtonGroup({
 				label: "which strategy?",
-				width: 52,
+				width: 42,
 				data: strategyOn,
 				onChoose: onChooseVoterStrategyOn
 			});
@@ -103,7 +103,7 @@ function main(config){
 			};
 			window.chooseFrun = new ButtonGroup({
 				label: "which candidates are the frontrunners?",
-				width: 52,
+				width: 42,
 				data: frun,
 				onChoose: onChooseFrun,
 				isCheckbox: true

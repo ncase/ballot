@@ -162,6 +162,9 @@ function main(config){
 			if (model.yeeobject) {model.yeeon = true} else {model.yeeon = false}
 			
 
+			// hide some menus
+			for (i in allnames) if(config.featurelist.includes(allnames[i])) {doms[allnames[i]].hidden = false} else {doms[allnames[i]].hidden = true}
+
 		};
 		model.election = Election.plurality;
 		model.onUpdate = function(){
@@ -313,14 +316,14 @@ function main(config){
 		// strategy
 		
 		var strategyOn = [
-			{name:"NO", realname:"no strategy. judge on an absolute scale.", margin:4},
-			{name:"N", realname:"normalize", margin:4},
-			{name:"BF", realname:"best frontrunner", margin:4},
-			{name:"F", realname:"normalize frontrunners only", margin:4},
-			{name:"NWF", realname:"not the worst frontrunner"}
+			{name:"NO", realname:"no strategy. judge on an absolute scale.", margin:5},
+			{name:"N", realname:"normalize", margin:5},
+			{name:"F", realname:"normalize frontrunners only", margin:5},
+			{name:"BF", realname:"best frontrunner", margin:5},
+			{name:"NwF", realname:"not the worst frontrunner"}
 		];
 		// old ones
-		// {name:"FL", realname:"justfirstandlast", margin:4},
+		// {name:"FL", realname:"justfirstandlast", margin:5},
 		// {name:"T", realname:"threshold"},
 		// {name:"SNTF", realname:"starnormfrontrunners"}
 			
@@ -427,14 +430,14 @@ function main(config){
 		// unstrategic
 
 		var strategyOff = [
-			{name:"NO", realname:"no strategy. judge on an absolute scale.", margin:4},
-			{name:"N", realname:"normalize", margin:4},
-			{name:"BF", realname:"best frontrunner", margin:4},
-			{name:"F", realname:"normalize frontrunners only", margin:4},
-			{name:"NWF", realname:"not the worst frontrunner"}
+			{name:"NO", realname:"no strategy. judge on an absolute scale.", margin:5},
+			{name:"N", realname:"normalize", margin:5},
+			{name:"F", realname:"normalize frontrunners only", margin:5},
+			{name:"BF", realname:"best frontrunner", margin:5},
+			{name:"NwF", realname:"not the worst frontrunner"}
 		];
 		// old ones
-		// {name:"FL", realname:"justfirstandlast", margin:4},
+		// {name:"FL", realname:"justfirstandlast", margin:5},
 		// {name:"T", realname:"threshold"},
 		// {name:"SNTF", realname:"starnormfrontrunners"}
 		var onChooseVoterStrategyOff = function(data){
@@ -452,7 +455,7 @@ function main(config){
 		};
 		window.chooseVoterStrategyOff = new ButtonGroup({
 			label: "what do the rest do?",
-			width: 52,
+			width: 40,
 			data: strategyOff,
 			onChoose: onChooseVoterStrategyOff
 		});
@@ -622,8 +625,6 @@ function main(config){
 		
 		if(config.hidegearconfig) choosegearicon.dom.hidden = true
 		
-		// hide some menus
-		for (i in allnames) if(config.featurelist.includes(allnames[i])) {doms[allnames[i]].hidden = false} else {doms[allnames[i]].hidden = true}
 		
 		///////////////////////
 		//////// INIT! ////////
