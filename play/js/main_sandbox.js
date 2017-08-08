@@ -63,7 +63,7 @@ function main(config){
 	config.voterStrategies = config.voterStrategies || []
 	config.description = config.description || ""
 	for (i in [0,1,2]) {
-		config.voterStrategies[i] = config.voterStrategies[i] || "no strategy. judge on an absolute scale."
+		config.voterStrategies[i] = config.voterStrategies[i] || "zero strategy. judge on an absolute scale."
 	}
 	config.voterPercentStrategy = config.voterPercentStrategy || []
 	for (i in [0,1,2]) {
@@ -71,7 +71,7 @@ function main(config){
 	}
 	config.snowman = config.snowman || false;
 	
-	config.unstrategic = config.unstrategic || "no strategy. judge on an absolute scale.";
+	config.unstrategic = config.unstrategic || "zero strategy. judge on an absolute scale.";
 	config.keyyee = config.keyyee || "off";
 	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 	var initialConfig = JSON.parse(JSON.stringify(config));
@@ -316,11 +316,11 @@ function main(config){
 		// strategy
 		
 		var strategyOn = [
-			{name:"NO", realname:"no strategy. judge on an absolute scale.", margin:5},
+			{name:"O", realname:"zero strategy. judge on an absolute scale.", margin:5},
 			{name:"N", realname:"normalize", margin:5},
 			{name:"F", realname:"normalize frontrunners only", margin:5},
-			{name:"BF", realname:"best frontrunner", margin:5},
-			{name:"NwF", realname:"not the worst frontrunner"}
+			{name:"B", realname:"best frontrunner", margin:5},
+			{name:"W", realname:"not the worst frontrunner"}
 		];
 		// old ones
 		// {name:"FL", realname:"justfirstandlast", margin:5},
@@ -430,11 +430,11 @@ function main(config){
 		// unstrategic
 
 		var strategyOff = [
-			{name:"NO", realname:"no strategy. judge on an absolute scale.", margin:5},
+			{name:"O", realname:"zero strategy. judge on an absolute scale.", margin:5},
 			{name:"N", realname:"normalize", margin:5},
 			{name:"F", realname:"normalize frontrunners only", margin:5},
-			{name:"BF", realname:"best frontrunner", margin:5},
-			{name:"NwF", realname:"not the worst frontrunner"}
+			{name:"B", realname:"best frontrunner", margin:5},
+			{name:"W", realname:"not the worst frontrunner"}
 		];
 		// old ones
 		// {name:"FL", realname:"justfirstandlast", margin:5},

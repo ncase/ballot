@@ -2,7 +2,7 @@ window.ONLY_ONCE = false;
 function main(config){
 
 	ballotType = config.system;
-	config.strategy = config.strategy || "no strategy. judge on an absolute scale.";
+	config.strategy = config.strategy || "zero strategy. judge on an absolute scale.";
 	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
 	config.showChoiceOfStrategy = config.showChoiceOfStrategy || false
 	config.showChoiceOfFrontrunners = config.showChoiceOfFrontrunners || false
@@ -53,11 +53,11 @@ function main(config){
 		if(config.showChoiceOfStrategy) {
 			
 			var strategyOn = [
-				{name:"NO", realname:"no strategy. judge on an absolute scale.", margin:4},
+				{name:"O", realname:"zero strategy. judge on an absolute scale.", margin:4},
 				{name:"N", realname:"normalize", margin:4},
 				{name:"F", realname:"normalize frontrunners only", margin:4},
-				{name:"BF", realname:"best frontrunner", margin:4},
-				{name:"NwF", realname:"not the worst frontrunner"}
+				{name:"B", realname:"best frontrunner", margin:4},
+				{name:"W", realname:"not the worst frontrunner"}
 			];
 			// old ones
 			// {name:"FL", realname:"justfirstandlast", margin:4},

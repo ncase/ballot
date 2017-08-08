@@ -219,7 +219,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 		}}}
 
 
-	}// otherwise, there is no strategy strategy == "no strategy. judge on an absolute scale."
+	}// otherwise, there is no strategy strategy == "zero strategy. judge on an absolute scale."
 		
 	// Scooooooore
 	var scoresfirstlast = {scores:scores, radiusFirst:radiusFirst , radiusLast:radiusLast, dottedCircle:dottedCircle}
@@ -751,7 +751,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 			if (r1 < self.percentStrategy) { 
 				var strategy = self.strategy // yes
 			} else {
-				var strategy = self.unstrategic; // no e.g. "no strategy. judge on an absolute scale."
+				var strategy = self.unstrategic; // no e.g. "zero strategy. judge on an absolute scale."
 			}
 			
 			var ballot = self.type.getBallot(x, y, strategy, config);
