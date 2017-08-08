@@ -201,18 +201,23 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 			} else if (strategy == "normalize frontrunners only" || strategy == "starnormfrontrunners") {
 				var fnorm = 1/ (maxfront-minfront);
 				var normit = function(d) {return (d-minfront)*fnorm;}
-				if (strategy == "starnormfrontrunners") maxscore--;
 				var gs = function(d) { return minscore+Math.round((maxscore-minscore)*(1-normit(d))); }
 				var thresholdit = function(d) {return (d<=minfront) ? maxscore : (d>=maxfront) ? minscore : gs(d)}
 				radiusFirst = minfront;
-				radiusLast = maxfront; 
-			}
+				radiusLast = maxfront;
+							}
 		}
 		var scores2 = dista.map(thresholdit);
 		var assignit = function(d,i) { scores[ candidates[i].id ] = d; }
 		scores2.map(assignit)
-		if (strategy == "starnormfrontrunners") maxscore++;
 		scores[mini] = maxscore;
+		if (strategy == "starnormfrontrunners") {
+			for(i in candidates){
+				var c = candidates[i].id
+				if (scores[c]==maxscore && c!=mini) {
+					scores[c]=maxscore-1;
+		}}}
+
 
 	}// otherwise, there is no strategy strategy == "no strategy. judge on an absolute scale."
 		
@@ -230,7 +235,10 @@ function ScoreVoter(model){
 
 	var self = this;
 	self.model = model;
-
+	var maxscore = 5;
+	var minscore = 0;
+	var scorearray = [];
+	for (var i=minscore; i<= maxscore; i++) scorearray.push(i)
 	self.radiusStep = window.HACK_BIG_RANGE ? 61 : 25; // step: x<25, 25<x<50, 50<x<75, 75<x<100, 100<x
 
 	self.getScore = function(x2){
@@ -245,9 +253,8 @@ function ScoreVoter(model){
 
 	self.getBallot = function(x, y, strategy, config){
 
-		
 		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(x,y,1,5,[1,2,3,4,5],strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
+		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
 		
 		self.radiusFirst = scoresfirstlast.radiusFirst
 		self.radiusLast = scoresfirstlast.radiusLast
@@ -262,12 +269,12 @@ function ScoreVoter(model){
 		// RETINA
 		x = x*2;
 		y = y*2;
-		
-		var step = (self.radiusLast - self.radiusFirst)/4;
+		var scorange = maxscore - minscore
+		var step = (self.radiusLast - self.radiusFirst)/scorange;
 		// Draw big ol' circles.
-		for(var i=1;i<5;i++){
+		for(var i=0;i<scorange;i++){
 			ctx.beginPath();
-			ctx.arc(x, y, (step*(i-.5) + self.radiusFirst)*2, 0, Math.TAU, false);
+			ctx.arc(x, y, (step*(i+.5) + self.radiusFirst)*2, 0, Math.TAU, false);
 			ctx.lineWidth = (5-i)*2;
 			ctx.strokeStyle = "#888";
 			ctx.setLineDash([]);
@@ -281,8 +288,6 @@ function ScoreVoter(model){
 
 		// There are #Candidates*5 slices
 		// Fill 'em in in order -- and the rest is gray.
-		var maxscore = 5;
-		var minscore = 0;
 		var totalSlices = self.model.candidates.length*(maxscore-minscore);
 		var leftover = totalSlices;
 		var slices = [];
@@ -312,7 +317,10 @@ function ThreeVoter(model){
 
 	var self = this;
 	self.model = model;
-
+	var maxscore = 2;
+	var minscore = 0;
+	var scorearray = [];
+	for (var i=minscore; i<= maxscore; i++) scorearray.push(i)
 	self.radiusStep = window.HACK_BIG_RANGE ? 61 : 25; // step: x<25, 25<x<50, 50<x<75, 75<x<100, 100<x
 
 	self.getScore = function(x2){
@@ -322,13 +330,17 @@ function ThreeVoter(model){
 		return 0;
 	};
 
-	self.getBallot = function(x, y, strategy,  config){
+	self.getBallot = function(x, y, strategy, config){
 
 		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(x,y,0,2,[0,1,2],strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
+		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
+		
+		self.radiusFirst = scoresfirstlast.radiusFirst
+		self.radiusLast = scoresfirstlast.radiusLast
+		self.dottedCircle = scoresfirstlast.dottedCircle
 		var scores = scoresfirstlast.scores
 		return scores
-
+		
 	};
 
 	self.drawBG = function(ctx, x, y, ballot){
@@ -336,13 +348,16 @@ function ThreeVoter(model){
 		// RETINA
 		x = x*2;
 		y = y*2;
-
+		var scorange = maxscore - minscore
+		var step = (self.radiusLast - self.radiusFirst)/scorange;
 		// Draw big ol' circles.
-		for(var i=1;i<5;i++){
+		for(var i=0;i<scorange;i++){
 			ctx.beginPath();
-			ctx.arc(x, y, (self.radiusStep*i)*2, 0, Math.TAU, false);
+			ctx.arc(x, y, (step*(i+.5) + self.radiusFirst)*2, 0, Math.TAU, false);
 			ctx.lineWidth = (5-i)*2;
 			ctx.strokeStyle = "#888";
+			ctx.setLineDash([]);
+			if (self.dottedCircle) ctx.setLineDash([5, 15]);
 			ctx.stroke();
 		}
 
@@ -352,13 +367,13 @@ function ThreeVoter(model){
 
 		// There are #Candidates*5 slices
 		// Fill 'em in in order -- and the rest is gray.
-		var totalSlices = self.model.candidates.length*2;
+		var totalSlices = self.model.candidates.length*(maxscore-minscore);
 		var leftover = totalSlices;
 		var slices = [];
 		for(var i=0; i<self.model.candidates.length; i++){
 			var c = self.model.candidates[i];
 			var cID = c.id;
-			var score = ballot[cID];
+			var score = ballot[cID] - minscore;
 			leftover -= score;
 			slices.push({
 				num: score,

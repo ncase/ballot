@@ -85,8 +85,8 @@ function main(config){
 				{name:h1("square"),realname:"square",margin:4},
 				{name:h1("triangle"),realname:"triangle",margin:4},
 				{name:h1("hexagon"),realname:"hexagon",margin:4},
-				{name:h1("pentagon"),realname:"pentagon",margin:4},
-				{name:h1("bob"),realname:"bob"}
+				//{name:h1("pentagon"),realname:"pentagon",margin:4},
+				//{name:h1("bob"),realname:"bob"}
 			];
 			var onChooseFrun = function(data){
 				
