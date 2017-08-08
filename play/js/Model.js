@@ -88,7 +88,7 @@ function Model(config){
 	self.onUpdate = function(){}; // TO IMPLEMENT
 	
 	self.calculateYee = function(){
-		self.density= 40.0;
+		self.density= 30.0;
 		var density = self.density;
 		WIDTH = ctx.canvas.width;
 		HEIGHT = ctx.canvas.height;
@@ -143,6 +143,7 @@ function Model(config){
 		//ctx.drawImage(background,0,0);
 		
 		if(self.yeeon){
+			ctx.globalAlpha = .9
 			var density = self.density;
 			for(var k=0;k<self.gridx.length;k++) {
 				var ca = self.gridl[k]
@@ -152,16 +153,17 @@ function Model(config){
 					var yb = self.gridy[k]-density*.5-1
 					var wb = density
 					var hb = density
-					var hh = 4; // height of stripe
+					var hh = 5; // height of stripe
 					for (var j=0; j< density/hh; j++) {
 						ctx.fillStyle = cb[j % cb.length]
 						ctx.fillRect(xb,yb+j*hh,wb,hh);
 					}
 				} else {
 					ctx.fillStyle = self.gridl[k];
-					ctx.fillRect(self.gridx[k]-density*.5-1, self.gridy[k]-density*.5-1, density+2, density+2);
+					ctx.fillRect(self.gridx[k]-density*.5-1, self.gridy[k]-density*.5-1, density, density);
 				}
 			}
+			ctx.globalAlpha = 1
 			// Draw axes
 			//var background = new Image();
 			//background.src = "../play/img/axis.png";
@@ -173,9 +175,14 @@ function Model(config){
 			var x = self.yeeobject.x;
 			var y = self.yeeobject.y;
 			ctx.beginPath();
-			ctx.arc(x*2, y*2, 50, 0, Math.TAU, true);
+			ctx.arc(x*2, y*2, 60, 0, Math.TAU, true);
 			ctx.strokeStyle = "white";
+			ctx.lineWidth = 8;
+			ctx.fillStyle = 'white';
+			ctx.globalAlpha = 0.3
+			ctx.fill();
 			ctx.stroke();
+			ctx.globalAlpha = 1
 		}
 		
 		for(var i=0; i<self.voters.length; i++){
@@ -190,10 +197,16 @@ function Model(config){
 		}
 		
 		if(self.yeeon){
-			ctx.font = "25px Arial";
-			ctx.fillStyle = "white";
+			function drawStroked(text, x, y) {
+				ctx.font = "40px Sans-serif"
+				ctx.strokeStyle = 'black';
+				ctx.lineWidth = 4;
+				ctx.strokeText(text, x, y);
+				ctx.fillStyle = 'white';
+				ctx.fillText(text, x, y);
+			}
 			ctx.textAlign = "center";
-			ctx.fillText("yee-yee!",x*2,y*2);		
+			drawStroked("yee-yee!",x*2,y*2);		
 		}
 
 		// Update!

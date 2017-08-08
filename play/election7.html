@@ -27,8 +27,9 @@
 <script src="js/main_sandbox.js"></script>
 <script>
 main({
-
-	features:1,
+	featurelist: ["percentstrategy"],
+	voterPercentStrategy: [100,0,0],
+	
 	system: "Score",
 
 	candidates: 3,
@@ -36,7 +37,7 @@ main({
 	
 	voters: 1,
 	voterPositions: [[150,150]],
-	voterStrategies: ["normalized"]
+	voterStrategies: ["normalize"]
 	
 });
 </script>

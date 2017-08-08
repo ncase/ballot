@@ -2,7 +2,7 @@ window.ONLY_ONCE = false;
 function main(config){
 
 	ballotType = config.system;
-	config.strategy = config.strategy || "nope";
+	config.strategy = config.strategy || "zero strategy. judge on an absolute scale.";
 	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
 	config.showChoiceOfStrategy = config.showChoiceOfStrategy || false
 	config.showChoiceOfFrontrunners = config.showChoiceOfFrontrunners || false
@@ -32,7 +32,7 @@ function main(config){
 				x:81, y:92
 			});
 			model.addCandidate("square", 41, 50);
-			model.addCandidate("triangle", 153, 95);
+			model.addCandidate("triangle", 173, 95);
 			model.addCandidate("hexagon", 216, 216);
 			model.frontrunnerSet = config.frontrunnerSet;
 			model.strategy = config.strategy;
@@ -53,15 +53,16 @@ function main(config){
 		if(config.showChoiceOfStrategy) {
 			
 			var strategyOn = [
-				{name:"NO", realname:"nope", margin:4},
-				{name:"FL", realname:"justfirstandlast", margin:4},
-				{name:"NR", realname:"normalized", margin:4},
-				{name:"T", realname:"threshold", margin:4},
-				{name:"TF", realname:"thresholdfrontrunners", margin:4},
-				{name:"NTF", realname:"normfrontrunners", margin:4},
-				{name:"MTF", realname:"morethresholdfrontrunners", margin:4},
-				{name:"SNTF", realname:"starnormfrontrunners"}
+				{name:"O", realname:"zero strategy. judge on an absolute scale.", margin:4},
+				{name:"N", realname:"normalize", margin:4},
+				{name:"F", realname:"normalize frontrunners only", margin:4},
+				{name:"B", realname:"best frontrunner", margin:4},
+				{name:"W", realname:"not the worst frontrunner"}
 			];
+			// old ones
+			// {name:"FL", realname:"justfirstandlast", margin:4},
+			// {name:"T", realname:"threshold"},
+			// {name:"SNTF", realname:"starnormfrontrunners"}
 			var onChooseVoterStrategyOn = function(data){
 				config.strategy = data.realname; 
 				model.strategy = config.strategy; 
@@ -70,7 +71,7 @@ function main(config){
 			};
 			window.chooseVoterStrategyOn = new ButtonGroup({
 				label: "which strategy?",
-				width: 52,
+				width: 42,
 				data: strategyOn,
 				onChoose: onChooseVoterStrategyOn
 			});
@@ -84,8 +85,8 @@ function main(config){
 				{name:h1("square"),realname:"square",margin:4},
 				{name:h1("triangle"),realname:"triangle",margin:4},
 				{name:h1("hexagon"),realname:"hexagon",margin:4},
-				{name:h1("pentagon"),realname:"pentagon",margin:4},
-				{name:h1("bob"),realname:"bob"}
+				//{name:h1("pentagon"),realname:"pentagon",margin:4},
+				//{name:h1("bob"),realname:"bob"}
 			];
 			var onChooseFrun = function(data){
 				
@@ -101,8 +102,8 @@ function main(config){
 				
 			};
 			window.chooseFrun = new ButtonGroup({
-				label: "which candidates are the frontrunners?",
-				width: 52,
+				label: "who are the frontrunners?",
+				width: 42,
 				data: frun,
 				onChoose: onChooseFrun,
 				isCheckbox: true
@@ -124,8 +125,6 @@ function main(config){
 		var resetDOM = document.createElement("div");
 		resetDOM.id = "reset";
 		resetDOM.innerHTML = "reset";
-		resetDOM.style.top = "240px";
-		resetDOM.style.left = "660px";
 		resetDOM.onclick = function(){
 
 			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!

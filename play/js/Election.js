@@ -21,30 +21,37 @@ Election.score = function(model, options){
 	var winners = _countWinner(tally);
 	var color = _colorWinner(model, winners);
 
-	if (!options.sidebar) return
+	if (options.sidebar) {
 
-	// Caption
-	var winner = winners[0];
-	var text = "";
-	text += "<span class='small'>";
-	text += "<b>highest average score wins</b><br>";
-	for(var i=0; i<model.candidates.length; i++){
-		var c = model.candidates[i].id;
-		text += _icon(c)+"'s score: "+(tally[c].toFixed(2))+" out of 5.00<br>";
-	}
-	if(!winner | winners.length>=2){
-		// NO WINNER?! OR TIE?!?!
-		text += _tietext(winners);
-	} else {
-		text += "<br>";
-		text += _icon(winner)+" has the highest score, so...<br>";
-		text += "</span>";
-		text += "<br>";
-		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+		// Caption
+		var winner = winners[0];
+		var text = "";
+		text += "<span class='small'>";
+		text += "<b>highest average score wins</b><br>";
+		for(var i=0; i<model.candidates.length; i++){
+			var c = model.candidates[i].id;
+			text += _icon(c)+"'s score: "+(tally[c].toFixed(2))+" out of 5.00<br>";
+		}
+		if(!winner | winners.length>=2){
+			// NO WINNER?! OR TIE?!?!
+			text += _tietext(winners);
+		} else {
+			text += "<br>";
+			text += _icon(winner)+" has the highest score, so...<br>";
+			text += "</span>";
+			text += "<br>";
+			text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+		}
+
+		model.caption.innerHTML = text;
 	}
 	
-	model.caption.innerHTML = text;
-
+	if (model.dotop2) {
+		for (i in winners) delete tally[winners[i]]
+		var runnersup = _countWinner(tally);
+		var tops = winners.concat(runnersup)
+		model.top2 = tops.slice(0,2)
+	}
 };
 
 Election.star = function(model, options){
