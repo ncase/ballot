@@ -514,6 +514,7 @@ function main(config){
 				model.update()
 				model.dotop2 = false
 				config.frontrunnerSet = new Set(model.top2)
+				model.top2 = []
 			}
 			
 			model.frontrunnerSet = config.frontrunnerSet
