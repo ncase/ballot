@@ -604,6 +604,30 @@ function main(config){
 		choosegearconfig.dom.hidden = true
 		document.querySelector("#left").insertBefore(choosegearconfig.dom,doms["systems"]);
 		
+
+		var presetnames = []
+		var presethtmlnames = []
+		var presetdescription = []
+		for (var i=1;i<=12;i++) {presetnames.push("b"+i) ; presethtmlnames.push("ballot"+i+".html") ; presetdescription.push("ballot"+i+".html")}
+		for (var i=1;i<=14;i++) {presetnames.push("e"+i) ; presethtmlnames.push("election"+i+".html") ; presetdescription.push("election"+i+".html")}
+		
+		var presetconfig = []
+		for (i in presetnames) presetconfig.push({name:presetnames[i],realname:presetdescription[i],htmlname:presethtmlnames[i],margin:4})
+
+		var onChoosepresetconfig = function(data){
+			if (data.isOn) {
+				document.location.replace(data.htmlname);
+			}
+		};
+		window.choosepresetconfig = new ButtonGroup({
+			label: "pick a preset:",
+			width: 38,
+			data: presetconfig,
+			onChoose: onChoosepresetconfig,
+			isCheckbox: true
+		});
+		choosepresetconfig.dom.hidden = true
+		document.querySelector("#left").insertBefore(choosepresetconfig.dom,doms["systems"]);
 		
 		// gear button (combines with above)
 		
@@ -611,8 +635,10 @@ function main(config){
 		var onChoosegearicon = function(data){
 			if (data.isOn) {
 				choosegearconfig.dom.hidden = false
+				choosepresetconfig.dom.hidden = false
 			} else {
 				choosegearconfig.dom.hidden = true
+				choosepresetconfig.dom.hidden = true
 			}
 		};
 		window.choosegearicon = new ButtonGroup({
