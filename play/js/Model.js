@@ -92,6 +92,88 @@ function Model(config){
 		var density = self.density;
 		WIDTH = ctx.canvas.width;
 		HEIGHT = ctx.canvas.height;
+		doArrayWay = true
+		if (doArrayWay) {
+			// put candidate information into arrays
+			var canA = [], canAid = [], xc = [], yc = [], fillc = [] , revCan = {} // candidates
+			var fA = [], fAid = [], xf = [], yf = [], fillf = [] // frontrunners
+			var movethisidx, whichtypetomove
+			var i = 0
+			for (can in self.candidatesById) {
+				var c = self.candidatesById[can]
+				canAid.push(can)
+				canA.push(c)
+				revCan[c] = i
+				xc.push(c.x)
+				yc.push(c.y)
+				fillc.push(c.fill)
+				if (model.frontrunnerSet.has(c.id)) {
+					fAid.push(can)
+					fA.push(c)
+					xf.push(c.x)
+					yf.push(c.y)
+					fillf.push(c.fill) // maybe don't need
+				}
+				if (self.yeeobject == c){
+					movethisidx = i
+					whichtypetomove = "candidate"
+				}
+				i++
+			}
+			// now we have xc,yc,fillc,xf,yf
+			// maybe we don't need fillf, fA, canA, canAid, fAid, but they might help
+
+			// put voter information into arrays
+			var av = [], xv = [], yv = [] , vg = [] , xvcenter = [] , yvcenter = []// candidates
+			var movethisidx, whichtypetomove
+			var i = 0
+			for (vidx in self.voters) {
+				v = self.voters[vidx]
+				av.push(v)
+				xvcenter.push(v.x)
+				yvcenter.push(v.y)
+				if (self.yeeobject == v){
+					movethisidx = i
+					whichtypetomove = "voter"
+				}
+				for (j in v.points) {
+					p = v.points[j]
+					xv.push(p[0] + v.x)
+					yv.push(p[1] + v.y)
+					vg.push(i)
+				}
+				i++
+			}
+			// now we have xv,yv,
+			// we might not need av
+
+			// need to compile yee and decide when to recompile
+			// basically the only reason to recompile is when the number of voters or candidates changes
+			
+			lv = xv.length
+			lc = xc.length
+			self.fastyeesettings = [lc,lv,WIDTH,HEIGHT,density]
+			function arraysEqual(arr1, arr2) {
+				arr1 = arr1 || [0]
+				arr2 = arr2 || [0]
+				if(arr1.length !== arr2.length)
+					return false;
+				for(var i = arr1.length; i--;) {
+					if(arr1[i] !== arr2[i])
+						return false;
+				}
+
+				return true;
+			}
+			recompileyee = !arraysEqual(self.fastyeesettings,self.oldfastyeesettings)
+			//(self.fastyeesettings || 0) != (self.oldfastyeesettings || 0))
+			self.oldfastyeesettings = self.fastyeesettings
+			if (recompileyee) {
+				fastyee = createKernelYee(lc,lv,WIDTH,HEIGHT,density)
+			}
+			winners = fastyee(xc,yc,xf,yf,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove)
+			
+		}
 		self.gridx = [];
 		self.gridy = [];
 		self.gridl = []; 
@@ -102,6 +184,15 @@ function Model(config){
 		var i=0
 		for(var x=0.0, cx=0; x<=WIDTH; x+= density, cx++) {
 			for(var y=0.0, cy=0; y<=HEIGHT; y+= density, cy++) {
+				if (doArrayWay) {
+					var a = Candidate.graphics[canAid[Math.round(winners[i])]].fill
+					if (a == "#ccc") {a = "#ddd"} // hack for now, but will deal with ties later
+					self.gridx.push(x);
+					self.gridy.push(y);
+					self.gridl.push(a);
+					i++;
+					continue;
+				}
 				self.yeeobject.x = x * .5;
 				self.yeeobject.y = y * .5;
 				for(var j=0; j<self.voters.length; j++){
