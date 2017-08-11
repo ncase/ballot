@@ -32,6 +32,15 @@ function main(config){
 		config.frontrunnerSet = new Set(config.afrontrunnerArray) // stringify a set is not good
 
 	}
+
+	var initialConfig
+	var allnames = ["systems","voters","candidates","strategy","percentstrategy","unstrategic","frontrunners","poll","yee"]
+	var doms = {}  // for hiding menus, later
+	var stratsliders = [] // for hiding sliders, later
+	
+	var loadDefaults = function() {
+
+
 	// Defaults...
 	config = config || {};
 	config.system = config.system || "FPTP";
@@ -50,9 +59,6 @@ function main(config){
 	if (config.doPercentFirst) config.featurelist = config.featurelist.concat(["percentstrategy"]);
 	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
 	if (config.doFullStrategyConfig) config.featurelist = config.featurelist.concat(["strategy","percentstrategy","unstrategic","frontrunners","poll","yee"])
-	var allnames = ["systems","voters","candidates","strategy","percentstrategy","unstrategic","frontrunners","poll","yee"]
-	var doms = {}  // for hiding menus, later
-	var stratsliders = [] // for hiding sliders, later
 	// clear the grandfathered config settings
 	config.doPercentFirst = undefined
 	config.features = undefined
@@ -74,8 +80,10 @@ function main(config){
 	config.unstrategic = config.unstrategic || "zero strategy. judge on an absolute scale.";
 	config.keyyee = config.keyyee || "off";
 	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
-	var initialConfig = JSON.parse(JSON.stringify(config));
+	initialConfig = JSON.parse(JSON.stringify(config));
 
+	} // not indented
+	loadDefaults()
 	Loader.onload = function(){
 
 		////////////////////////
@@ -605,6 +613,13 @@ function main(config){
 		document.querySelector("#left").insertBefore(choosegearconfig.dom,doms["systems"]);
 		
 
+var loadpreset = function(htmlname) {
+    if (htmlname == "election1.html") {
+        config = {system: "Plurality"}
+    }
+    return config
+}
+
 		var presetnames = []
 		var presethtmlnames = []
 		var presetdescription = []
@@ -616,7 +631,16 @@ function main(config){
 
 		var onChoosepresetconfig = function(data){
 			if (data.isOn) {
-				document.location.replace(data.htmlname);
+				if (0) {
+					document.location.replace(data.htmlname);
+				} else {
+					config = loadpreset(data.htmlname)
+					loadDefaults()
+					model.reset(true);
+					model.onInit();
+					setInPosition();
+					selectUI();
+				}
 			}
 		};
 		window.choosepresetconfig = new ButtonGroup({
