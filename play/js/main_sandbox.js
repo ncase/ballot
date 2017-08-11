@@ -611,14 +611,6 @@ function main(config){
 		});
 		choosegearconfig.dom.hidden = true
 		document.querySelector("#left").insertBefore(choosegearconfig.dom,doms["systems"]);
-		
-
-var loadpreset = function(htmlname) {
-    if (htmlname == "election1.html") {
-        config = {system: "Plurality"}
-    }
-    return config
-}
 
 		var presetnames = []
 		var presethtmlnames = []
@@ -647,8 +639,7 @@ var loadpreset = function(htmlname) {
 			label: "pick a preset:",
 			width: 38,
 			data: presetconfig,
-			onChoose: onChoosepresetconfig,
-			isCheckbox: true
+			onChoose: onChoosepresetconfig
 		});
 		choosepresetconfig.dom.hidden = true
 		document.querySelector("#left").insertBefore(choosepresetconfig.dom,doms["systems"]);
