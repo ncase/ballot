@@ -358,6 +358,29 @@ features: undefined,
 doPercentFirst: undefined,
 doFullStrategyConfig: undefined
 }
+    } else if (htmlname == "election15.html") {
+		config = 
+{
+	candidatePositions: [[92,69],[210,70],[245,182],[149,250],[55,180]],
+voterPositions: [[150,150]],
+description: "",
+features: undefined,
+system: "FPTP",
+candidates: 5,
+voters: 1,
+doFullStrategyConfig: undefined,
+doPercentFirst: undefined,
+featurelist: ["systems","voters","candidates","percentstrategy","strategy","percentstrategy","unstrategic","frontrunners","poll","yee"],
+sandboxsave: true,
+hidegearconfig: false,
+frontrunnerSet: new Set(["square"]),
+voterStrategies: ["zero strategy. judge on an absolute scale.","zero strategy. judge on an absolute scale.","zero strategy. judge on an absolute scale."],
+voterPercentStrategy: [0,0,0],
+snowman: false,
+unstrategic: "zero strategy. judge on an absolute scale.",
+keyyee: "pentagon",
+kindayee: "can",
+}
     } else if (htmlname == "sandbox.html") {
 		config = 
 {

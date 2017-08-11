@@ -88,8 +88,8 @@ function Model(config){
 	self.onUpdate = function(){}; // TO IMPLEMENT
 	
 	self.calculateYee = function(){
-		self.density= 30.0;
-		var density = self.density;
+		self.pixelsize= 30.0;
+		var pixelsize = self.pixelsize;
 		WIDTH = ctx.canvas.width;
 		HEIGHT = ctx.canvas.height;
 		doArrayWay = true
@@ -152,7 +152,7 @@ function Model(config){
 			
 			lv = xv.length
 			lc = xc.length
-			self.fastyeesettings = [lc,lv,WIDTH,HEIGHT,density]
+			self.fastyeesettings = [lc,lv,WIDTH,HEIGHT,pixelsize]
 			function arraysEqual(arr1, arr2) {
 				arr1 = arr1 || [0]
 				arr2 = arr2 || [0]
@@ -169,7 +169,7 @@ function Model(config){
 			//(self.fastyeesettings || 0) != (self.oldfastyeesettings || 0))
 			self.oldfastyeesettings = self.fastyeesettings
 			if (recompileyee) {
-				fastyee = createKernelYee(lc,lv,WIDTH,HEIGHT,density)
+				fastyee = createKernelYee(lc,lv,WIDTH,HEIGHT,pixelsize)
 			}
 			winners = fastyee(xc,yc,xf,yf,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove)
 			
@@ -182,8 +182,8 @@ function Model(config){
 		saveo.x = self.yeeobject.x;
 		saveo.y = self.yeeobject.y;
 		var i=0
-		for(var x=0.0, cx=0; x<=WIDTH; x+= density, cx++) {
-			for(var y=0.0, cy=0; y<=HEIGHT; y+= density, cy++) {
+		for(var x=.5*pixelsize, cx=0; x<=WIDTH; x+= pixelsize, cx++) {
+			for(var y=.5*pixelsize, cy=0; y<=HEIGHT; y+= pixelsize, cy++) {
 				if (doArrayWay) {
 					var a = Candidate.graphics[canAid[Math.round(winners[i])]].fill
 					if (a == "#ccc") {a = "#ddd"} // hack for now, but will deal with ties later
@@ -235,23 +235,23 @@ function Model(config){
 		
 		if(self.yeeon){
 			ctx.globalAlpha = .9
-			var density = self.density;
+			var pixelsize = self.pixelsize;
 			for(var k=0;k<self.gridx.length;k++) {
 				var ca = self.gridl[k]
 				if (ca=="#ccc") { // make stripes instead of gray
 					var cb = self.gridb[k]
-					var xb = self.gridx[k]-density*.5-1
-					var yb = self.gridy[k]-density*.5-1
-					var wb = density
-					var hb = density
+					var xb = self.gridx[k]-pixelsize*.5
+					var yb = self.gridy[k]-pixelsize*.5
+					var wb = pixelsize
+					var hb = pixelsize
 					var hh = 5; // height of stripe
-					for (var j=0; j< density/hh; j++) {
+					for (var j=0; j< pixelsize/hh; j++) {
 						ctx.fillStyle = cb[j % cb.length]
 						ctx.fillRect(xb,yb+j*hh,wb,hh);
 					}
 				} else {
 					ctx.fillStyle = self.gridl[k];
-					ctx.fillRect(self.gridx[k]-density*.5-1, self.gridy[k]-density*.5-1, density, density);
+					ctx.fillRect(self.gridx[k]-pixelsize*.5, self.gridy[k]-pixelsize*.5, pixelsize, pixelsize);
 				}
 			}
 			ctx.globalAlpha = 1
