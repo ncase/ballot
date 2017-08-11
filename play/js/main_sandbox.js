@@ -611,26 +611,38 @@ function main(config){
 		choosegearconfig.dom.hidden = true
 		document.querySelector("#left").insertBefore(choosegearconfig.dom,doms["systems"]);
 
-		var presetnames = []
-		var presethtmlnames = []
-		var presetdescription = []
-		for (var i=1;i<=12;i++) {presetnames.push("b"+i) ; presethtmlnames.push("ballot"+i+".html") ; presetdescription.push("ballot"+i+".html")}
+		// get current filename, in order to go back to the original intended preset
+		var url = window.location.pathname;
+		var filename = url.substring(url.lastIndexOf('/')+1);
+		main(loadpreset(filename));
+
+		var presetnames = ["O"]
+		var presethtmlnames = [filename]
+		var presetdescription = ["original intended preset"]
+
+		// and fill in the rest
 		for (var i=1;i<=14;i++) {presetnames.push("e"+i) ; presethtmlnames.push("election"+i+".html") ; presetdescription.push("election"+i+".html")}
 		
+		// TODO
+		//for (var i=1;i<=12;i++) {presetnames.push("b"+i) ; presethtmlnames.push("ballot"+i+".html") ; presetdescription.push("ballot"+i+".html")}
+		
+
+
 		var presetconfig = []
 		for (i in presetnames) presetconfig.push({name:presetnames[i],realname:presetdescription[i],htmlname:presethtmlnames[i],margin:4})
 
 		var onChoosepresetconfig = function(data){
 			if (data.isOn) {
-				if (0) {
-					document.location.replace(data.htmlname);
-				} else {
+				var firstletter = data.htmlname[0]
+				if (firstletter == 'e') {
 					config = loadpreset(data.htmlname)
 					loadDefaults()
 					model.reset(true);
 					model.onInit();
 					setInPosition();
 					selectUI();
+				} else if (firstletter == 'b') {
+					document.location.replace(data.htmlname);
 				}
 			}
 		};
