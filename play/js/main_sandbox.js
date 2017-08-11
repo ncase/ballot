@@ -20,7 +20,7 @@ function main(config){
 		results = regex.exec(url);
 		if (!results) return null;
 		if (!results[2]) return '';
-		return decodeURIComponent(results[2].replace(/\+/g, " "));
+		return decodeURIComponent(results[2].replace(/\+/g, " ")).replace("}/","}"); //not sure how that / got there.
 	};
 	var modelData = _getParameterByName("m");
 	if(modelData){
@@ -616,9 +616,9 @@ function main(config){
 		var filename = url.substring(url.lastIndexOf('/')+1);
 		main(loadpreset(filename));
 
-		var presetnames = ["O"]
-		var presethtmlnames = [filename]
-		var presetdescription = ["original intended preset"]
+		var presetnames = ["O","SA"]
+		var presethtmlnames = [filename,"sandbox.html"]
+		var presetdescription = ["original intended preset","sandbox"]
 
 		// and fill in the rest
 		for (var i=1;i<=14;i++) {presetnames.push("e"+i) ; presethtmlnames.push("election"+i+".html") ; presetdescription.push("election"+i+".html")}
