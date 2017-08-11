@@ -26,8 +26,8 @@ function createKernelYee(lc,lv,WIDTH,HEIGHT,density) {
 
 
 runscript = false
-var onlylast = true
-docubevc = true
+var onlylast = false
+//docubevc = true
 
 var li,lv,lc
 
@@ -60,9 +60,11 @@ right.innerHTML += 'left is gpu output. right is true values.'
 
 // make variables
 
-var lc = 5
-var lv = 2
-var li = 10 // 400
+// comment these out since we get them fron the function
+// var lc = 5
+// var lv = 2
+// var li = 10 // 400
+
 var xf = []
 for (i =0;i<lc;i++) xf.push(Math.random())
 var xv=[]
@@ -73,6 +75,10 @@ for (i =0;i<li;i++) {
 }
 var yv=xv
 var yf=xf
+
+// for now,
+var xc = xf
+var yc = yf
 
 }
 
@@ -580,9 +586,15 @@ right.innerHTML += "<br>"+miset.join("<br>")
 
 cube2 = d(xv, yv, xf, yf)
 }
+
 const superKernel2 = gpu.combineKernels(minCube,maxCube,doFnorm,doScores,doTally,findWinner, function(cube2) {
 		return findWinner(doTally(doScores(cube2,maxCube(cube2),minCube(cube2),doFnorm(maxCube(cube2),minCube(cube2)),5,0)))
 	})
+
+// const superKernel3 = gpu.combineKernels(d,superKernel2,function(xv,yv,xf,yf){
+// 	return superKernel2(d(xv,yv,xf,yf))
+// })
+// can't do this kind of nesting
 	
 if(runscript){
 
@@ -649,32 +661,32 @@ right.innerHTML += "<br>"+"done"
 	
 }
 
-// const superKernelCandidate = gpu.combineKernels(cubeCandidate,minCube,maxCube,doFnorm,doScores,doTally,findWinner, function(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix) {
-// 		var cube,min,max,fnorm,scores,tally,winner
-// 		cube = cubeCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix)
-// 		min = minCube(cube)
-// 		max = maxCube(cube)
-// 		fnorm = doFnorm(max,min)
-// 		scores = doScores(cube,max,min,fnorm,5,0)
+const superKernelCandidate = gpu.combineKernels(cubeCandidate,minCube,maxCube,doFnorm,doScores,doTally,findWinner, function(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix) {
+		// var cube,min,max,fnorm,scores,tally,winner
+		cube = cubeCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix)
+		min = minCube(cube)
+		max = maxCube(cube)
+		fnorm = doFnorm(max,min)
+		scores = doScores(cube,max,min,fnorm,5,0)
 		
-// 		tally = doTally(scores)
-// 		winner = findWinner(tally)
-// 		return winner
-// 	})
+		tally = doTally(scores)
+		winner = findWinner(tally)
+		return winner
+	})
 
 	
-// const superKernelVoter = gpu.combineKernels(cubeVoter,minCube,maxCube,doFnorm,doScores,doTally,findWinner, function(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix) {
-// 		var cube,min,max,fnorm,scores,tally,winner
-// 		cube = cubeVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix)
-// 		min = minCube(cube)
-// 		max = maxCube(cube)
-// 		fnorm = doFnorm(max,min)
-// 		scores = doScores(cube,max,min,fnorm,5,0)
+const superKernelVoter = gpu.combineKernels(cubeVoter,minCube,maxCube,doFnorm,doScores,doTally,findWinner, function(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix) {
+		//var cube,min,max,fnorm,scores,tally,winner
+		cube = cubeVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix)
+		min = minCube(cube)
+		max = maxCube(cube)
+		fnorm = doFnorm(max,min)
+		scores = doScores(cube,max,min,fnorm,5,0)
 		
-// 		tally = doTally(scores)
-// 		winner = findWinner(tally)
-// 		return winner
-// 	})
+		tally = doTally(scores)
+		winner = findWinner(tally)
+		return winner
+	})
 
 
 cubeCandidateToWinner = function(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix){
@@ -685,13 +697,19 @@ fnorm3 = doFnorm(max3,min3)
 scores3 = doScores(cube3,max3,min3,fnorm3,5,0)
 
 tally3 = doTally(scores3)
-winner3 = findWinner(tally3).slice(0,li);
+winner3 = findWinner(tally3)
 return winner3
 }
 
 
-
-
+// these two are different because they use nesting instead of variables
+// const superKernel3Candidate = gpu.combineKernels(cubeCandidate,superKernel2,function(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix){
+// 	return superKernel2(cubeCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix))
+// })
+// const superKernel3Voter = gpu.combineKernels(cubeVoter,superKernel2,function(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix){
+// 	return superKernel2(cubeVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix))
+// })
+// can't do this kind of nesting
 
 cubeVoterToWinner = function(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix){
 cubeV = cubeVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix)
@@ -701,7 +719,7 @@ fnorm3 = doFnorm(max3,min3)
 scores3 = doScores(cube3,max3,min3,fnorm3,5,0)
 
 tally3 = doTally(scores3)
-winner3 = findWinner(tally3).slice(0,li);
+winner3 = findWinner(tally3)
 return winner3
 
 } 
@@ -711,14 +729,17 @@ return winner3
 
 
 function fastyee(xc,yc,xf,yf,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove) {
+	// have not implemented frontrunners yet
 	if (whichtypetomove == "voter"){
 		votergrouptomove = movethisidx
-		return cubeVoterToWinner(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix)
-		// return superKernelCandidate(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix)
+		// return cubeVoterToWinner(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+		return superKernelVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).slice(0,li)
+		// // return superKernel3Candidate(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
 	} else if (whichtypetomove == "candidate"){
 		candidatetomove = movethisidx
-		return cubeCandidateToWinner(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix)
-		// return superKernelVoter(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix)
+		// return cubeCandidateToWinner(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+		return superKernelCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).slice(0,li)
+		// // return superKernel3Voter(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
 	}
 }
 
