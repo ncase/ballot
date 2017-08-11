@@ -39,51 +39,50 @@ function main(config){
 	var stratsliders = [] // for hiding sliders, later
 	
 	var loadDefaults = function() {
+		// Defaults...
+		config = config || {};
+		config.system = config.system || "FPTP";
+		config.candidates = config.candidates || 3;
+		config.voters = config.voters || 1;
+		
+		config.features = config.features || 0; // 1-basic, 2-voters, 3-candidates, 4-save
+		if (       config.features == 0 && ! config.featurelist) {config.featurelist = ["systems"]  // old spec
+		} else if (config.features == 1) {config.featurelist = ["systems"]
+		} else if (config.features == 2) {config.featurelist = ["systems","voters"]
+		} else if (config.features == 3) {config.featurelist = ["systems","voters","candidates"]
+		} else if (config.features == 4) {config.featurelist = ["systems","voters","candidates"]; config.sandboxsave = true;}
+		config.sandboxsave = config.sandboxsave || false;
+		config.featurelist = config.featurelist || ["systems"]
+		config.doPercentFirst = config.doPercentFirst || false;
+		if (config.doPercentFirst) config.featurelist = config.featurelist.concat(["percentstrategy"]);
+		config.doFullStrategyConfig = config.doFullStrategyConfig || false;
+		if (config.doFullStrategyConfig) config.featurelist = config.featurelist.concat(["strategy","percentstrategy","unstrategic","frontrunners","poll","yee"])
+		// clear the grandfathered config settings
+		config.doPercentFirst = undefined
+		config.features = undefined
+		config.doFullStrategyConfig = undefined
+		config.hidegearconfig = config.hidegearconfig || false;
+		
+		config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
+		config.voterStrategies = config.voterStrategies || []
+		config.description = config.description || ""
+		for (i in [0,1,2]) {
+			config.voterStrategies[i] = config.voterStrategies[i] || "zero strategy. judge on an absolute scale."
+		}
+		config.voterPercentStrategy = config.voterPercentStrategy || []
+		for (i in [0,1,2]) {
+			config.voterPercentStrategy[i] = config.voterPercentStrategy[i] || 0
+		}
+		config.snowman = config.snowman || false;
+		
+		config.unstrategic = config.unstrategic || "zero strategy. judge on an absolute scale.";
+		config.keyyee = config.keyyee || "off";
+		config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
+		initialConfig = JSON.parse(JSON.stringify(config));
 
-
-	// Defaults...
-	config = config || {};
-	config.system = config.system || "FPTP";
-	config.candidates = config.candidates || 3;
-	config.voters = config.voters || 1;
-	
-	config.features = config.features || 0; // 1-basic, 2-voters, 3-candidates, 4-save
-	if (       config.features == 0 && ! config.featurelist) {config.featurelist = ["systems"]  // old spec
-	} else if (config.features == 1) {config.featurelist = ["systems"]
-	} else if (config.features == 2) {config.featurelist = ["systems","voters"]
-	} else if (config.features == 3) {config.featurelist = ["systems","voters","candidates"]
-	} else if (config.features == 4) {config.featurelist = ["systems","voters","candidates"]; config.sandboxsave = true;}
-	config.sandboxsave = config.sandboxsave || false;
-	config.featurelist = config.featurelist || ["systems"]
-	config.doPercentFirst = config.doPercentFirst || false;
-	if (config.doPercentFirst) config.featurelist = config.featurelist.concat(["percentstrategy"]);
-	config.doFullStrategyConfig = config.doFullStrategyConfig || false;
-	if (config.doFullStrategyConfig) config.featurelist = config.featurelist.concat(["strategy","percentstrategy","unstrategic","frontrunners","poll","yee"])
-	// clear the grandfathered config settings
-	config.doPercentFirst = undefined
-	config.features = undefined
-	config.doFullStrategyConfig = undefined
-	config.hidegearconfig = config.hidegearconfig || false;
-	
-	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
-	config.voterStrategies = config.voterStrategies || []
-	config.description = config.description || ""
-	for (i in [0,1,2]) {
-		config.voterStrategies[i] = config.voterStrategies[i] || "zero strategy. judge on an absolute scale."
 	}
-	config.voterPercentStrategy = config.voterPercentStrategy || []
-	for (i in [0,1,2]) {
-		config.voterPercentStrategy[i] = config.voterPercentStrategy[i] || 0
-	}
-	config.snowman = config.snowman || false;
-	
-	config.unstrategic = config.unstrategic || "zero strategy. judge on an absolute scale.";
-	config.keyyee = config.keyyee || "off";
-	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
-	initialConfig = JSON.parse(JSON.stringify(config));
-
-	} // not indented
 	loadDefaults()
+	
 	Loader.onload = function(){
 
 		////////////////////////
