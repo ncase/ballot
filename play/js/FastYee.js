@@ -120,7 +120,8 @@ left.innerHTML += "<br>"+cube.slice(0,100).join("<br>")
 right.innerHTML += "<br>"+"cube"
 }
 function dJ(xv,yv,xf,yf,lc,li,lv) {
-cube=[]
+var cube=[]
+var civ,i,v,c,d,dx,dy,ci
 for (var civ=0; civ<lc*li*lv; civ++) {
 	v = Math.floor((civ) / (lc*li)); // z
 	//v = civ / (lc*lv) >> 0
@@ -197,8 +198,8 @@ const cubeVoter = gpu.createKernel( function(xv,yv,xc,yc,xvcenter,yvcenter,vg,vo
 
 
 	if (vg[v]==votergrouptomove){
-		xnewvcenter = pixelsize * i / liy // rounding is actually done in the gpu.js code, so I don't actually need it here.  otherwise I would put a Math.round on this
-		ynewvcenter = pixelsize * i % liy
+		xnewvcenter = pixelsize * (i / liy) // rounding is actually done in the gpu.js code, so I don't actually need it here.  otherwise I would put a Math.round on this
+		ynewvcenter = pixelsize * (i % liy)
 		// next, shift the center to this new center
 		xnewv = xv[v] + (xnewvcenter - xvcenter[votergrouptomove])
 		ynewv = yv[v] + (ynewvcenter - yvcenter[votergrouptomove])
@@ -214,6 +215,36 @@ const cubeVoter = gpu.createKernel( function(xv,yv,xc,yc,xvcenter,yvcenter,vg,vo
 	dimensions: [lv*lc*li], // y,x
 	constants: {lv:lv,lc:lc,li:li}
 })
+
+cubeVoterJ = function(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix,c,li,lv){
+var cube = []
+var civ,i,v,c,d,dx,dy,ci,xnewv,ynewv,xnewvcenter,ynewvcenter
+for (var civ = 0; civ < li*lv*lc ; civ++) {
+	
+	v = Math.floor(civ / (lc*li))
+	ci = civ - v * lc * li
+	i = Math.floor((ci) / lc)
+	c = ci % lc; // x
+
+
+	if (vg[v]==votergrouptomove){
+		xnewvcenter = pixelsize * (i / liy) // rounding is actually done in the gpu.js code, so I don't actually need it here.  otherwise I would put a Math.round on this
+		ynewvcenter = pixelsize * (i % liy)
+		// next, shift the center to this new center
+		xnewv = xv[v] + (xnewvcenter - xvcenter[votergrouptomove])
+		ynewv = yv[v] + (ynewvcenter - yvcenter[votergrouptomove])
+	} else {
+		xnewv = xv[v]
+		ynewv = yv[v]
+	}
+	dx = xc[c] - xnewv
+	dy = yc[c] - ynewv
+	d = Math.sqrt(dx*dx + dy*dy)
+	cube.push(d)
+}
+return cube
+}
+
 
 if(runscript){
 
@@ -249,8 +280,8 @@ const cubeCandidate = gpu.createKernel( function(xv,yv,xc,yc,candidatetomove,pix
 
 	//xnewc = xc[c] * (1-boolcanmove[c]) + xmoved * boolcanmove[c]
 	if (c==candidatetomove){
-		xnewc = pixelsize * i / liy // rounding is actually done in the gpu.js code, so I don't actually need it here.  otherwise I would put a Math.round on this
-		ynewc = pixelsize * i % liy
+		xnewc = pixelsize * (i / liy) // rounding is actually done in the gpu.js code, so I don't actually need it here.  otherwise I would put a Math.round on this
+		ynewc = pixelsize * (i % liy)
 	} else {
 		xnewc = xc[c]
 		ynewc = yc[c]
@@ -263,6 +294,33 @@ const cubeCandidate = gpu.createKernel( function(xv,yv,xc,yc,candidatetomove,pix
 	dimensions: [lv*lc*li], // y,x
 	constants: {lv:lv,lc:lc,li:li}
 })
+
+cubeCandidateJ = function(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix,lc,li,lv) {
+var cube = []
+var civ,i,v,c,d,dx,dy,ci,xnewc,ynewc
+for (var civ = 0; civ < li*lv*lc ; civ++) {
+
+	v = Math.floor(civ / (lc*li))
+	ci = civ - v * lc * li
+	i = Math.floor((ci) / lc)
+	c = ci % lc; // x
+
+	//xnewc = xc[c] * (1-boolcanmove[c]) + xmoved * boolcanmove[c]
+	if (c==candidatetomove){
+		xnewc = pixelsize * (i / liy) // rounding is actually done in the gpu.js code, so I don't actually need it here.  otherwise I would put a Math.round on this
+		ynewc = pixelsize * (i % liy)
+	} else {
+		xnewc = xc[c]
+		ynewc = yc[c]
+	}
+	dx = xv[v] - xnewc
+	dy = yv[v] - ynewc
+	d = Math.sqrt(dx*dx + dy*dy)
+
+	cube.push(d)
+}
+return cube
+}
 
 if(runscript){
 
@@ -303,8 +361,9 @@ left.innerHTML += "<br>"+"min"
 left.innerHTML += "<br>"+min.slice(0,100).join("<br>")
 right.innerHTML += "<br>"+"min"
 }
-function minCubeJ(d,lc,li,lv) {
-min=[]
+function minCubeJ(cube,lc,li,lv) {
+	var iv,civ,n,d1
+var min=[]
 for (var iv=0; iv<li*lv; iv++) {
 	n=1000
 	for (var c = 0; c < lc; c++) {
@@ -318,7 +377,7 @@ for (var iv=0; iv<li*lv; iv++) {
 		}
 	}
 	min.push(n)
-	right.innerHTML += "<br>"+n
+	if(runscript) right.innerHTML += "<br>"+n
 }
 return min
 }
@@ -359,8 +418,9 @@ left.innerHTML += "<br>"+max.slice(0,100).join("<br>")
 
 right.innerHTML += "<br>"+"max"
 }
-function maxCubeJ(d,lc,li,lv){
-max=[]
+function maxCubeJ(cube,lc,li,lv){
+	var iv,i,v,dx,dy,civ,n,m,d1
+var max=[]
 for (var iv=0; iv<li*lv; iv++) {
 	m=-1
 	for (var c = 0; c < lc; c++) {
@@ -373,7 +433,7 @@ for (var iv=0; iv<li*lv; iv++) {
 			m = d1 //min
 		}
 	}
-	right.innerHTML += "<br>"+m
+	if(runscript) right.innerHTML += "<br>"+m
 	max.push(m)
 }
 return max
@@ -384,7 +444,7 @@ max = maxCubeJ(cube,lc,li,lv)
 }
 
 
-const doFnorm = gpu.createKernel(function(m,n) {
+const doFnorm = gpu.createKernel(function(n,m) {
 	var iv = this.thread.x
 	var fnorm
 	//fnorm =  (m[iv]-n[iv])
@@ -395,7 +455,7 @@ const doFnorm = gpu.createKernel(function(m,n) {
 })
 if(runscript){
 
-var fnormdone = doFnorm(max,min).slice(0,li*lv)
+var fnormdone = doFnorm(min,max).slice(0,li*lv)
 
 
 left.innerHTML += "<br>"+"fnorm"
@@ -404,10 +464,11 @@ left.innerHTML += "<br>"+fnormdone.slice(0,100).join("<br>")
 right.innerHTML += "<br>"+"fnorm"
 }
 function doFnormJ(min,max,lc,li,lv) {
-fnormdone=[]
+	var fnorm
+var fnormdone=[]
 for (var iv=0; iv<li*lv; iv++) {
 	fnorm = 1/ (max[iv]-min[iv])
-	right.innerHTML += "<br>"+fnorm
+	if(runscript) right.innerHTML += "<br>"+fnorm
 	fnormdone.push(fnorm)
 }
 return fnormdone
@@ -417,7 +478,7 @@ if(runscript){
 fnorm = doFnormJ(min,max,lc,li,lv)
 }
 
-const doScores = gpu.createKernel(function(d,m,n,fnorm, minscore, maxscore) {
+const doScores = gpu.createKernel(function(d,n,m,fnorm, minscore, maxscore) {
 	var v,i,iv,civ,ci,normit,score
 	civ = this.thread.x
 
@@ -438,7 +499,7 @@ const doScores = gpu.createKernel(function(d,m,n,fnorm, minscore, maxscore) {
 
 if(runscript){
 
-var scores = doScores(cube,max,min,fnormdone,0,5).slice(0,lc*li*lv)
+var scores = doScores(cube,min,max,fnormdone,0,5).slice(0,lc*li*lv)
 left.innerHTML += "<br>"+"scores"
 left.innerHTML += "<br>"+scores.slice(0,100).join("<br>")
 
@@ -446,8 +507,9 @@ right.innerHTML += "<br>"+"scores"
 maxscore=5
 minscore=0
 }
-function doScoresJ(cube,max,min,fnorm,lc,li,lv) {
-scores=[]
+function doScoresJ(cube,min,max,fnorm,minscore,maxscore,lc,li,lv) {
+	var v,i,iv,civ,ci,normit,score
+var scores=[]
 for (var civ=0; civ<lc*li*lv; civ++) {
 	v = Math.floor(civ / (lc*li))
 	ci = civ - v*lc*li
@@ -459,13 +521,13 @@ for (var civ=0; civ<lc*li*lv; civ++) {
 	score = Math.floor(.5+minscore+(maxscore-minscore)*(1-normit))
 
 	scores.push(score)
-	right.innerHTML += "<br>"+score
+	if(runscript) right.innerHTML += "<br>"+score
 }
 return scores
 }
 if(runscript){
 
-scores = doScoresJ(cube,max,min,fnorm,lc,li,lv)
+scores = doScoresJ(cube,min,max,fnorm,0,5,lc,li,lv)
 }
 const doTally = gpu.createKernel(function(scores) {
 	var ci,sum
@@ -491,7 +553,8 @@ left.innerHTML += "<br>"+tally.slice(0,100).join("<br>")
 right.innerHTML += "<br>"+"tally"
 }
 function doTallyJ(scores,lc,li,lv){
-tally = []
+	var ci,sum
+var tally = []
 for (var ci = 0; ci< lc*li; ci++) {
 	
 	sum = 0
@@ -501,7 +564,7 @@ for (var ci = 0; ci< lc*li; ci++) {
 		sum += scores[civ]
 	}
 	tally.push(sum)
-	right.innerHTML += "<br>"+sum
+	if(runscript) right.innerHTML += "<br>"+sum
 }
 return tally
 }
@@ -536,7 +599,8 @@ left.innerHTML += "<br>"+winner.join("<br>")
 right.innerHTML += "<br>"+"winner"
 }
 function findWinnerJ(tally,lc,li,lv){
-miset=[]
+	var i,ci,m,t1,mi
+var miset=[]
 for (var i = 0; i < li; i++) {
 	m = -1
 	mi = -1
@@ -548,7 +612,7 @@ for (var i = 0; i < li; i++) {
 			mi = c
 		}
 	}
-	right.innerHTML += "<br>"+mi
+	if(runscript) right.innerHTML += "<br>"+mi
 	miset.push(mi)
 }
 return miset
@@ -563,8 +627,8 @@ const superKernel = gpu.combineKernels(d,minCube,maxCube,doFnorm,doScores,doTall
 		cube = d(xv, yv, xf, yf)
 		min = minCube(cube)
 		max = maxCube(cube)
-		fnorm = doFnorm(max,min)
-		scores = doScores(cube,max,min,fnorm,5,0)
+		fnorm = doFnorm(min,max)
+		scores = doScores(cube,min,max,fnorm,0,5)
 		
 		tally = doTally(scores)
 		winner = findWinner(tally)
@@ -588,7 +652,7 @@ cube2 = d(xv, yv, xf, yf)
 }
 
 const superKernel2 = gpu.combineKernels(minCube,maxCube,doFnorm,doScores,doTally,findWinner, function(cube2) {
-		return findWinner(doTally(doScores(cube2,maxCube(cube2),minCube(cube2),doFnorm(maxCube(cube2),minCube(cube2)),5,0)))
+		return findWinner(doTally(doScores(cube2,minCube(cube2),maxCube(cube2),doFnorm(maxCube(cube2),minCube(cube2)),0,5)))
 	})
 
 // const superKernel3 = gpu.combineKernels(d,superKernel2,function(xv,yv,xf,yf){
@@ -611,8 +675,8 @@ function cubeToWinner(xv,yv,xf,yf) {
 cube3 = d(xv, yv, xf, yf)
 min3 = minCube(cube3)
 max3 = maxCube(cube3)
-fnorm3 = doFnorm(max3,min3)
-scores3 = doScores(cube3,max3,min3,fnorm3,5,0)
+fnorm3 = doFnorm(min3,max3)
+scores3 = doScores(cube3,min3,max3,fnorm3,0,5)
 
 tally3 = doTally(scores3)
 winner3 = findWinner(tally3).slice(0,li);
@@ -637,8 +701,32 @@ function cubeToWinnerJ(xv,yv,xf,yf,lc,li,lv) {
 cube3 = dJ(xv, yv, xf, yf,lc,li,lv)
 min3 = minCubeJ(cube3,lc,li,lv)
 max3 = maxCubeJ(cube3,lc,li,lv)
-fnorm3 = doFnormJ(max3,min3,lc,li,lv)
-scores3 = doScoresJ(cube3,max3,min3,fnorm3,5,0,lc,li,lv)
+fnorm3 = doFnormJ(min3,max3,lc,li,lv)
+scores3 = doScoresJ(cube3,min3,max3,fnorm3,0,5,lc,li,lv)
+
+tally3 = doTallyJ(scores3,lc,li,lv)
+winner3 = findWinnerJ(tally3,lc,li,lv)
+return winner3
+}
+
+function cubeCandidateToWinnerJ(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix,lc,li,lv) {
+cube3 = cubeCandidateJ(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix,lc,li,lv)
+min3 = minCubeJ(cube3,lc,li,lv)
+max3 = maxCubeJ(cube3,lc,li,lv)
+fnorm3 = doFnormJ(min3,max3,lc,li,lv)
+scores3 = doScoresJ(cube3,min3,max3,fnorm3,0,5,lc,li,lv)
+
+tally3 = doTallyJ(scores3,lc,li,lv)
+winner3 = findWinnerJ(tally3,lc,li,lv)
+return winner3
+}
+
+function cubeVoterToWinnerJ(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix,lc,li,lv) {
+cube3 = cubeVoterJ(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix,lc,li,lv)
+min3 = minCubeJ(cube3,lc,li,lv)
+max3 = maxCubeJ(cube3,lc,li,lv)
+fnorm3 = doFnormJ(min3,max3,lc,li,lv)
+scores3 = doScoresJ(cube3,min3,max3,fnorm3,0,5,lc,li,lv)
 
 tally3 = doTallyJ(scores3,lc,li,lv)
 winner3 = findWinnerJ(tally3,lc,li,lv)
@@ -666,8 +754,8 @@ const superKernelCandidate = gpu.combineKernels(cubeCandidate,minCube,maxCube,do
 		cube = cubeCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix)
 		min = minCube(cube)
 		max = maxCube(cube)
-		fnorm = doFnorm(max,min)
-		scores = doScores(cube,max,min,fnorm,5,0)
+		fnorm = doFnorm(min,max)
+		scores = doScores(cube,min,max,fnorm,0,5)
 		
 		tally = doTally(scores)
 		winner = findWinner(tally)
@@ -680,8 +768,8 @@ const superKernelVoter = gpu.combineKernels(cubeVoter,minCube,maxCube,doFnorm,do
 		cube = cubeVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix)
 		min = minCube(cube)
 		max = maxCube(cube)
-		fnorm = doFnorm(max,min)
-		scores = doScores(cube,max,min,fnorm,5,0)
+		fnorm = doFnorm(min,max)
+		scores = doScores(cube,min,max,fnorm,0,5)
 		
 		tally = doTally(scores)
 		winner = findWinner(tally)
@@ -690,11 +778,11 @@ const superKernelVoter = gpu.combineKernels(cubeVoter,minCube,maxCube,doFnorm,do
 
 
 cubeCandidateToWinner = function(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix){
-const cube3 = cubeCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix)
+cube3 = cubeCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix)
 min3 = minCube(cube3)
 max3 = maxCube(cube3)
-fnorm3 = doFnorm(max3,min3)
-scores3 = doScores(cube3,max3,min3,fnorm3,5,0)
+fnorm3 = doFnorm(min3,max3)
+scores3 = doScores(cube3,min3,max3,fnorm3,0,5)
 
 tally3 = doTally(scores3)
 winner3 = findWinner(tally3)
@@ -715,8 +803,8 @@ cubeVoterToWinner = function(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,p
 cubeV = cubeVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix)
 min3 = minCube(cube3)
 max3 = maxCube(cube3)
-fnorm3 = doFnorm(max3,min3)
-scores3 = doScores(cube3,max3,min3,fnorm3,5,0)
+fnorm3 = doFnorm(min3,max3)
+scores3 = doScores(cube3,min3,max3,fnorm3,0,5)
 
 tally3 = doTally(scores3)
 winner3 = findWinner(tally3)
@@ -734,12 +822,14 @@ function fastyee(xc,yc,xf,yf,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetom
 		votergrouptomove = movethisidx
 		// return cubeVoterToWinner(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
 		return superKernelVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).slice(0,li)
-		// // return superKernel3Candidate(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+		// // return superKernel3Voter(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+		// return cubeVoterToWinnerJ(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix,lc,li,lv)
 	} else if (whichtypetomove == "candidate"){
 		candidatetomove = movethisidx
 		// return cubeCandidateToWinner(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
 		return superKernelCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).slice(0,li)
-		// // return superKernel3Voter(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+		// // return superKernel3Candidate(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+		// return cubeCandidateToWinnerJ(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix,lc,li,lv)
 	}
 }
 

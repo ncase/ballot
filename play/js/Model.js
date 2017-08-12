@@ -104,14 +104,14 @@ function Model(config){
 				canAid.push(can)
 				canA.push(c)
 				revCan[c] = i
-				xc.push(c.x)
-				yc.push(c.y)
+				xc.push(c.x*2) // remember the 2
+				yc.push(c.y*2)
 				fillc.push(c.fill)
 				if (model.frontrunnerSet.has(c.id)) {
 					fAid.push(can)
 					fA.push(c)
-					xf.push(c.x)
-					yf.push(c.y)
+					xf.push(c.x*2)
+					yf.push(c.y*2)
 					fillf.push(c.fill) // maybe don't need
 				}
 				if (self.yeeobject == c){
@@ -130,16 +130,16 @@ function Model(config){
 			for (vidx in self.voters) {
 				v = self.voters[vidx]
 				av.push(v)
-				xvcenter.push(v.x)
-				yvcenter.push(v.y)
+				xvcenter.push(v.x*2)
+				yvcenter.push(v.y*2)
 				if (self.yeeobject == v){
 					movethisidx = i
 					whichtypetomove = "voter"
 				}
 				for (j in v.points) {
 					p = v.points[j]
-					xv.push(p[0] + v.x)
-					yv.push(p[1] + v.y)
+					xv.push((p[0] + v.x)*2)
+					yv.push((p[1] + v.y)*2)
 					vg.push(i)
 				}
 				i++
