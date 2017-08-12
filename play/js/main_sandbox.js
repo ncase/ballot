@@ -669,7 +669,7 @@ function main(config){
 		// only do this once.  Otherwise it would be in SelectUI
 
 
-		var computeMethod = [{name:"gpu",margin:4},{name:"js"}]
+		var computeMethod = [{name:"gpu",margin:4},{name:"js",margin:4},{name:"ez"}]
 		var onChooseComputeMethod = function(data){
 			config.computeMethod = data.name
 			model.computeMethod = data.name

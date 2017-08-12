@@ -92,28 +92,29 @@ function Model(config){
 		var pixelsize = self.pixelsize;
 		WIDTH = ctx.canvas.width;
 		HEIGHT = ctx.canvas.height;
-		doArrayWay = true
+		doArrayWay = self.computeMethod != "ez"
 		var winners
 		if (doArrayWay) {
 			// put candidate information into arrays
-			var canA = [], canAid = [], xc = [], yc = [], fillc = [] , revCan = {} // candidates
-			var fA = [], fAid = [], xf = [], yf = [], fillf = [] // frontrunners
+			var canAid = [], xc = [], yc = [], fillc = [] //, canA = [], revCan = {} // candidates
+			var f=[] // , fA = [], fAid = [], xf = [], yf = [], fillf = [] // frontrunners
 			var movethisidx, whichtypetomove
 			var i = 0
 			for (can in self.candidatesById) {
 				var c = self.candidatesById[can]
 				canAid.push(can)
-				canA.push(c)
-				revCan[c] = i
+				// canA.push(c)
+				// revCan[c] = i
 				xc.push(c.x*2) // remember the 2
 				yc.push(c.y*2)
 				fillc.push(c.fill)
 				if (model.frontrunnerSet.has(c.id)) {
-					fAid.push(can)
-					fA.push(c)
-					xf.push(c.x*2)
-					yf.push(c.y*2)
-					fillf.push(c.fill) // maybe don't need
+					// fAid.push(can)
+					// fA.push(c)
+					f.push(i)
+					// xf.push(c.x*2)
+					// yf.push(c.y*2)
+					// fillf.push(c.fill) // maybe don't need
 				}
 				if (self.yeeobject == c){
 					movethisidx = i
@@ -175,7 +176,7 @@ function Model(config){
 			//method = "gpu"
 			//method = "js"
 			method = self.computeMethod
-			winners = fastyee(xc,yc,xf,yf,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method)
+			winners = fastyee(xc,yc,f,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method)
 			
 		}
 		self.gridx = [];
@@ -189,8 +190,27 @@ function Model(config){
 		for(var x=.5*pixelsize, cx=0; x<=WIDTH; x+= pixelsize, cx++) {
 			for(var y=.5*pixelsize, cy=0; y<=HEIGHT; y+= pixelsize, cy++) {
 				if (doArrayWay) {
-					var a = Candidate.graphics[canAid[Math.round(winners[i])] || "square"].fill
-					if (a == "#ccc") {a = "#ddd"} // hack for now, but will deal with ties later
+					var winner = Math.round(winners[i])
+					if (winner > lc) { // we have a set of winners to decode
+						//winner = 3 + lc* (2+lc*(4))
+						//var decode = function (winner) {
+							wl = []
+							for (var s = 0; s < lc; s++) {
+								if (winner <= lc) {break}
+								wl.push(winner % lc)
+								winner = Math.floor(winner / lc)
+							}
+							wl.push(winner)
+						//	return wl
+						//}
+						colorlist = []
+						for (w in wl) {colorlist.push(Candidate.graphics[canAid[wl[w]] || "square"].fill)}
+						self.gridb[i] = colorlist
+						var a = "#ccc" // grey is actually a code for "look for more colors"
+					} else {
+						var a = Candidate.graphics[canAid[winner] || "square"].fill
+					}
+					// if (a == "#ccc") {a = "#ddd"} // hack for now, but will deal with ties later
 					self.gridx.push(x);
 					self.gridy.push(y);
 					self.gridl.push(a);
