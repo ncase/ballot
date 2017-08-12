@@ -113,6 +113,7 @@ function main(config){
 				return(system.name==model.system);
 			})[0];
 			model.voterType = votingSystem.voter;
+			model.ballotType = window[votingSystem.ballot];
 			model.election = votingSystem.election;
 
 			// Voters
@@ -189,6 +190,23 @@ function main(config){
 		model.election = Election.plurality;
 		model.onUpdate = function(){
 			model.election(model, {sidebar:true});
+			
+			// CREATE A BALLOT
+			var myNode = document.querySelector("#right");
+			while (myNode.firstChild) {
+				myNode.removeChild(myNode.firstChild);
+			}  // remove old one, if there was one
+			// document.querySelector("#ballot").remove()	
+			if (config.oneVoter) {
+				window.ballot = new model.ballotType();
+				document.querySelector("#right").appendChild(ballot.dom);
+			} else {
+				document.querySelector("#right").appendChild(model.caption);
+			}
+			
+			if (config.oneVoter) {
+				ballot.update(model.voters[0].ballot);
+			}
 		};
 
 		// In Position!
@@ -223,7 +241,7 @@ function main(config){
 
 		};
 
-
+		
 		//////////////////////////////////
 		// BUTTONS - WHAT VOTING SYSTEM //
 		//////////////////////////////////
@@ -231,14 +249,14 @@ function main(config){
 
 		// Which voting system?
 		var votingSystems = [
-			{name:"FPTP", voter:PluralityVoter, election:Election.plurality, margin:4},
-			{name:"IRV", voter:RankedVoter, election:Election.irv},
-			{name:"Borda", voter:RankedVoter, election:Election.borda, margin:4},
-			{name:"Condorcet", voter:RankedVoter, election:Election.condorcet},
-			{name:"Approval", voter:ApprovalVoter, election:Election.approval, margin:4},
-			{name:"Score", voter:ScoreVoter, election:Election.score},
-			{name:"STAR", voter:ScoreVoter, election:Election.star, margin:4},
-			{name:"3-2-1", voter:ThreeVoter, election:Election.three21}
+			{name:"FPTP", voter:PluralityVoter, ballot:"PluralityBallot", election:Election.plurality, margin:4},
+			{name:"IRV", voter:RankedVoter, ballot:"RankedBallot", election:Election.irv},
+			{name:"Borda", voter:RankedVoter, ballot:"RankedBallot", election:Election.borda, margin:4},
+			{name:"Condorcet", voter:RankedVoter, ballot:"RankedBallot", election:Election.condorcet},
+			{name:"Approval", voter:ApprovalVoter, ballot:"ApprovalBallot", election:Election.approval, margin:4},
+			{name:"Score", voter:ScoreVoter, ballot:"ScoreBallot", election:Election.score},
+			{name:"STAR", voter:ScoreVoter, ballot:"ScoreBallot", election:Election.star, margin:4},
+			{name:"3-2-1", voter:ThreeVoter, ballot:"ThreeBallot", election:Election.three21}
 		];
 		var onChooseSystem = function(data){
 
@@ -247,6 +265,8 @@ function main(config){
 
 			// no reset...
 			model.voterType = data.voter;
+			model.ballotType = window[data.ballot];
+			
 			for(var i=0;i<model.voters.length;i++){
 				model.voters[i].setType(data.voter);
 			}
@@ -911,12 +931,25 @@ function main(config){
 	};
 
 	Loader.load([
+		
+		// the peeps
 		"img/voter_face.png",
 		"img/square.png",
 		"img/triangle.png",
 		"img/hexagon.png",
 		"img/pentagon.png",
-		"img/bob.png"
+		"img/bob.png",
+
+		// Ballot instructions
+		"img/ballot_fptp.png",
+		"img/ballot_ranked.png",
+		"img/ballot_approval.png",
+		"img/ballot_range.png",
+
+		// The boxes
+		"img/ballot_box.png",
+		"img/ballot_rate.png"
+
 	]);
 
 	//if(config.sandboxsave) resetDOM.onclick();
