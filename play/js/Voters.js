@@ -780,17 +780,33 @@ function SingleVoter(config){
 	var self = this;
 	Draggable.call(self, config);
 
+
+	// not sure if we need all these, but just in case
+	self.num = 1;
+	self.vid = 0;
+	self.snowman = false;
+	self.strategy = config.strategy
+	self.frontrunnerSet = config.frontrunnerSet
+
+
 	// WHAT TYPE?
 	self.type = new config.type(self.model);
+	self.setType = function(newType){
+		self.type = new newType(self.model);
+	};
 
 	// Image!
 	self.img = new Image();
 	self.img.src = "img/voter_face.png";
 
+	
+	self.points = [[0,0]];
+
 	// UPDATE!
 	self.ballot = null;
 	self.update = function(){
-		self.ballot = self.type.getBallot(self.x, self.y, self.model.strategy, config);
+		self.ballot = self.type.getBallot(self.x, self.y, self.strategy, config);
+		self.ballots = [self.ballot]
 	};
 
 	// DRAW!

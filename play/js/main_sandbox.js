@@ -130,8 +130,13 @@ function main(config){
 			}
 			for(var i=0; i<num; i++){
 				var pos = voterPositions[i];
+				if (config.oneVoter) {
+					var dist1 = SingleVoter
+				} else {
+					var dist1 = GaussianVoters
+				}
 				model.addVoters({
-					dist: GaussianVoters,
+					dist: dist1,
 					type: model.voterType,
 					strategy: config.voterStrategies[i],
 					percentStrategy: config.voterPercentStrategy[i],
@@ -263,17 +268,19 @@ function main(config){
 		
 		// How many voters?
 		var voters = [
-			{name:"1", num:1, margin:4},
-			{name:"2", num:2, margin:4},
-			{name:"3", num:3, margin:4},
+			{name:"&#50883;", num:1, margin:5, oneVoter:true},
+			{name:"1", num:1, margin:5},
+			{name:"2", num:2, margin:5},
+			{name:"3", num:3, margin:5},
 			{name:"&#x2603;", num:3, snowman:true},
 		];
 		var onChooseVoters = function(data){
 
 			// update config...
 			config.voters = data.num;
-
+			
 			config.snowman = data.snowman || false;
+			config.oneVoter = data.oneVoter || false;
 			// save candidates before switching!
 			config.candidatePositions = save().candidatePositions;
 
@@ -288,7 +295,7 @@ function main(config){
 		};
 		window.chooseVoters = new ButtonGroup({
 			label: "how many groups of voters?",
-			width: 52,
+			width: 40,
 			data: voters,
 			onChoose: onChooseVoters
 		});
@@ -673,6 +680,7 @@ function main(config){
 		var onChooseComputeMethod = function(data){
 			config.computeMethod = data.name
 			model.computeMethod = data.name
+			if (model.yeeon) {model.calculateYee(); model.update()}
 		};
 		window.chooseComputeMethod = new ButtonGroup({
 			label: "method of computing yee diagram:",

@@ -241,6 +241,7 @@ function Model(config){
 		// calculate yee if its turned on and we haven't already calculated it ( we aren't dragging the yee object)
 		if (self.yeeon && Mouse.dragging != self.yeeobject) self.calculateYee()
 		
+		
 		// Clear it all!
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -321,7 +322,9 @@ function Model(config){
 				ctx.fillText(text, x, y);
 			}
 			ctx.textAlign = "center";
-			drawStroked("yee-yee!",x*2,y*2);		
+			ctx.globalAlpha = 0.9
+			drawStroked("yee-yee!",x*2,y*2+50);		
+			ctx.globalAlpha = 1
 		}
 
 		// Update!
