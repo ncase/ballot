@@ -93,6 +93,7 @@ function Model(config){
 		WIDTH = ctx.canvas.width;
 		HEIGHT = ctx.canvas.height;
 		doArrayWay = true
+		var winners
 		if (doArrayWay) {
 			// put candidate information into arrays
 			var canA = [], canAid = [], xc = [], yc = [], fillc = [] , revCan = {} // candidates
@@ -171,7 +172,10 @@ function Model(config){
 			if (recompileyee) {
 				fastyee = createKernelYee(lc,lv,WIDTH,HEIGHT,pixelsize)
 			}
-			winners = fastyee(xc,yc,xf,yf,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove)
+			//method = "gpu"
+			//method = "js"
+			method = self.computeMethod
+			winners = fastyee(xc,yc,xf,yf,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method)
 			
 		}
 		self.gridx = [];
@@ -185,7 +189,7 @@ function Model(config){
 		for(var x=.5*pixelsize, cx=0; x<=WIDTH; x+= pixelsize, cx++) {
 			for(var y=.5*pixelsize, cy=0; y<=HEIGHT; y+= pixelsize, cy++) {
 				if (doArrayWay) {
-					var a = Candidate.graphics[canAid[Math.round(winners[i])]].fill
+					var a = Candidate.graphics[canAid[Math.round(winners[i])] || "square"].fill
 					if (a == "#ccc") {a = "#ddd"} // hack for now, but will deal with ties later
 					self.gridx.push(x);
 					self.gridy.push(y);

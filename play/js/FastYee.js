@@ -816,20 +816,27 @@ return winner3
 
 
 
-function fastyee(xc,yc,xf,yf,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove) {
+function fastyee(xc,yc,xf,yf,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method) {
 	// have not implemented frontrunners yet
 	if (whichtypetomove == "voter"){
 		votergrouptomove = movethisidx
-		// return cubeVoterToWinner(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
-		return superKernelVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).slice(0,li)
-		// // return superKernel3Voter(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
-		// return cubeVoterToWinnerJ(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix,lc,li,lv)
+		
+		if (method == "gpu") {
+			// return cubeVoterToWinner(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+			return superKernelVoter(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).slice(0,li)
+			// // return superKernel3Voter(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+		} else if (method == "js") {
+			return cubeVoterToWinnerJ(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix,lc,li,lv)
+		}
 	} else if (whichtypetomove == "candidate"){
 		candidatetomove = movethisidx
-		// return cubeCandidateToWinner(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
-		return superKernelCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).slice(0,li)
-		// // return superKernel3Candidate(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
-		// return cubeCandidateToWinnerJ(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix,lc,li,lv)
+		if (method == "gpu") {
+			// return cubeCandidateToWinner(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+			return superKernelCandidate(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix).slice(0,li)
+			// // return superKernel3Candidate(xv,yv,xc,yc,xvcenter,yvcenter,vg,votergrouptomove,pixelsize,liy,lix).toArray(gpu).slice(0,li)
+		} else if (method == "js") {
+			return cubeCandidateToWinnerJ(xv,yv,xc,yc,candidatetomove,pixelsize,liy,lix,lc,li,lv)
+		}
 	}
 }
 

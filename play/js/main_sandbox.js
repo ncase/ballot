@@ -77,6 +77,11 @@ function main(config){
 		
 		config.unstrategic = config.unstrategic || "zero strategy. judge on an absolute scale.";
 		config.keyyee = config.keyyee || "off";
+		config.computeMethod = config.computeMethod || "js";
+		var url = window.location.pathname;
+		var filename = url.substring(url.lastIndexOf('/')+1);
+		config.filename = filename
+		config.presethtmlname = filename;
 		config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 		initialConfig = JSON.parse(JSON.stringify(config));
 
@@ -103,6 +108,7 @@ function main(config){
 			model.numOfVoters = config.voters;
 			model.system = config.system;
 			model.frontrunnerSet = config.frontrunnerSet;
+			model.computeMethod = config.computeMethod;
 			var votingSystem = votingSystems.filter(function(system){
 				return(system.name==model.system);
 			})[0];
@@ -164,6 +170,8 @@ function main(config){
 			} else if (config.kindayee=="voter") {
 				model.yeeobject = model.voters[config.keyyee]
 			} else if (config.kindayee=="off") {
+				model.yeeobject = undefined
+			} else { // if yeeobject is not defined
 				model.yeeobject = undefined
 			}
 			if (model.yeeobject) {model.yeeon = true} else {model.yeeon = false}
@@ -612,17 +620,19 @@ function main(config){
 		document.querySelector("#left").insertBefore(choosegearconfig.dom,doms["systems"]);
 
 		// get current filename, in order to go back to the original intended preset
-		var url = window.location.pathname;
-		var filename = url.substring(url.lastIndexOf('/')+1);
-		main(loadpreset(filename));
 
-		var presetnames = ["O","SA"]
-		var presethtmlnames = [filename,"sandbox.html"]
-		var presetdescription = ["original intended preset","sandbox"]
+
+		// var presetnames = ["O","SA"]
+		// var presethtmlnames = [config.filename,"sandbox.html"]
+		// var presetdescription = ["original intended preset","sandbox"]
+
+		var presetnames = ["S"]
+		var presethtmlnames = ["sandbox.html"]
+		var presetdescription = ["sandbox"]
 
 		// and fill in the rest
 		for (var i=1;i<=14;i++) {presetnames.push("e"+i) ; presethtmlnames.push("election"+i+".html") ; presetdescription.push("election"+i+".html")}
-		
+		presetnames.push("O") ; presethtmlnames.push(filename) ; presetdescription.push("original intended preset")
 		// TODO
 		//for (var i=1;i<=12;i++) {presetnames.push("b"+i) ; presethtmlnames.push("ballot"+i+".html") ; presetdescription.push("ballot"+i+".html")}
 		
@@ -634,7 +644,7 @@ function main(config){
 		var onChoosepresetconfig = function(data){
 			if (data.isOn) {
 				var firstletter = data.htmlname[0]
-				if (firstletter == 'e') {
+				if (firstletter == 'e' || firstletter == 's') {
 					config = loadpreset(data.htmlname)
 					loadDefaults()
 					model.reset(true);
@@ -655,6 +665,24 @@ function main(config){
 		choosepresetconfig.dom.hidden = true
 		document.querySelector("#left").insertBefore(choosepresetconfig.dom,doms["systems"]);
 		
+		if(window.choosepresetconfig) choosepresetconfig.highlight("htmlname", config.presethtmlname);
+		// only do this once.  Otherwise it would be in SelectUI
+
+
+		var computeMethod = [{name:"gpu",margin:4},{name:"js"}]
+		var onChooseComputeMethod = function(data){
+			config.computeMethod = data.name
+			model.computeMethod = data.name
+		};
+		window.chooseComputeMethod = new ButtonGroup({
+			label: "method of computing yee diagram:",
+			width: 38,
+			data: computeMethod,
+			onChoose: onChooseComputeMethod
+		});
+		chooseComputeMethod.dom.hidden = true
+		document.querySelector("#left").insertBefore(chooseComputeMethod.dom,doms["systems"]);
+		
 		// gear button (combines with above)
 		
 		var gearicon = [{name:"config"}]
@@ -662,9 +690,11 @@ function main(config){
 			if (data.isOn) {
 				choosegearconfig.dom.hidden = false
 				choosepresetconfig.dom.hidden = false
+				chooseComputeMethod.dom.hidden = false
 			} else {
 				choosegearconfig.dom.hidden = true
 				choosepresetconfig.dom.hidden = true
+				chooseComputeMethod.dom.hidden = true
 			}
 		};
 		window.choosegearicon = new ButtonGroup({
@@ -702,6 +732,7 @@ function main(config){
 			}
 			if(window.chooseyeeobject) chooseyeeobject.highlight("keyyee", config.keyyee);
 			if(window.choosegearconfig) choosegearconfig.highlight("realname", new Set(config.featurelist));
+			if(window.chooseComputeMethod) chooseComputeMethod.highlight("name", config.computeMethod);
 			
 		};
 		selectUI();
