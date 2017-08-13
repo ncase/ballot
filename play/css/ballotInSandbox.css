@@ -3,16 +3,17 @@ BALLOT DESIGN
 **********************/
 
 #right{
-	width: auto
+	width: auto;
+	height: auto;
 }
 
 #ballot{
 
 	width: 375px;
-	height: 250px;
+	height: 350px;
 	margin-left: 0px;
 	margin-bottom: 0px;
-	margin-top: 20px;
+	margin-top: 30px;
 
 	background: #F0EAD6;
 	color: #302707;
@@ -21,7 +22,7 @@ BALLOT DESIGN
 	border: 2px solid #fff;
 
 	position: relative;
-	
+	transform: translate(-50px,-50px) scale(.8);
 
 }
 

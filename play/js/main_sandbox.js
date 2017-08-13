@@ -44,7 +44,10 @@ function main(config){
 		config.system = config.system || "FPTP";
 		config.candidates = config.candidates || 3;
 		config.voters = config.voters || 1;
-		
+		config.snowman = config.snowman || false;
+		//config.votersRealName = config.votersRealName || "Single Voter";
+		config.oneVoter = config.oneVoter || false;
+
 		config.features = config.features || 0; // 1-basic, 2-voters, 3-candidates, 4-save
 		if (       config.features == 0 && ! config.featurelist) {config.featurelist = ["systems"]  // old spec
 		} else if (config.features == 1) {config.featurelist = ["systems"]
@@ -73,11 +76,10 @@ function main(config){
 		for (i in [0,1,2]) {
 			config.voterPercentStrategy[i] = config.voterPercentStrategy[i] || 0
 		}
-		config.snowman = config.snowman || false;
 		
 		config.unstrategic = config.unstrategic || "zero strategy. judge on an absolute scale.";
 		config.keyyee = config.keyyee || "off";
-		config.computeMethod = config.computeMethod || "js";
+		config.computeMethod = config.computeMethod || "ez";
 		var url = window.location.pathname;
 		var filename = url.substring(url.lastIndexOf('/')+1);
 		config.filename = filename
@@ -106,6 +108,7 @@ function main(config){
 			// Based on config... what should be what?
 			model.numOfCandidates = config.candidates;
 			model.numOfVoters = config.voters;
+			model.votersRealName = voters.filter( function(x){return (x.num==config.voters && (x.snowman||false)==config.snowman && (x.oneVoter||false) == config.oneVoter) })[0].realname
 			model.system = config.system;
 			model.frontrunnerSet = config.frontrunnerSet;
 			model.computeMethod = config.computeMethod;
@@ -288,11 +291,11 @@ function main(config){
 		
 		// How many voters?
 		var voters = [
-			{name:"&#50883;", num:1, margin:5, oneVoter:true},
-			{name:"1", num:1, margin:5},
-			{name:"2", num:2, margin:5},
-			{name:"3", num:3, margin:5},
-			{name:"&#x2603;", num:3, snowman:true},
+			{realname: "Single Voter", name:"&#50883;", num:1, margin:5, oneVoter:true},
+			{realname: "One Group", name:"1", num:1, margin:5},
+			{realname: "Two Groups", name:"2", num:2, margin:5},
+			{realname: "Three Groups", name:"3", num:3, margin:5},
+			{realname: "Different Sized Groups (like a snowman)", name:"&#x2603;", num:3, snowman:true},
 		];
 		var onChooseVoters = function(data){
 
@@ -301,6 +304,7 @@ function main(config){
 			
 			config.snowman = data.snowman || false;
 			config.oneVoter = data.oneVoter || false;
+			model.votersRealName = data.realname;
 			// save candidates before switching!
 			config.candidatePositions = save().candidatePositions;
 
@@ -748,7 +752,7 @@ function main(config){
 		var selectUI = function(){
 			if(window.chooseSystem) chooseSystem.highlight("name", model.system);
 			if(window.chooseCandidates) chooseCandidates.highlight("num", model.numOfCandidates);
-			if(window.chooseVoters) chooseVoters.highlight("num", model.numOfVoters);
+			if(window.chooseVoters) chooseVoters.highlight("realname", model.votersRealName);
 			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[0].percentStrategy);
 			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
 			if(window.chooseVoterStrategyOff) chooseVoterStrategyOff.highlight("realname", model.voters[0].unstrategic);
@@ -941,14 +945,14 @@ function main(config){
 		"img/bob.png",
 
 		// Ballot instructions
-		"img/ballot_fptp.png",
-		"img/ballot_ranked.png",
-		"img/ballot_approval.png",
-		"img/ballot_range.png",
+		"img/ballot5_fptp.png",
+		"img/ballot5_ranked.png",
+		"img/ballot5_approval.png",
+		"img/ballot5_range.png",
 
 		// The boxes
-		"img/ballot_box.png",
-		"img/ballot_rate.png"
+		"img/ballot5_box.png",
+		"img/ballot5_rate.png"
 
 	]);
 

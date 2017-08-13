@@ -6,18 +6,29 @@ What does the base Ballot class need to do?
 
 ******************/
 
+
+// are we in a sandbox or election?
+var url = window.location.pathname;
+var filename = url.substring(url.lastIndexOf('/')+1);
+var firstletter = filename[0]
+var inSandbox = (firstletter == "e" || firstletter == "s")
 function ScoreBallot(config){
 
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_range.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_range.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
 	self.boxes = {
 		square: self.createRate(133, 100, 0),
 		triangle: self.createRate(133, 143, 3),
-		hexagon: self.createRate(133, 184, 1)
+		hexagon: self.createRate(133, 184, 1),
+		pentagon: self.createRate(133, 226, 1),
+		bob: self.createRate(133, 268, 1)
 	};
 
 	// On update...
@@ -35,13 +46,18 @@ function ThreeBallot(config){
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_range3.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_range3.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
 	self.boxes = {
 		square: self.createThree(133, 100, 0),
 		triangle: self.createThree(133, 143, 3),
-		hexagon: self.createThree(133, 184, 1)
+		hexagon: self.createThree(133, 184, 1),
+		pentagon: self.createThree(133, 226, 1),
+		bob: self.createThree(133, 268, 1)
 	};
 
 	// On update...
@@ -59,13 +75,18 @@ function ApprovalBallot(config){
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_approval.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_approval.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
 	self.boxes = {
 		square: self.createBox(26, 98, 0),
 		triangle: self.createBox(26, 140, 1),
-		hexagon: self.createBox(26, 184, 0)
+		hexagon: self.createBox(26, 184, 0),
+		pentagon: self.createBox(26, 228, 0),
+		bob: self.createBox(26, 272, 0)
 	};
 
 	// On update...
@@ -92,13 +113,18 @@ function RankedBallot(config){
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_ranked.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_ranked.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
 	self.boxes = {
 		square: self.createBox(26, 98, 0),
 		triangle: self.createBox(26, 140, 1),
-		hexagon: self.createBox(26, 184, 0)
+		hexagon: self.createBox(26, 184, 0),
+		pentagon: self.createBox(26, 228, 0),
+		bob: self.createBox(26, 272, 0)
 	};
 
 	// On update...
@@ -117,13 +143,18 @@ function PluralityBallot(config){
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_fptp.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_fptp.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
 	self.boxes = {
 		square: self.createBox(26, 98, 0),
 		triangle: self.createBox(26, 140, 1),
-		hexagon: self.createBox(26, 184, 0)
+		hexagon: self.createBox(26, 184, 0),
+		pentagon: self.createBox(26, 228, 0),
+		bob: self.createBox(26, 272, 0)
 	};
 
 	// On update...
@@ -173,6 +204,14 @@ function Ballot(config){
 
 	};
 	self.createBox = function(x,y,frame){
+		if (inSandbox) {
+			return self.createSprite({
+				img: "img/ballot5_box.png",
+				x:x, y:y,
+				w:50, h:50,
+				frame:frame
+			});	
+		}
 		return self.createSprite({
 			img: "img/ballot_box.png",
 			x:x, y:y,
@@ -181,6 +220,14 @@ function Ballot(config){
 		});
 	};
 	self.createRate = function(x,y,frame){
+		if (inSandbox) {
+			return self.createSprite({
+				img: "img/ballot5_rate.png",
+				x:x, y:y,
+				w:225, h:50,
+				frame:frame
+			});
+		}
 		return self.createSprite({
 			img: "img/ballot_rate.png",
 			x:x, y:y,
@@ -189,6 +236,14 @@ function Ballot(config){
 		});
 	};
 	self.createThree = function(x,y,frame){
+		if (inSandbox) {
+			return self.createSprite({	
+				img: "img/ballot5_three.png",
+				x:x, y:y,
+				w:225, h:50,
+				frame:frame
+			});
+		}
 		return self.createSprite({
 			img: "img/ballot_three.png",
 			x:x, y:y,
