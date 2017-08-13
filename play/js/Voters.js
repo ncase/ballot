@@ -48,7 +48,7 @@ function makeGetScore( rangescore,mindist ,maxdist ) {return makeGetScore1(makeS
 function makeGetScore2(rangescore,mindist2,maxdist2) {return makeGetScore1(makeScoreScale2(rangescore,mindist2,maxdist2))}
 // just a composition of two functions above
 
-function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontrunnerSet,candidates,radiusStep,getScore) {
+function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,preFrontrunnerIds,candidates,radiusStep,getScore) {
 	// I think there is a division by zero error sometimes when trying normalization.
 	
 	// set the circle radii
@@ -75,9 +75,8 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 	}
 	
 	
-	frontrunnerSet = frontrunnerSet || new Set(["square"]);
-	var frontrunners = Array.from(frontrunnerSet)
-	lastwinner = frontrunners[0]; // just for now hack
+	preFrontrunnerIds = preFrontrunnerIds || ["square","triangle"];
+	lastwinner = preFrontrunnerIds[0]; // just for now hack
 	
 	var mindist2 = 999999999;
 	var maxdist2 = -1;
@@ -171,8 +170,8 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontru
 			var iminfront = 0;
 			for(var i=0; i<candidates.length; i++){
 				var c = candidates[i];
-				for(var j = 0; j < frontrunners.length; j++) {
-					var cf = frontrunners[j]
+				for(var j = 0; j < preFrontrunnerIds.length; j++) {
+					var cf = preFrontrunnerIds[j]
 					if (c.id == cf) {
 						var testd = dista[i];
 						if(testd < minfront) {
@@ -254,7 +253,7 @@ function ScoreVoter(model){
 	self.getBallot = function(x, y, strategy, config){
 
 		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
+		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
 		
 		self.radiusFirst = scoresfirstlast.radiusFirst
 		self.radiusLast = scoresfirstlast.radiusLast
@@ -280,6 +279,7 @@ function ScoreVoter(model){
 			ctx.setLineDash([]);
 			if (self.dottedCircle) ctx.setLineDash([5, 15]);
 			ctx.stroke();
+			if (self.dottedCircle) ctx.setLineDash([]);
 		}
 
 	};
@@ -333,7 +333,7 @@ function ThreeVoter(model){
 	self.getBallot = function(x, y, strategy, config){
 
 		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
+		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
 		
 		self.radiusFirst = scoresfirstlast.radiusFirst
 		self.radiusLast = scoresfirstlast.radiusLast
@@ -359,6 +359,7 @@ function ThreeVoter(model){
 			ctx.setLineDash([]);
 			if (self.dottedCircle) ctx.setLineDash([5, 15]);
 			ctx.stroke();
+			if (self.dottedCircle) ctx.setLineDash([]);
 		}
 
 	};
@@ -406,7 +407,7 @@ function ApprovalVoter(model){
 	self.getBallot = function(x, y, strategy,  config){
 		
 		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(x,y,0,1,[0,1],strategy,self.model.idlastwinner,self.model.frontrunnerSet,self.model.candidates,self.radiusStep,self.getScore)
+		var scoresfirstlast = dostrategy(x,y,0,1,[0,1],strategy,self.model.idlastwinner,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
 		var scores = scoresfirstlast.scores
 		
 		
@@ -548,12 +549,12 @@ function PluralityVoter(model){
 	self.getBallot = function(x, y, strategy,  config){
 
 		// Who am I closest to? Use their fill
-		var checkOnlyFrontrunners = (strategy!="zero strategy. judge on an absolute scale." && config.frontrunnerSet.size > 1)
+		var checkOnlyFrontrunners = (strategy!="zero strategy. judge on an absolute scale." && config.preFrontrunnerIds.length > 1)
 		var closest = null;
 		var closestDistance = Infinity;
 		for(var j=0;j<self.model.candidates.length;j++){
 			var c = self.model.candidates[j];
-			if(checkOnlyFrontrunners && ! config.frontrunnerSet.has(c.id)  ) {
+			if(checkOnlyFrontrunners && ! config.preFrontrunnerIds.includes(c.id)  ) {
 				continue // skip this candidate because he isn't one of the 2 or more frontrunners, so we can't vote for him
 			}
 			var dx = c.x-x;
@@ -685,7 +686,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 	self.percentStrategy = config.percentStrategy
 	self.strategy = config.strategy
 	self.unstrategic = config.unstrategic
-	self.frontrunnerSet = config.frontrunnerSet
+	self.preFrontrunnerIds = config.preFrontrunnerIds
 
 	// HACK: larger grab area
 	self.radius = 50;
@@ -792,7 +793,7 @@ function SingleVoter(config){
 	self.percentStrategy = config.percentStrategy
 	self.strategy = config.strategy
 	self.unstrategic = config.unstrategic
-	self.frontrunnerSet = config.frontrunnerSet
+	self.preFrontrunnerIds = config.preFrontrunnerIds
 
 
 	// WHAT TYPE?

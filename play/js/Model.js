@@ -108,7 +108,7 @@ function Model(config){
 				xc.push(c.x*2) // remember the 2
 				yc.push(c.y*2)
 				fillc.push(c.fill)
-				if (model.frontrunnerSet.has(c.id)) {
+				if (model.preFrontrunnerIds.includes(c.id)) {
 					// fAid.push(can)
 					// fA.push(c)
 					f.push(i)
