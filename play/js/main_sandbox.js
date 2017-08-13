@@ -811,8 +811,6 @@ function main(config){
 		var resetDOM = document.createElement("div");
 		resetDOM.id = "reset";
 		resetDOM.innerHTML = "reset";
-		resetDOM.style.top = "340px";
-		resetDOM.style.left = "350px";
 		resetDOM.onclick = function(){
 
 			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
@@ -916,25 +914,11 @@ function main(config){
 				// yay.
 				descText.value = initialConfig.description;
 			}
-			// Move that reset button
-			if (config.sandboxsave) {
-				resetDOM.style.top = "470px";
-				resetDOM.style.left = "235px";
-			} else {
-				resetDOM.style.top = "340px";
-				resetDOM.style.left = "245px";
-			}
 			// Create a "save" button
 			var saveDOM = document.createElement("div");
 			saveDOM.id = "save";
 			saveDOM.innerHTML = "save:";
-			if (config.sandboxsave) {
-				saveDOM.style.top = "470px";
-				saveDOM.style.left = "350px";
-			} else {
-				saveDOM.style.top = "340px";
-				saveDOM.style.left = "350px";
-			}
+			
 			saveDOM.onclick = function(){
 				_saveModel();
 			};

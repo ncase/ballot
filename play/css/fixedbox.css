@@ -16,7 +16,20 @@
 	border-bottom-color: #888;
 }
 
+#reset{
+	position:absolute;
+	top: 700px;
+	left: 00px;
+}
+
+#save{
+	position:absolute;
+	top: 700px;
+	left: 110px;
+}
+
 #description_container{
+	display: none;
 	clear: both;
 	overflow: hidden;
 	width: 800px;
@@ -24,12 +37,14 @@
 	margin-bottom: 15px;
 }
 textarea, input{
+	display: none;
 	display: block;
     border: 1px solid #bbb;
     resize: none;
     font-family: Arial, sans-serif;
 }
 #description_container textarea{
+	display: none;
     width: 778px;
     height: 97px;
     padding: 10px;
@@ -38,10 +53,12 @@ textarea, input{
 
 #savelink{
 	position: absolute;
-    top: 471px;
-    left: 460px;
+    top: 700px;
+    left: 220px;
     width: 82px;
     height: 15px;
     padding: 8px;
     font-size: 12px;
 }
+
+

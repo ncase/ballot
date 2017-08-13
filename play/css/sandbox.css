@@ -16,6 +16,18 @@
 	border-bottom-color: #888;
 }
 
+#reset{
+	position:absolute;
+	top: 470px;
+	left: 235px;
+}
+
+#save{
+	position:absolute;
+	top: 470px;
+	left: 350px;
+}
+
 #description_container{
 	clear: both;
 	overflow: hidden;

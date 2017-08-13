@@ -135,6 +135,10 @@ li{
 	background:#fff;
 	border:20px solid #fff;
 }
+#fixedbox{
+	transform-origin: left;
+	transform: scale(.5);
+}
 #end{
 	font-size: 18px;
 	line-height: 1.5em;
