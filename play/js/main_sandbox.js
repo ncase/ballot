@@ -952,7 +952,8 @@ function main(config){
 
 		// The boxes
 		"img/ballot5_box.png",
-		"img/ballot5_rate.png"
+		"img/ballot_rate.png",
+		"img/ballot_three.png"
 
 	]);
 

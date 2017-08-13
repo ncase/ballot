@@ -49,7 +49,7 @@ function makeGetScore2(rangescore,mindist2,maxdist2) {return makeGetScore1(makeS
 // just a composition of two functions above
 
 function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,frontrunnerSet,candidates,radiusStep,getScore) {
-	
+	// I think there is a division by zero error sometimes when trying normalization.
 	
 	// set the circle radii
 	// starnormfrontrunners and justfirstandlast don't have good representations yet
@@ -804,6 +804,7 @@ function SingleVoter(config){
 
 	// UPDATE!
 	self.ballot = null;
+	self.ballots = [];
 	self.update = function(){
 		self.ballot = self.type.getBallot(self.x, self.y, self.strategy, config);
 		self.ballots = [self.ballot]

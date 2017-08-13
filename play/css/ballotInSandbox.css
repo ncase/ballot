@@ -2,18 +2,14 @@
 BALLOT DESIGN
 **********************/
 
-#right{
-	width: auto;
-	height: auto;
-}
 
 #ballot{
 
-	width: 375px;
-	height: 350px;
+	width: 210px;
+	height: 195px;
 	margin-left: 0px;
 	margin-bottom: 0px;
-	margin-top: 30px;
+	margin-top: 0px;
 
 	background: #F0EAD6;
 	color: #302707;
@@ -22,8 +18,7 @@ BALLOT DESIGN
 	border: 2px solid #fff;
 
 	position: relative;
-	transform: translate(-50px,-50px) scale(.8);
-
+	
 }
 
 #ballot .ballot_sprite{

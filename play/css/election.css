@@ -20,7 +20,7 @@ Election/Sandbox design:
 	height: 370px;
 }
 #right{
-	width:376px;
+	width: 220px;
 	padding-left: 20px;
 	overflow-y: auto;
 }
