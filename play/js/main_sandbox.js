@@ -716,6 +716,21 @@ function main(config){
 		// only do this once.  Otherwise it would be in SelectUI
 
 
+		// Also handle messages from the parent window
+		function bindEvent(element, eventName, eventHandler) {
+            if (element.addEventListener) {
+                element.addEventListener(eventName, eventHandler, false);
+            } else if (element.attachEvent) {
+                element.attachEvent('on' + eventName, eventHandler);
+            }
+        }
+        // Listen to messages from parent window
+        bindEvent(window, 'message', function (e) {
+			onChoosepresetconfig({htmlname:e.data})
+        });
+
+
+
 		var computeMethod = [{name:"gpu",margin:4},{name:"js",margin:4},{name:"ez"}]
 		var onChooseComputeMethod = function(data){
 			config.computeMethod = data.name
