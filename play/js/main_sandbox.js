@@ -673,34 +673,32 @@ function main(config){
 		for (i in presetnames) presetconfig.push({name:presetnames[i],realname:presetdescription[i],htmlname:presethtmlnames[i],margin:4})
 
 		var onChoosepresetconfig = function(data){
-			if (data.isOn) {
-				var firstletter = data.htmlname[0]
-				if (firstletter == 'e' || firstletter == 's') {
-					config = loadpreset(data.htmlname)
-					loadDefaults()
-					model.reset(true);
-					model.onInit();
-					setInPosition();
-					selectUI();
-				} else if (firstletter == 'b') {
-					//document.location.replace(data.htmlname);
-					ballotconfig = loadpreset(data.htmlname)
-					var systemTranslator = {Plurality:"FPTP",Ranked:"Condorcet",Approval:"Approval",Score:"Score",Three:"3-2-1"}
-					config = {}
-					config.system = systemTranslator[ballotconfig.system]
-					var s = ballotconfig.strategy || "zero strategy. judge on an absolute scale."
-					config.voterStrategies = [s,s,s]
-					config.frontrunnerSet = ballotconfig.frontrunnerSet
-					config.featurelist = []
-					if (ballotconfig.showChoiceOfFrontrunners) {config.featurelist.push("frontrunners")}
-					if (ballotconfig.showChoiceOfStrategy) {config.featurelist.push("strategy")}
-					config.oneVoter = true
-					loadDefaults()
-					model.reset(true);
-					model.onInit();
-					setInPosition();
-					selectUI();
-				}
+			var firstletter = data.htmlname[0]
+			if (firstletter == 'e' || firstletter == 's') {
+				config = loadpreset(data.htmlname)
+				loadDefaults()
+				model.reset(true);
+				model.onInit();
+				setInPosition();
+				selectUI();
+			} else if (firstletter == 'b') {
+				//document.location.replace(data.htmlname);
+				ballotconfig = loadpreset(data.htmlname)
+				var systemTranslator = {Plurality:"FPTP",Ranked:"Condorcet",Approval:"Approval",Score:"Score",Three:"3-2-1"}
+				config = {}
+				config.system = systemTranslator[ballotconfig.system]
+				var s = ballotconfig.strategy || "zero strategy. judge on an absolute scale."
+				config.voterStrategies = [s,s,s]
+				config.frontrunnerSet = ballotconfig.frontrunnerSet
+				config.featurelist = []
+				if (ballotconfig.showChoiceOfFrontrunners) {config.featurelist.push("frontrunners")}
+				if (ballotconfig.showChoiceOfStrategy) {config.featurelist.push("strategy")}
+				config.oneVoter = true
+				loadDefaults()
+				model.reset(true);
+				model.onInit();
+				setInPosition();
+				selectUI();
 			}
 		};
 		window.choosepresetconfig = new ButtonGroup({

@@ -102,12 +102,7 @@
 		</p>
 		</div>
 
-    <h1>Parent Window</h1>
-    <p>Send Message: <button id="message_button">Hi there iframe</button></p>
-    <p>Got Message:</p>
-    <div id="results"></div>
-    <br/>
-
+    <p>Send Message: <button id="message_button">load election 4</button></p>
     <script>
         // addEventListener support for IE8
         function bindEvent(element, eventName, eventHandler) {
@@ -117,39 +112,19 @@
                 element.attachEvent('on' + eventName, eventHandler);
             }
         }
-
-        // var iframeSource = 'sandbox.html';
-
-        // // Create the iframe
-        // var iframe = document.createElement('sandbox');
-        // iframe.setAttribute('src', iframeSource);
-        // iframe.setAttribute('id', 'the_iframe');
-        // iframe.style.width = 450 + 'px';
-        // iframe.style.height = 200 + 'px';
-        // document.body.appendChild(iframe);
-
         // Send a message to the child iframe
         var iframeEl = document.getElementById('sandbox'),
-            messageButton = document.getElementById('message_button'),
-            results = document.getElementById('results');
-
-
+            messageButton = document.getElementById('message_button');
         // Send a message to the child iframe
         var sendMessage = function(msg) {
             // Make sure you are sending a string, and to stringify JSON
             iframeEl.contentWindow.postMessage(msg, '*');
         };
-
         // Send random messge data on every button click
         bindEvent(messageButton, 'click', function (e) {
-            var random = Math.random();
-            sendMessage('' + random);
+            sendMessage('election4.html');
         });
 
-        // Listen to message from child window
-        bindEvent(window, 'message', function (e) {
-            results.innerHTML = e.data;
-        });
     </script>
 	</div>
 </body>
