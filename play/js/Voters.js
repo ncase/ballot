@@ -68,7 +68,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,preFron
 			var dist2 = dx*dx+dy*dy;
 			dist2a.push(dist2)
 			scores[c.id] = getScore(dist2);
-		}
+		}f
 		
 		var scoresfirstlast = {scores:scores, radiusFirst:radiusFirst , radiusLast:radiusLast, dottedCircle:dottedCircle}
 		return scoresfirstlast;
@@ -250,7 +250,7 @@ function ScoreVoter(model){
 		return 0;
 	};
 
-	self.getBallot = function(x, y, strategy, config){
+	self.getBallot = function(x, y, strategy){
 
 		self.model.idlastwinner = "square"
 		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
@@ -330,7 +330,7 @@ function ThreeVoter(model){
 		return 0;
 	};
 
-	self.getBallot = function(x, y, strategy, config){
+	self.getBallot = function(x, y, strategy){
 
 		self.model.idlastwinner = "square"
 		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
@@ -404,7 +404,7 @@ function ApprovalVoter(model){
 		return (x2<self.approvalRadius**2) ? 1 : 0
 	};
 
-	self.getBallot = function(x, y, strategy,  config){
+	self.getBallot = function(x, y, strategy){
 		
 		self.model.idlastwinner = "square"
 		var scoresfirstlast = dostrategy(x,y,0,1,[0,1],strategy,self.model.idlastwinner,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
@@ -465,7 +465,7 @@ function RankedVoter(model){
 	var self = this;
 	self.model = model;
 
-	self.getBallot = function(x, y, strategy,  config){
+	self.getBallot = function(x, y, strategy){
 
 		// Rank the peeps I'm closest to...
 		var rank = [];
@@ -546,15 +546,15 @@ function PluralityVoter(model){
 	var self = this;
 	self.model = model;
 
-	self.getBallot = function(x, y, strategy,  config){
+	self.getBallot = function(x, y, strategy){
 
 		// Who am I closest to? Use their fill
-		var checkOnlyFrontrunners = (strategy!="zero strategy. judge on an absolute scale." && config.preFrontrunnerIds.length > 1)
+		var checkOnlyFrontrunners = (strategy!="zero strategy. judge on an absolute scale." && model.preFrontrunnerIds.length > 1)
 		var closest = null;
 		var closestDistance = Infinity;
 		for(var j=0;j<self.model.candidates.length;j++){
 			var c = self.model.candidates[j];
-			if(checkOnlyFrontrunners && ! config.preFrontrunnerIds.includes(c.id)  ) {
+			if(checkOnlyFrontrunners && ! model.preFrontrunnerIds.includes(c.id)  ) {
 				continue // skip this candidate because he isn't one of the 2 or more frontrunners, so we can't vote for him
 			}
 			var dx = c.x-x;
@@ -759,7 +759,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 				var strategy = self.unstrategic; // no e.g. "zero strategy. judge on an absolute scale."
 			}
 			
-			var ballot = self.type.getBallot(x, y, strategy, config);
+			var ballot = self.type.getBallot(x, y, strategy);
 			self.ballots.push(ballot);
 		}
 	};
@@ -813,7 +813,7 @@ function SingleVoter(config){
 	self.ballot = null;
 	self.ballots = [];
 	self.update = function(){
-		self.ballot = self.type.getBallot(self.x, self.y, self.strategy, config);
+		self.ballot = self.type.getBallot(self.x, self.y, self.strategy);
 		self.ballots = [self.ballot]
 	};
 
