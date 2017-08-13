@@ -392,6 +392,15 @@ kindayee: "can",
 	doFullStrategyConfig: true,
 	doPercentFirst: true
 }
+    } else if (htmlname == "fixedbox.html") {
+		config = 
+{
+	description: "",
+	features: 4,
+	system: "FPTP",
+	candidates: 5,
+	voters: 1,
+}
     } else if (htmlname == "ballot1.html") {
 		config = 
 {system: "Plurality"}

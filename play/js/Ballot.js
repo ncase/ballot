@@ -11,7 +11,7 @@ What does the base Ballot class need to do?
 var url = window.location.pathname;
 var filename = url.substring(url.lastIndexOf('/')+1);
 var firstletter = filename[0]
-var inSandbox = (firstletter == "e" || firstletter == "s")
+var inSandbox = (firstletter == "e" || firstletter == "s" || firstletter == "f")
 var sc = 1 // scale factor also is present in  setting width and height in ballotInSandbox.css
 if(inSandbox) {sc = 210/375}
 

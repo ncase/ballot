@@ -674,7 +674,7 @@ function main(config){
 
 		var onChoosepresetconfig = function(data){
 			var firstletter = data.htmlname[0]
-			if (firstletter == 'e' || firstletter == 's') {
+			if (firstletter == 'e' || firstletter == 's' || firstletter == 'f') {
 				config = loadpreset(data.htmlname)
 				loadDefaults()
 				model.reset(true);

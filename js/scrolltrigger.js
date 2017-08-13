@@ -25,8 +25,27 @@ function maketrigger(divname,f,htmlname) {
     .on('start', function() {return f(htmlname)})
     .addTo(ctrl);
 }
-maketrigger("#b4toptrigger",sendMessage,'ballot4.html')
-maketrigger("#b4bottomtrigger",sendMessage,'ballot4.html')
-maketrigger("#b5toptrigger",sendMessage,'ballot5.html')
-maketrigger("#b5bottomtrigger",sendMessage,'ballot5.html')
+// maketrigger("#ballot4.html-toptrigger",sendMessage,'ballot4.html')
+// maketrigger("#b4bottomtrigger",sendMessage,'ballot4.html')
+// maketrigger("#b5toptrigger",sendMessage,'ballot5.html')
+// maketrigger("#b5bottomtrigger",sendMessage,'ballot5.html')
+//ballot4t
+
+// get all class triggers
+var triggers = document.getElementsByClassName("spacer")
+for (var i in triggers) {
+    // var divname = triggers[i].id
+    // var htmlname = divname.split("")[0]
+    var id1 = triggers[i].id
+    if (id1) {
+            
+        var divname = id1
+        //var htmlname = id1.substring(0, id1.length - 1) + ".html"
+        
+        var htmlname = id1.slice(0, -1) + ".html"
+        maketrigger("#"+divname,sendMessage,htmlname)
+    }
+}
+
+
 // Open console to see output!

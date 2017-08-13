@@ -36,8 +36,7 @@
 </head>
 <body>
 	
-	<div class="spacer" id="b4toptrigger"></div>
-	<iframe id="arena" src="sandbox/sandbox.html" width="352" height="1080" scrolling="yes" style="
+	<iframe id="arena" src="sandbox/fixedbox.html" width="352" height="1080" scrolling="yes" style="
 		margin-top: 0 !important;
 		position: fixed;
 		top: 0;"></iframe>
@@ -152,6 +151,7 @@ THE SPOILER EFFECT
 
 	</div>
 	
+	<div class="spacer" id="ballot4t"></div>
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
@@ -185,8 +185,6 @@ THE SPOILER EFFECT
 
 	<p>I used to think that median voting methods were the best. But then I did the simulations I'll talk about below, and they were merely OK; not much better outcomes than approval voting, but without the simplicity. I still think they're hugely better than FPTP and a bit better than IRV, but I'm not sold enough on them for it to be worth my time programming them in to Nicky's simulator.</p>
 
-	<div class="spacer" id="b4bottomtrigger"></div>
-	<div class="spacer" id="b5toptrigger"></div>
 
 	<h1 id="postmedian>">Lightly-strategic voting: "normalization"</h1>
 
@@ -195,6 +193,9 @@ THE SPOILER EFFECT
 	<p>Here's an example of a "normalizing" voter for you to play with:</p>
 
 	</div>
+
+	<div class="spacer" id="ballot4b"></div>
+	<div class="spacer" id="ballot5t"></div>
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Normalizing Voter</h2>
@@ -203,10 +204,12 @@ THE SPOILER EFFECT
 		<iframe src="play/ballot5.html" width="655" height="256" scrolling="no"></iframe>
 
 	</div>
+	
+	<div class="spacer" id="ballot5b"></div>
+	<div class="spacer" id="election7t"></div>
 	<div class="words">
 		<p><em>Description: this should be like ncase's "drag the voter" examples, with a normalizing score voter. This voter should have a series of circles, where the closest one intersects the closest candidate and the farthest one the farthest candidate. Thus, as you moved the voter or candidates the circles would change size.</em></p>
 
-	<div class="spacer" id="b5bottomtrigger"></div>
 	<p>As soon as voters are using strategy in score voting — even a very slight amount of strategy, such as normalization — it is no longer fully exempt from impossibility theorems like Arrow's theorem. In particular, it no longer obeys independence of irrelevant alternatives (IIA); adding or removing a losing candidate can change how voters normalize, and thus change who wins. For instance, in the simulation below, try moving the losing yellow traingle candidate, and see what happens.</p>
 
 	</div>
@@ -224,6 +227,8 @@ THE SPOILER EFFECT
 	<p>But a bigger problem than IIA violation, which in the real world is relatively hard to engineer or take advantage of, is the issue of differential voting power. In the following election, one of the groups of voters normalizes, and the other one doesn't. The two groups are the same size, but the normalizing group gets a candidate they like a lot better.</p>
 
 	</div>
+	<div class="spacer" id="election7b"></div>
+	<div class="spacer" id="election8t"></div>
 	<div class="sim-test">
 
 		<p class="caption-test">
@@ -239,6 +244,8 @@ THE SPOILER EFFECT
 
 
 	</div>
+	<div class="spacer" id="election8b"></div>
+	<div class="spacer" id="ballot8t"></div>
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Strong Strategic Voter</h2>
@@ -256,6 +263,8 @@ THE SPOILER EFFECT
 	<p> Even stronger strategic voters could only choose the best of the frontrunners.</p>
 		
 		</div>
+	<div class="spacer" id="ballot8b"></div>
+	<div class="spacer" id="ballot11t"></div>
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Best Frontrunner</h2>
@@ -269,6 +278,9 @@ THE SPOILER EFFECT
 	<p> A more risk-averse, safe strategic voter could avoid the worst frontrunner by voting for everyone better.</p>
 		
 		</div>
+
+	<div class="spacer" id="ballot11b"></div>
+	<div class="spacer" id="ballot12t"></div>
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Not the Worst Frontrunner</h2>
@@ -290,6 +302,8 @@ THE SPOILER EFFECT
 
 
 	</div>
+	<div class="spacer" id="ballot12b"></div>
+	<div class="spacer" id="election10t"></div>
 	<div class="sim-test">
 
 		<p class="caption-test">
@@ -308,6 +322,8 @@ THE SPOILER EFFECT
 
 
 	</div>
+	<div class="spacer" id="election10b"></div>
+	<div class="spacer" id="election11t"></div>
 	<div class="sim-test">
 
 		<p class="caption-test">
@@ -316,6 +332,8 @@ THE SPOILER EFFECT
 		<iframe src="play/election11.html" width="802" height="380" scrolling="no"></iframe>
 
 	</div>
+	<div class="spacer" id="election11b"></div>
+	<div class="spacer" id="election12t"></div>
 	<div class="sim-test">
 
 		<p class="caption-test">
@@ -335,6 +353,8 @@ THE SPOILER EFFECT
 	<p>"Star", or more precisely, "s+ar", stands for "score plus automatic runoff." In this method, voters use the same ballot as score voting. Between the two candidates with the highest scores, the winner is the one that comes higher on more ballots. Here's a one-voter star election. You can choose between three kinds of strategy: normalized, moderately strategic, and strongly strategic. The first and last kinds you've seen before. The third is almost like a strongly strategic voter, except that the ratings may be changed by one to avoid giving a frontrunner the same score as any other candidate. Here's a one-voter election:</p>
 
 	</div>
+	<div class="spacer" id="election12b"></div>
+	<div class="spacer" id="ballot9t"></div>
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Star Strong</h2>
@@ -350,6 +370,8 @@ THE SPOILER EFFECT
 	<p>And here's the chicken dilemma you saw above:</p>
 
 	</div>
+	<div class="spacer" id="ballot9b"></div>
+	<div class="spacer" id="election13t"></div>
 	<div class="sim-test">
 
 		<p class="caption-test">
@@ -367,6 +389,8 @@ THE SPOILER EFFECT
 	<p>In 3-2-1 voting, voters rate each candidate "Good", "OK", or "Bad". To find the winner, you first narrow it down to three semifinalists, the candidates with the most "good" ratings. Then, narrow it further to two finalists, the candidates with the fewest "bad" ratings. Finally, the winner is the one preferred on more ballots. Here's a ballot to play with:</p>
 
 	</div>
+	<div class="spacer" id="election13b"></div>
+	<div class="spacer" id="ballot10t"></div>
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">321 Strategic</h2>
@@ -382,6 +406,8 @@ THE SPOILER EFFECT
 	<p>And here's the chicken dilemma. Note "moderately strategic" doesn't change the result from "normalized". So unlike in star voting, candidates wouldn't have to go negative against their nearby rivals in order to ensure that their voters would at least be moderately strategic and wouldn't just normalize.</p>
 
 	</div>
+	<div class="spacer" id="ballot10t"></div>
+	<div class="spacer" id="election14t"></div>
 	<div class="sim-test">
 
 		<p class="caption-test">
@@ -398,6 +424,8 @@ THE SPOILER EFFECT
 
 	</div>
 	
+	<div class="spacer" id="election14b"></div>
+	<div class="spacer" id="sandboxt"></div>
 <!-- - - - - - - - -
 
 PART IV:
@@ -1289,6 +1317,6 @@ PART V: THE END
 
 </body>
 <script type="text/javascript" src="js/index.js"></script>
+</html>
 <script type="text/javascript" src="js/ScrollMagic.js"></script>
 <script type="text/javascript" src="js/scrolltrigger.js"></script>
-</html>
