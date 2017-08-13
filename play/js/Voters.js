@@ -48,7 +48,9 @@ function makeGetScore( rangescore,mindist ,maxdist ) {return makeGetScore1(makeS
 function makeGetScore2(rangescore,mindist2,maxdist2) {return makeGetScore1(makeScoreScale2(rangescore,mindist2,maxdist2))}
 // just a composition of two functions above
 
-function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,preFrontrunnerIds,candidates,radiusStep,getScore) {
+
+
+function dostrategy(x,y,minscore,maxscore,rangescore,strategy,preFrontrunnerIds,candidates,radiusStep,getScore) {
 	// I think there is a division by zero error sometimes when trying normalization.
 	
 	// set the circle radii
@@ -76,7 +78,6 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,preFron
 	
 	
 	preFrontrunnerIds = preFrontrunnerIds || ["square","triangle"];
-	lastwinner = preFrontrunnerIds[0]; // just for now hack
 	
 	var mindist2 = 999999999;
 	var maxdist2 = -1;
@@ -151,18 +152,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,lastwinner,preFron
 	} else if (strategy == "threshold" || strategy == "not the worst frontrunner" || strategy == "best frontrunner" || strategy == "normalize frontrunners only" || strategy == "starnormfrontrunners") {
 		var dista = []
 		for (i in dist2a) dista[i] = Math.sqrt(dist2a[i])
-		if (strategy == "threshold") {
-			var windex = 0;
-			for(var i=0; i<candidates.length; i++){
-				var c = candidates[i];
-				if (c.id == lastwinner) windex = i;
-			}
-			var d_threshold = dista[windex];
-			var thresholdit = function(d) {return (d<d_threshold) ? maxscore : minscore} // don't vote for the best frontrunner. just those who are better
-			radiusFirst = d_threshold;
-			radiusLast = d_threshold;
-			dottedCircle = true;
-		} else if (strategy == "best frontrunner" || strategy == "not the worst frontrunner" || strategy == "normalize frontrunners only" || strategy == "starnormfrontrunners") {
+		if (strategy == "best frontrunner" || strategy == "not the worst frontrunner" || strategy == "normalize frontrunners only" || strategy == "starnormfrontrunners") {
 			var windex = [];
 			var maxfront = 0;
 			var imaxfront = 0;
@@ -252,8 +242,8 @@ function ScoreVoter(model){
 
 	self.getBallot = function(x, y, strategy){
 
-		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
+		
+		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
 		
 		self.radiusFirst = scoresfirstlast.radiusFirst
 		self.radiusLast = scoresfirstlast.radiusLast
@@ -332,8 +322,8 @@ function ThreeVoter(model){
 
 	self.getBallot = function(x, y, strategy){
 
-		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.idlastwinner,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
+		
+		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
 		
 		self.radiusFirst = scoresfirstlast.radiusFirst
 		self.radiusLast = scoresfirstlast.radiusLast
@@ -406,8 +396,8 @@ function ApprovalVoter(model){
 
 	self.getBallot = function(x, y, strategy){
 		
-		self.model.idlastwinner = "square"
-		var scoresfirstlast = dostrategy(x,y,0,1,[0,1],strategy,self.model.idlastwinner,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
+		
+		var scoresfirstlast = dostrategy(x,y,0,1,[0,1],strategy,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
 		var scores = scoresfirstlast.scores
 		
 		
