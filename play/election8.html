@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/model.css">
 	<link rel="stylesheet" type="text/css" href="css/election.css">
+	<link rel="stylesheet" type="text/css" href="css/ballotInSandbox.css">
 </head>
 <body>
 	<div id="left"></div>
@@ -22,43 +23,8 @@
 <script src="js/Voters.js"></script>
 <script src="js/Election.js"></script>
 <script src="js/Buttons.js"></script>
+<script src="js/Ballot.js"></script>
 <script src="js/seedrandom.min.js"></script>
 
 <script src="js/main_sandbox.js"></script>
-<script>
-main({
-
-	/*
-	features:3,
-	system: "Score",
-
-	candidates: 3,
-	candidatePositions: [[100,150],[150,150+100],[300-100,150]],
-	
-	voters: 2,
-	voterPositions: [[100,150],[300-100,150]],
-	voterStrategies: ["normalize","zero strategy. judge on an absolute scale."],
-	frontrunnerSet: new Set(["square","hexagon"])
-	*/
-	
-candidatePositions: [[50,150],[250,150]],
-voterPositions: [[100,150],[200,150]],
-system: "Score",
-candidates: 2,
-voters: 2,
-voterStrategies: ["normalize","normalize","zero strategy. judge on an absolute scale."],
-frontrunnerSet: new Set(["square","hexagon"]),
-featurelist: ["percentstrategy"],
-sandboxsave: false,
-hidegearconfig: false,
-description: "",
-voterPercentStrategy: ["70","49",0],
-snowman: false,
-unstrategic: "zero strategy. judge on an absolute scale.",
-keyyee: "off",
-features: undefined,
-doPercentFirst: undefined,
-doFullStrategyConfig: undefined,
-	
-});
-</script>
+<script src="js/Presets.js"></script>

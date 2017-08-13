@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/model.css">
 	<link rel="stylesheet" type="text/css" href="css/election.css">
+	<link rel="stylesheet" type="text/css" href="css/ballotInSandbox.css">
 </head>
 <body>
 	<div id="left"></div>
@@ -22,48 +23,8 @@
 <script src="js/Voters.js"></script>
 <script src="js/Election.js"></script>
 <script src="js/Buttons.js"></script>
+<script src="js/Ballot.js"></script>
 <script src="js/seedrandom.min.js"></script>
 
 <script src="js/main_sandbox.js"></script>
-<script>
-main({
-/*
-	features:3,
-	doPercentFirst:true,
-	system: "IRV",
-
-	candidates: 4,
-	candidatePositions: [[150-25,150-20],
-						 [150+20,150-20],
-						 [150,150+75],
-						 [150+0,150+10]],
-	
-	voters: 3,
-	voterPositions: [[150,150-70],
-						 [150,150+10],
-						 [150,150+90]],
-	voterStrategies: ["normalize frontrunners only","normalize frontrunners only","normalize frontrunners only"],
-	voterPercentStrategy: [100,100,100],
-	frontrunnerSet: new Set(['square','triangle','hexagon'])
-	*/
-	
-candidatePositions: [[145,155],[184,153],[106,157]],
-voterPositions: [[150,150]],
-system: "IRV",
-candidates: 3,
-voters: 1,
-voterStrategies: ["zero strategy. judge on an absolute scale.","normalize frontrunners only","normalize frontrunners only"],
-voterPercentStrategy: ["100",100,100],
-frontrunnerSet: new Set(["square","triangle","hexagon"]),
-featurelist: ["systems"],
-sandboxsave: false,
-hidegearconfig: false,
-description: "",
-snowman: false,
-unstrategic: "zero strategy. judge on an absolute scale.",
-keyyee: "off",
-features: undefined,
-doPercentFirst: undefined,
-doFullStrategyConfig: undefined,
-});
-</script>
+<script src="js/Presets.js"></script>

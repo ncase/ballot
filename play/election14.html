@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/model.css">
 	<link rel="stylesheet" type="text/css" href="css/election.css">
+	<link rel="stylesheet" type="text/css" href="css/ballotInSandbox.css">
 </head>
 <body>
 	<div id="left"></div>
@@ -22,48 +23,8 @@
 <script src="js/Voters.js"></script>
 <script src="js/Election.js"></script>
 <script src="js/Buttons.js"></script>
+<script src="js/Ballot.js"></script>
 <script src="js/seedrandom.min.js"></script>
 
 <script src="js/main_sandbox.js"></script>
-<script>
-main({
-/*
-	features:3,
-	doPercentFirst:true,
-	system: "3-2-1",
-
-	candidates: 3,
-	candidatePositions: [[150-25,150-20],
-						 [150+20,150-20],
-						 [150,150+75]],
-	
-	voters: 3,
-	voterPositions: [[150,150-70],
-						 [150,150+10],
-						 [150,150+90]],
-	voterStrategies: ["starnormfrontrunners","starnormfrontrunners","starnormfrontrunners"],
-	voterPercentStrategy: [100,100,100],
-	frontrunnerSet: new Set(['square','triangle','hexagon'])
-	*/
-	
-candidatePositions: [[121,149],[118,170],[194,159]],
-voterPositions: [[116,121],[116,184],[195,155]],
-system: "3-2-1",
-candidates: 3,
-voters: 3,
-voterStrategies: ["best frontrunner","best frontrunner","best frontrunner"],
-voterPercentStrategy: ["100","100",100],
-frontrunnerSet: new Set(["square","triangle","hexagon"]),
-featurelist: ["percentstrategy"],
-sandboxsave: false,
-hidegearconfig: false,
-description: "",
-snowman: true,
-unstrategic: "normalize",
-keyyee: "off",
-kindayee: "off",
-features: undefined,
-doPercentFirst: undefined,
-doFullStrategyConfig: undefined
-});
-</script>
+<script src="js/Presets.js"></script>

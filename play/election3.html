@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/model.css">
 	<link rel="stylesheet" type="text/css" href="css/election.css">
+	<link rel="stylesheet" type="text/css" href="css/ballotInSandbox.css">
 </head>
 <body>
 	<div id="left"></div>
@@ -22,24 +23,8 @@
 <script src="js/Voters.js"></script>
 <script src="js/Election.js"></script>
 <script src="js/Buttons.js"></script>
+<script src="js/Ballot.js"></script>
 <script src="js/seedrandom.min.js"></script>
 
 <script src="js/main_sandbox.js"></script>
-<script>
-main({
-	
-	features:1,
-	
-	system: "Borda",
-
-	candidates: 3,
-	candidatePositions: [[173,150],[275,150],[23,150]],
-	//candidates: 4,
-	//candidatePositions: [[174,175],[271,266],[23,149],[23,23]],
-
-	voters: 1,
-	voterPositions: [[232,150]]
-	// voterPositions: [[226,230]]
-
-});
-</script>
+<script src="js/Presets.js"></script>

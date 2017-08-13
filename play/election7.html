@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="css/model.css">
 	<link rel="stylesheet" type="text/css" href="css/election.css">
+	<link rel="stylesheet" type="text/css" href="css/ballotInSandbox.css">
 </head>
 <body>
 	<div id="left"></div>
@@ -22,22 +23,8 @@
 <script src="js/Voters.js"></script>
 <script src="js/Election.js"></script>
 <script src="js/Buttons.js"></script>
+<script src="js/Ballot.js"></script>
 <script src="js/seedrandom.min.js"></script>
 
 <script src="js/main_sandbox.js"></script>
-<script>
-main({
-	featurelist: ["percentstrategy"],
-	voterPercentStrategy: [100,0,0],
-	
-	system: "Score",
-
-	candidates: 3,
-	candidatePositions: [[150-30,150],[150+130,150],[150+50,150]],
-	
-	voters: 1,
-	voterPositions: [[150,150]],
-	voterStrategies: ["normalize"]
-	
-});
-</script>
+<script src="js/Presets.js"></script>

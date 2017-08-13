@@ -5,6 +5,7 @@
 	<base href="../play/"/>
 	<link rel="stylesheet" type="text/css" href="css/model.css">
 	<link rel="stylesheet" type="text/css" href="css/election.css">
+	<link rel="stylesheet" type="text/css" href="css/ballotInSandbox.css">
 	<link rel="stylesheet" type="text/css" href="css/sandbox.css">
 </head>
 <body>
@@ -19,22 +20,18 @@
 <script src="js/Loader.js"></script>
 <script src="js/Mouse.js"></script>
 <script src="js/Draggable.js"></script>
+
+<script src="js/gpu.js-develop/bin/gpu-core.js"></script>
+<script src="js/gpu.js-develop/bin/gpu.js"></script>
+<script src="js/FastYee.js"></script>
+
 <script src="js/Model.js"></script>
 <script src="js/Candidate.js"></script>
 <script src="js/Voters.js"></script>
 <script src="js/Election.js"></script>
 <script src="js/Buttons.js"></script>
+<script src="js/Ballot.js"></script>
 <script src="js/seedrandom.min.js"></script>
 
 <script src="js/main_sandbox.js"></script>
-<script>
-main({
-	description: "[type a description for your model here. for example...]\n\nLook, it's the whole shape gang! Steven Square, Tracy Triangle, Henry Hexagon, Percival Pentagon, and last but not least, Bob.",
-	features: 4,
-	system: "FPTP",
-	candidates: 5,
-	voters: 1,
-	doFullStrategyConfig: true,
-	doPercentFirst: true
-});
-</script>
+<script src="js/Presets.js"></script>

@@ -46,12 +46,7 @@ Election.score = function(model, options){
 		model.caption.innerHTML = text;
 	}
 	
-	if (model.dotop2) {
-		for (i in winners) delete tally[winners[i]]
-		var runnersup = _countWinner(tally);
-		var tops = winners.concat(runnersup)
-		model.top2 = tops.slice(0,2)
-	}
+	if (model.dotop2) model.top2 = _sortTally(tally).slice(0,2)
 };
 
 Election.star = function(model, options){
@@ -89,6 +84,8 @@ Election.star = function(model, options){
 		winner = frontrunners[1]
 	}
 	var color = _colorWinner(model, [winner]);
+
+	if (model.dotop2) model.top2 = frontrunners.slice(0,2)
 
 	if (!options.sidebar) return
 
@@ -153,6 +150,8 @@ Election.three21 = function(model, options){
 		winner = finalists[1]
 	}
 	var color = _colorWinner(model, [winner]);
+	
+	if (model.dotop2) model.top2 = finalists.slice(0,2)
 
 	if (!options.sidebar) return
 
@@ -201,6 +200,8 @@ Election.approval = function(model, options){
 
 	var color = _colorWinner(model, winners);
 	
+	if (model.dotop2) model.top2 = _sortTally(tally).slice(0,2)
+
 	if (!options.sidebar) return
 
 	// Caption
@@ -289,7 +290,7 @@ Election.condorcet = function(model, options){
 	// probably it would be better to find the smith set but this is okay for now
 	topWinners = _countWinner(tally);
 	var color = _colorWinner(model, topWinners);
-
+	if (model.dotop2) model.top2 = _sortTally(tally).slice(0,2)
 	if (!options.sidebar) return
 	
 	var topWinner = topWinners[0];
@@ -331,6 +332,7 @@ Election.borda = function(model, options){
 	});
 	var winners = _countLoser(tally); // LOWER score is best!
 	var color = _colorWinner(model, winners);
+	if (model.dotop2) model.top2 = _sortTallyRev(tally).slice(0,2)
 	if (!options.sidebar) return
 
 	// Caption
@@ -360,15 +362,15 @@ Election.irv = function(model, options){
 	var text = "";
 	text += "<span class='small'>";
 
-	var finalWinners = null;
+	var resolved = null;
 	var roundNum = 1;
 
 	var candidates = [];
 	for(var i=0; i<model.candidates.length; i++){
 		candidates.push(model.candidates[i].id);
 	}
-
-	while(!finalWinners){
+	var loserslist = []
+	while(!resolved){
 
 		text += "<b>round "+roundNum+":</b><br>";
 		text += "who's voters' #1 choice?<br>";
@@ -400,10 +402,10 @@ Election.irv = function(model, options){
 		var ratio = tally[winner]/model.getTotalVoters();
 		if(ratio>0.5){
 			if (winners.length >= 2) {	// won't happen bc ratio > .5	
-				finalWinners = "tie"; 
+				resolved = "tie"; 
 				break;
 			}
-			finalWinners = winners;
+			resolved = "done";
 			text += _icon(winner)+" has more than 50%<br>";
 			break;
 		}
@@ -411,7 +413,11 @@ Election.irv = function(model, options){
 		// Otherwise... runoff...
 		var losers = _countLoser(tally);
 		var loser = losers[0];
-		if (losers.length >= 2 & losers.length >= Object.keys(tally).length) {finalWinners = "tie"; break;}
+		if (losers.length >= candidates.length) {
+			resolved = "tie"; 
+			break;
+		}
+		loserslist = loserslist.concat(losers)
 
 		// ACTUALLY ELIMINATE
 		
@@ -424,19 +430,25 @@ Election.irv = function(model, options){
 			for(var i=0; i<ballots.length; i++){
 				var rank = ballots[i].rank;
 				rank.splice(rank.indexOf(loser), 1); // REMOVE THE LOSER
-			}			
+			}
 			// And repeat!
 			roundNum++;
 		}
 		text += "<br>"
 	
 	}
+	if (model.dotop2) {
+		loserslist = loserslist.concat(_sortTallyRev(tally))
+		var ll = loserslist.length
+		model.top2 = loserslist.slice(ll-1,ll).concat(loserslist.slice(ll-2,ll-1))
+	}
+	
 	
 	var color = _colorWinner(model, winners);
 
 	if (!options.sidebar) return
 
-	if (finalWinners == "tie") {
+	if (resolved == "tie") {
 		text += _tietext(winners);
 	} else {
 		// END!
@@ -459,6 +471,7 @@ Election.plurality = function(model, options){
 	});
 	var winners = _countWinner(tally);
 	var color = _colorWinner(model, winners);
+	if (model.dotop2) model.top2 = _sortTally(tally).slice(0,2)
 	if (!options.sidebar) return
 
 	// Caption
@@ -546,6 +559,30 @@ var _countWinner = function(tally){
 
 	return winners;
 
+}
+
+var _sortTally = function(tally){
+	
+	var frontrunners = [];
+
+	for (var i in tally) {
+	   frontrunners.push(i);
+	}
+	frontrunners.sort(function(a,b){return tally[b]-tally[a]})
+	
+	return frontrunners
+}
+
+var _sortTallyRev = function(tally){
+	
+	var frontrunners = [];
+
+	for (var i in tally) {
+	   frontrunners.push(i);
+	}
+	frontrunners.sort(function(a,b){return -tally[b]+tally[a]})
+	
+	return frontrunners
 }
 
 var _countLoser = function(tally){

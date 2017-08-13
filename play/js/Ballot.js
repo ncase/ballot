@@ -6,11 +6,23 @@ What does the base Ballot class need to do?
 
 ******************/
 
+
+// are we in a sandbox or election?
+var url = window.location.pathname;
+var filename = url.substring(url.lastIndexOf('/')+1);
+var firstletter = filename[0]
+var inSandbox = (firstletter == "e" || firstletter == "s")
+var sc = 1 // scale factor also is present in  setting width and height in ballotInSandbox.css
+if(inSandbox) {sc = 210/375}
+
 function ScoreBallot(config){
 
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_range.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_range.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
@@ -18,13 +30,22 @@ function ScoreBallot(config){
 		square: self.createRate(133, 100, 0),
 		triangle: self.createRate(133, 143, 3),
 		hexagon: self.createRate(133, 184, 1)
+	}
+	if (inSandbox) {
+		self.boxes["pentagon"] = self.createRate(133, 226, 1)
+		self.boxes["bob"] = self.createRate(133, 268, 1)
 	};
-
+	
 	// On update...
 	self.update = function(ballot){
+		// Clear all
+		var vote = ballot.vote;
+		for(var box in self.boxes){
+			self.boxes[box].gotoFrame(0);
+		}
 		for(var cID in ballot){
 			var score = ballot[cID];
-			self.boxes[cID].gotoFrame(score);
+			self.boxes[cID].gotoFrame(score+1);
 		}
 	};
 
@@ -35,6 +56,9 @@ function ThreeBallot(config){
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_range3.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_range3.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
@@ -43,12 +67,22 @@ function ThreeBallot(config){
 		triangle: self.createThree(133, 143, 3),
 		hexagon: self.createThree(133, 184, 1)
 	};
+	if (inSandbox) {
+		self.boxes["pentagon"] = self.createThree(133, 226, 1)
+		self.boxes["bob"] = self.createThree(133, 268, 1)
+	};
 
 	// On update...
 	self.update = function(ballot){
+		// Clear all
+		var vote = ballot.vote;
+		for(var box in self.boxes){
+			self.boxes[box].gotoFrame(0);
+		}
+
 		for(var cID in ballot){
 			var score = ballot[cID];
-			self.boxes[cID].gotoFrame(score);
+			self.boxes[cID].gotoFrame(score+1);
 		}
 	};
 
@@ -59,6 +93,9 @@ function ApprovalBallot(config){
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_approval.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_approval.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
@@ -66,6 +103,10 @@ function ApprovalBallot(config){
 		square: self.createBox(26, 98, 0),
 		triangle: self.createBox(26, 140, 1),
 		hexagon: self.createBox(26, 184, 0)
+	};
+	if (inSandbox) {
+		self.boxes["pentagon"] = self.createBox(26, 228, 0)
+		self.boxes["bob"] = self.createBox(26, 272, 0)
 	};
 
 	// On update...
@@ -92,6 +133,9 @@ function RankedBallot(config){
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_ranked.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_ranked.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
@@ -100,9 +144,18 @@ function RankedBallot(config){
 		triangle: self.createBox(26, 140, 1),
 		hexagon: self.createBox(26, 184, 0)
 	};
+	if (inSandbox) {
+		self.boxes["pentagon"] = self.createBox(26, 228, 0)
+		self.boxes["bob"] = self.createBox(26, 272, 0)
+	};
 
 	// On update...
 	self.update = function(ballot){
+		// Clear all
+		var vote = ballot.vote;
+		for(var box in self.boxes){
+			self.boxes[box].gotoFrame(0);
+		}
 		for(var i=0; i<ballot.rank.length; i++){
 			var candidate = ballot.rank[i];
 			var frame = 2 + i;
@@ -117,6 +170,9 @@ function PluralityBallot(config){
 	var self = this;
 	config = config || {};
 	config.bg = "img/ballot_fptp.png";
+	if (inSandbox) {
+		config.bg = "img/ballot5_fptp.png";
+	}
 	Ballot.call(self, config);
 
 	// BOXES!
@@ -124,6 +180,10 @@ function PluralityBallot(config){
 		square: self.createBox(26, 98, 0),
 		triangle: self.createBox(26, 140, 1),
 		hexagon: self.createBox(26, 184, 0)
+	};
+	if (inSandbox) {
+		self.boxes["pentagon"] = self.createBox(26, 228, 0)
+		self.boxes["bob"] = self.createBox(26, 272, 0)
 	};
 
 	// On update...
@@ -155,17 +215,17 @@ function Ballot(config){
 		sprite.dom = document.createElement("div");
 		sprite.dom.setAttribute("class", "ballot_sprite");
 		sprite.dom.style.backgroundImage = "url("+config.img+")";
-		sprite.dom.style.width = config.w+"px";
-		sprite.dom.style.height = config.h+"px";
-		sprite.dom.style.left = config.x+"px";
-		sprite.dom.style.top = config.y+"px";
+		sprite.dom.style.width = (sc*config.w)+"px";
+		sprite.dom.style.height = (sc*config.h)+"px";
+		sprite.dom.style.left = (sc*config.x)+"px";
+		sprite.dom.style.top = (sc*config.y)+"px";
 
 		// Add to my dom.
 		self.dom.appendChild(sprite.dom);
 
 		// Method.
 		sprite.gotoFrame = function(frame){
-			sprite.dom.style.backgroundPosition = "0px -"+(frame*config.h)+"px";
+			sprite.dom.style.backgroundPosition = "0px -"+(frame*sc*config.h)+"px";
 		};
 		sprite.gotoFrame(config.frame);
 
@@ -173,6 +233,14 @@ function Ballot(config){
 
 	};
 	self.createBox = function(x,y,frame){
+		if (inSandbox) {
+			return self.createSprite({
+				img: "img/ballot5_box.png",
+				x:x, y:y,
+				w:50, h:50,
+				frame:frame
+			});	
+		}
 		return self.createSprite({
 			img: "img/ballot_box.png",
 			x:x, y:y,
@@ -184,7 +252,7 @@ function Ballot(config){
 		return self.createSprite({
 			img: "img/ballot_rate.png",
 			x:x, y:y,
-			w:225, h:50,
+			w:216, h:40, // 270, 50
 			frame:frame
 		});
 	};
