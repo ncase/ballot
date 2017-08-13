@@ -36,6 +36,12 @@
 </head>
 <body>
 	
+	<div class="spacer" id="b4toptrigger"></div>
+	<iframe id="arena" src="sandbox/sandbox.html" width="352" height="1080" scrolling="yes" style="
+		margin-top: 0 !important;
+		position: fixed;
+		top: 0;"></iframe>
+
 	<!-- preloading images-->
 	<div style="display: none;">
 		<script type="text/javascript">
@@ -145,6 +151,7 @@ THE SPOILER EFFECT
 
 
 	</div>
+	
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
@@ -178,6 +185,9 @@ THE SPOILER EFFECT
 
 	<p>I used to think that median voting methods were the best. But then I did the simulations I'll talk about below, and they were merely OK; not much better outcomes than approval voting, but without the simplicity. I still think they're hugely better than FPTP and a bit better than IRV, but I'm not sold enough on them for it to be worth my time programming them in to Nicky's simulator.</p>
 
+	<div class="spacer" id="b4bottomtrigger"></div>
+	<div class="spacer" id="b5toptrigger"></div>
+
 	<h1 id="postmedian>">Lightly-strategic voting: "normalization"</h1>
 
 	<p>As I suggested above, in the real world, in score voting and similar methods, most voters will want to make sure that their ballot contains at least one candidate each at the top rating and at the bottom rating. The simplest way to do that (even though the name sounds complicated and math-y) is "normalization". That just means that you set the top and bottom ratings to be however good your favorite and least-favorite candidates are, and then spread the rest of the ratings evenly between that.</p>
@@ -196,6 +206,7 @@ THE SPOILER EFFECT
 	<div class="words">
 		<p><em>Description: this should be like ncase's "drag the voter" examples, with a normalizing score voter. This voter should have a series of circles, where the closest one intersects the closest candidate and the farthest one the farthest candidate. Thus, as you moved the voter or candidates the circles would change size.</em></p>
 
+	<div class="spacer" id="b5bottomtrigger"></div>
 	<p>As soon as voters are using strategy in score voting — even a very slight amount of strategy, such as normalization — it is no longer fully exempt from impossibility theorems like Arrow's theorem. In particular, it no longer obeys independence of irrelevant alternatives (IIA); adding or removing a losing candidate can change how voters normalize, and thus change who wins. For instance, in the simulation below, try moving the losing yellow traingle candidate, and see what happens.</p>
 
 	</div>
@@ -1277,5 +1288,7 @@ PART V: THE END
 </div>
 
 </body>
-<script src="js/index.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/ScrollMagic.js"></script>
+<script type="text/javascript" src="js/scrolltrigger.js"></script>
 </html>
