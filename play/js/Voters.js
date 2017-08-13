@@ -548,10 +548,14 @@ function PluralityVoter(model){
 	self.getBallot = function(x, y, strategy,  config){
 
 		// Who am I closest to? Use their fill
+		var checkOnlyFrontrunners = (strategy!="zero strategy. judge on an absolute scale." && config.frontrunnerSet.size > 1)
 		var closest = null;
 		var closestDistance = Infinity;
 		for(var j=0;j<self.model.candidates.length;j++){
 			var c = self.model.candidates[j];
+			if(checkOnlyFrontrunners && ! config.frontrunnerSet.has(c.id)  ) {
+				continue // skip this candidate because he isn't one of the 2 or more frontrunners, so we can't vote for him
+			}
 			var dx = c.x-x;
 			var dy = c.y-y;
 			var dist = dx*dx+dy*dy;
