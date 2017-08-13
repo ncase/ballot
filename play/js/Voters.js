@@ -785,7 +785,9 @@ function SingleVoter(config){
 	self.num = 1;
 	self.vid = 0;
 	self.snowman = false;
+	self.percentStrategy = config.percentStrategy
 	self.strategy = config.strategy
+	self.unstrategic = config.unstrategic
 	self.frontrunnerSet = config.frontrunnerSet
 
 

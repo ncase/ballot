@@ -665,7 +665,7 @@ function main(config){
 		for (var i=1;i<=14;i++) {presetnames.push("e"+i) ; presethtmlnames.push("election"+i+".html") ; presetdescription.push("election"+i+".html")}
 		presetnames.push("O") ; presethtmlnames.push(filename) ; presetdescription.push("original intended preset")
 		// TODO
-		//for (var i=1;i<=12;i++) {presetnames.push("b"+i) ; presethtmlnames.push("ballot"+i+".html") ; presetdescription.push("ballot"+i+".html")}
+		for (var i=1;i<=12;i++) {presetnames.push("b"+i) ; presethtmlnames.push("ballot"+i+".html") ; presetdescription.push("ballot"+i+".html")}
 		
 
 
@@ -683,7 +683,23 @@ function main(config){
 					setInPosition();
 					selectUI();
 				} else if (firstletter == 'b') {
-					document.location.replace(data.htmlname);
+					//document.location.replace(data.htmlname);
+					ballotconfig = loadpreset(data.htmlname)
+					var systemTranslator = {Plurality:"FPTP",Ranked:"Condorcet",Approval:"Approval",Score:"Score",Three:"3-2-1"}
+					config = {}
+					config.system = systemTranslator[ballotconfig.system]
+					var s = ballotconfig.strategy || "zero strategy. judge on an absolute scale."
+					config.voterStrategies = [s,s,s]
+					config.frontrunnerSet = ballotconfig.frontrunnerSet
+					config.featurelist = []
+					if (ballotconfig.showChoiceOfFrontrunners) {config.featurelist.push("frontrunners")}
+					if (ballotconfig.showChoiceOfStrategy) {config.featurelist.push("strategy")}
+					config.oneVoter = true
+					loadDefaults()
+					model.reset(true);
+					model.onInit();
+					setInPosition();
+					selectUI();
 				}
 			}
 		};
@@ -754,7 +770,11 @@ function main(config){
 			if(window.chooseCandidates) chooseCandidates.highlight("num", model.numOfCandidates);
 			if(window.chooseVoters) chooseVoters.highlight("realname", model.votersRealName);
 			if(window.choosePercentStrategy) choosePercentStrategy.highlight("num", model.voters[0].percentStrategy);
-			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
+			if(window.chooseVoterStrategyOn) {
+				if (model.voters[0].strategy != "starnormfrontrunners") { // kind of a hack for now, but I don't really want another button
+					chooseVoterStrategyOn.highlight("realname", model.voters[0].strategy);
+				}
+			}
 			if(window.chooseVoterStrategyOff) chooseVoterStrategyOff.highlight("realname", model.voters[0].unstrategic);
 			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
 			if(stratsliders) {

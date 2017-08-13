@@ -392,6 +392,87 @@ kindayee: "can",
 	doFullStrategyConfig: true,
 	doPercentFirst: true
 }
+    } else if (htmlname == "ballot1.html") {
+		config = 
+{system: "Plurality"}
+
+    } else if (htmlname == "ballot2.html") {
+		config = 
+{system: "Ranked"}
+
+    } else if (htmlname == "ballot3.html") {
+		config = 
+{system: "Approval"}
+
+    } else if (htmlname == "ballot4.html") {
+		config = 
+{system: "Score"}
+
+    } else if (htmlname == "ballot5.html") {
+		config = 
+{
+	system: "Score",
+	strategy: "normalize"
+}
+    } else if (htmlname == "ballot6.html") {
+		config = 
+{
+	system: "Score",
+	strategy: "best frontrunner",
+	frontrunnerSet: new Set(["square","triangle"]),
+	showChoiceOfFrontrunners: true,
+	showChoiceOfStrategy: true
+}
+    } else if (htmlname == "ballot7.html") {
+		config = 
+{
+	system: "Score",
+	strategy: "not the worst frontrunner",
+	showChoiceOfFrontrunners: true
+}
+    } else if (htmlname == "ballot8.html") {
+		config = 
+{
+	system: "Score",
+	strategy: "normalize frontrunners only",
+	frontrunnerSet: new Set(["square","triangle"]),
+	showChoiceOfFrontrunners: true,
+	showChoiceOfStrategy: true
+}
+    } else if (htmlname == "ballot9.html") {
+		config = 
+{
+	system: "Score",
+	strategy: "starnormfrontrunners", // for now we are using an "off-menu" option.  We should make versions of each of hte strategies for star.
+	frontrunnerSet: new Set(["square","triangle"]),
+	showChoiceOfFrontrunners: true
+}
+    } else if (htmlname == "ballot10.html") {
+		config = 
+{
+	system: "Three",
+	strategy: "starnormfrontrunners",
+	frontrunnerSet: new Set(["square","triangle"]),
+	showChoiceOfFrontrunners: true
+}
+    } else if (htmlname == "ballot11.html") {
+		config = 
+{
+	system: "Score",
+	strategy: "best frontrunner",
+	frontrunnerSet: new Set(["square","triangle"]),
+	showChoiceOfFrontrunners: true,
+	showChoiceOfStrategy: true
+}
+    } else if (htmlname == "ballot12.html") {
+		config = 
+{
+	system: "Score",
+	strategy: "not the worst frontrunner",
+	frontrunnerSet: new Set(["square","triangle"]),
+	showChoiceOfFrontrunners: true,
+	showChoiceOfStrategy: true
+}
     // } else if (htmlname == "election.html") {
 	// 	config = 
 
