@@ -4,7 +4,7 @@
 }
 
 #main {
-	width: 75%;
+	width: 70%;
 	float: right;
 }
 
@@ -25,6 +25,7 @@
 #nav nav {
 	position: fixed;
 	width: 25%;
+	height: 10%;
 }
 
 #nav a {
@@ -39,4 +40,13 @@
 #nav a:hover, #nav a.active {
 	background: #666;
 	color: #fff;
+}
+
+#fixedbox {
+	top: 15%;
+	width: 49%;
+	height: 1080px;
+	position: fixed;
+	transform-origin: top left;
+	transform: scale(.6)
 }

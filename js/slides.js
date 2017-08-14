@@ -3,10 +3,11 @@ $('#nav nav a').on('click', function(event) {
 	$(this).addClass('active');
 });
 var old_div = null;
-var window_height = $(window).height();
+var globalHtmlName = "ballot4.html"
 var exampleLoaded = null
+
 $(window).on('scroll', function() {
-	
+	var window_height = $(window).height();
 	$('.target').each(function() {
 		var scrollMiddle = $(window).scrollTop() + (window_height/2);
 		elTop = $(this).offset().top;
@@ -19,8 +20,11 @@ $(window).on('scroll', function() {
 			$('#nav nav a[href=#'+ id +']').addClass('active');
 			$(this).css('background-color',"#00ff00");
 			if (id!=old_div) {
-				exampleLoaded = $(this).attr('exampleLoad')
-				window.alert(exampleLoaded)
+				globalHtmlName = $(this).attr('exampleLoad')
+				$('#example div').html(exampleLoaded)
+				msg = ''
+				var iframeEl = document.getElementById('fixedbox')
+				iframeEl.contentWindow.postMessage(msg, '*');
 			}
 			old_div = id
 		} else {
