@@ -33,6 +33,11 @@ function maketrigger(divname,f,htmlname) {
 
 // get all class triggers
 var triggers = document.getElementsByClassName("spacer")
+
+var sendGlobalHtmlMessage = function(htmlname) {
+    globalHtmlName = htmlname
+    iframeEl.contentWindow.postMessage(globalHtmlName, '*');
+}
 for (var i in triggers) {
     // var divname = triggers[i].id
     // var htmlname = divname.split("")[0]
@@ -43,7 +48,7 @@ for (var i in triggers) {
         //var htmlname = id1.substring(0, id1.length - 1) + ".html"
         
         var htmlname = id1.slice(0, -1) + ".html"
-        maketrigger("#"+divname,sendMessage,htmlname)
+        maketrigger("#"+divname,sendGlobalHtmlMessage,htmlname)
     }
 }
 

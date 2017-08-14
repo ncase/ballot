@@ -724,7 +724,7 @@ function main(config){
         }
         // Listen to messages from parent window
         bindEvent(window, 'message', function (e) {
-			onChoosepresetconfig({htmlname:e.data})
+			onChoosepresetconfig({htmlname:parent.globalHtmlName})
         });
 
 
