@@ -97,7 +97,7 @@ function Model(config){
 		if (doArrayWay) {
 			// put candidate information into arrays
 			var canAid = [], xc = [], yc = [], fillc = [] //, canA = [], revCan = {} // candidates
-			var f=[] // , fA = [], fAid = [], xf = [], yf = [], fillf = [] // frontrunners
+			var f=[], e=[] // , fA = [], fAid = [], xf = [], yf = [], fillf = [] // frontrunners and extras
 			var movethisidx, whichtypetomove
 			var i = 0
 			for (can in self.candidatesById) {
@@ -115,6 +115,8 @@ function Model(config){
 					// xf.push(c.x*2)
 					// yf.push(c.y*2)
 					// fillf.push(c.fill) // maybe don't need
+				} else {
+					e.push(i)
 				}
 				if (self.yeeobject == c){
 					movethisidx = i
@@ -176,7 +178,7 @@ function Model(config){
 			//method = "gpu"
 			//method = "js"
 			method = self.computeMethod
-			winners = fastyee(xc,yc,f,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method)
+			winners = fastyee(xc,yc,f,e,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method)
 			
 		}
 		self.gridx = [];

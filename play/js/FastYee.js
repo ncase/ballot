@@ -842,7 +842,7 @@ return winner3
 
 
 
-function fastyee(xc,yc,f,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method) {
+function fastyee(xc,yc,f,e,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method) {
 	// have not implemented frontrunners yet
 	lf = f.length
 	if (whichtypetomove == "voter"){
