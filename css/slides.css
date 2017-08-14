@@ -1,0 +1,42 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#main {
+	width: 75%;
+	float: right;
+}
+
+#main div.target {
+	background: #ccc;
+	height: 400px;
+}
+
+#main div.target:nth-child(even) {
+	background: #eee;
+}
+
+#nav {
+	width: 25%;
+	position: relative;
+}
+
+#nav nav {
+	position: fixed;
+	width: 25%;
+}
+
+#nav a {
+	border-bottom: 1px solid #666;
+	color: #333;
+	display: block;
+	padding: 1px;
+	text-align: center;
+	text-decoration: none;
+}
+
+#nav a:hover, #nav a.active {
+	background: #666;
+	color: #fff;
+}
