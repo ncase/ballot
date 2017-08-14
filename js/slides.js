@@ -18,17 +18,17 @@ $(window).on('scroll', function() {
 			var id = $(this).attr('id');
 			$('#nav nav a').removeClass('active');
 			$('#nav nav a[href=#'+ id +']').addClass('active');
-			$(this).css('background-color',"#00ff00");
+			$(this).css('background-color',"#ddddee");
 			if (id!=old_div) {
-				globalHtmlName = $(this).attr('exampleLoad')
-				$('#example div').html(exampleLoaded)
+				globalHtmlName = $(this).attr('id') + ".html"
+				// $('#example div').html(exampleLoaded)
 				msg = ''
 				var iframeEl = document.getElementById('fixedbox')
 				iframeEl.contentWindow.postMessage(msg, '*');
 			}
 			old_div = id
 		} else {
-			$(this).css('background-color',"#aaa");
+			$(this).css('background-color',"#fff");
 		}
 	});
 });

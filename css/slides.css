@@ -1,16 +1,15 @@
-* {
+div.target  {
 	margin: 0;
 	padding: 0;
 }
 
 #main {
-	width: 70%;
+	width: 60%;
 	float: right;
 }
 
 #main div.target {
 	background: #ccc;
-	height: 400px;
 }
 
 #main div.target:nth-child(even) {
@@ -18,14 +17,15 @@
 }
 
 #nav {
-	width: 25%;
-	position: relative;
+	position: absolute;
+	font-size: 7px;
+	top: 0%;
 }
 
 #nav nav {
 	position: fixed;
-	width: 25%;
-	height: 10%;
+	width: 5%;
+	height: 20%;
 }
 
 #nav a {
@@ -43,10 +43,8 @@
 }
 
 #fixedbox {
-	top: 15%;
-	width: 49%;
-	height: 1080px;
+	top: 20%;
+	width: 35%;
+	height: 80%;
 	position: fixed;
-	transform-origin: top left;
-	transform: scale(.6)
 }

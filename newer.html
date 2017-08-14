@@ -33,13 +33,11 @@
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 	<base target="_blank">
 
+	<link rel="stylesheet" type="text/css" href="css/slides.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.1.js"></script>
+	<script type="text/javascript" src="js/slides.js"></script>
 </head>
 <body>
-	<script> var globalHtmlName = "ballot4.html" </script>
-	<iframe id="fixedbox" src="sandbox/fixedbox.html" width="352" height="1080" scrolling="yes" style="
-		margin-top: 0 !important;
-		position: fixed;
-		top: 0;"></iframe>
 
 <!-- - - - - - - - -
 
@@ -52,18 +50,17 @@ SPLASH!
 	<img src="img/logo.png"/>
 </div>
 
-</div>
+<section id="main">
+	<div id="content">
 
-<div id="content">
+	<!-- - - - - - - - -
 
-<!-- - - - - - - - -
+	INTRODUCTION:
+	THE SPOILER EFFECT
 
-INTRODUCTION:
-THE SPOILER EFFECT
+	- - - - - - - - - -->
 
-- - - - - - - - - -->
-
-<div class="words">
+	<div class="words">
 
 	<p>You read/played Nicky Case's great <a href="http://ncase.me/ballot/">explainer on voting methods</a>. And you still want more!</p>
 
@@ -87,14 +84,13 @@ THE SPOILER EFFECT
 
 	</div>
 	
-	<div class="spacer" id="ballot4t"></div>
+	<div class="target" id="ballot4">
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
 		<p class="ballot_caption">Judge, don't choose.</p>
 
-		<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 		<p><em>Description: this should just be an unstrategic score voter, as in ncase's thing. Allow ballot picture to show 0 scores.</em></p>
@@ -130,48 +126,49 @@ THE SPOILER EFFECT
 
 	</div>
 
-	<div class="spacer" id="ballot4b"></div>
-	<div class="spacer" id="ballot5t"></div>
+	</div>
+	<div class="target" id="ballot5">
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Normalizing Voter</h2>
 		<p class="ballot_caption">Best is 5. Worst is 1.</p>
 
-		<iframe src="play/ballot5.html" width="655" height="256" scrolling="no"></iframe>
-
+		
 	</div>
 	
-	<div class="spacer" id="ballot5b"></div>
-	<div class="spacer" id="election7t"></div>
 	<div class="words">
 		<p><em>Description: this should be like ncase's "drag the voter" examples, with a normalizing score voter. This voter should have a series of circles, where the closest one intersects the closest candidate and the farthest one the farthest candidate. Thus, as you moved the voter or candidates the circles would change size.</em></p>
 
 	<p>As soon as voters are using strategy in score voting — even a very slight amount of strategy, such as normalization — it is no longer fully exempt from impossibility theorems like Arrow's theorem. In particular, it no longer obeys independence of irrelevant alternatives (IIA); adding or removing a losing candidate can change how voters normalize, and thus change who wins. For instance, in the simulation below, try moving the losing yellow traingle candidate, and see what happens.</p>
 
 	</div>
+	</div>
+	<div class="target" id="election7">
 	<div class="sim-test">
 
 		<p class="caption-test">
 		non-optimal<br>
 		</p>
-		<iframe src="play/election7.html" width="900" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 		<p><em>This should be a score voting scenario with 100% normalizing voters. the voter median around (0,0), and candidates square (3,0), triangle (-2,0), pentagon (-4,0). Pentagon voters are not enthusiastic enough about triangle so square wins, even though triangle is higher utility. Removing penta fixes the problem.  </em></p>
 
+		
+	</div>
+	</div>
+	<div class="target" id="election8">
+		
+	<div class="words">
 	<p>But a bigger problem than IIA violation, which in the real world is relatively hard to engineer or take advantage of, is the issue of differential voting power. In the following election, one of the groups of voters normalizes, and the other one doesn't. The two groups are the same size, but the normalizing group gets a candidate they like a lot better.</p>
 
 	</div>
-	<div class="spacer" id="election7b"></div>
-	<div class="spacer" id="election8t"></div>
 	<div class="sim-test">
 
 		<p class="caption-test">
 		Strategists win<br>
 		</p>
-		<iframe src="play/election8.html" width="802" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 		<p><em>groups of voters at (-4,0)non-normalizing and (4,0)normalizing. Cands at (-2.5,.5), (-2,0), (0,0), (2,0), (2.5,.5). (2,0) wins. </em></p>
@@ -180,15 +177,14 @@ THE SPOILER EFFECT
 
 
 	</div>
-	<div class="spacer" id="election8b"></div>
-	<div class="spacer" id="ballot8t"></div>
+	</div>
+	<div class="target" id="ballot8">
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Strong Strategic Voter</h2>
 		<p class="ballot_caption">Almost like strategic approval.</p>
 
-		<iframe src="play/ballot8.html" width="655" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 
@@ -198,16 +194,15 @@ THE SPOILER EFFECT
 		
 	<p> Even stronger strategic voters could only choose the best of the frontrunners.</p>
 		
-		</div>
-	<div class="spacer" id="ballot8b"></div>
-	<div class="spacer" id="ballot11t"></div>
+	</div>
+	</div>
+	<div class="target" id="ballot11">
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Best Frontrunner</h2>
 		<p class="ballot_caption">And everybody you like better.</p>
 
-		<iframe src="play/ballot11.html" width="655" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">	
 		
@@ -215,15 +210,14 @@ THE SPOILER EFFECT
 		
 		</div>
 
-	<div class="spacer" id="ballot11b"></div>
-	<div class="spacer" id="ballot12t"></div>
+	</div>
+	<div class="target" id="ballot12">
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Not the Worst Frontrunner</h2>
 		<p class="ballot_caption">Just everybody you like better.</p>
 
-		<iframe src="play/ballot12.html" width="655" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 	<p> These two strategies are really just different extremes of the strong strategic voter.</p>
@@ -238,15 +232,14 @@ THE SPOILER EFFECT
 
 
 	</div>
-	<div class="spacer" id="ballot12b"></div>
-	<div class="spacer" id="election10t"></div>
+	</div>
+	<div class="target" id="election10">
 	<div class="sim-test">
 
 		<p class="caption-test">
 		Playing Chicken<br>
 		</p>
-		<iframe src="play/election10.html" width="802" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 
@@ -258,25 +251,23 @@ THE SPOILER EFFECT
 
 
 	</div>
-	<div class="spacer" id="election10b"></div>
-	<div class="spacer" id="election11t"></div>
+	</div>
+	<div class="target" id="election11">
 	<div class="sim-test">
 
 		<p class="caption-test">
 		Playing Chicken with Different Methods<br>
 		</p>
-		<iframe src="play/election11.html" width="802" height="380" scrolling="no"></iframe>
-
+		
 	</div>
-	<div class="spacer" id="election11b"></div>
-	<div class="spacer" id="election12t"></div>
+	</div>
+	<div class="target" id="election12">
 	<div class="sim-test">
 
 		<p class="caption-test">
 		Center Squeeze<br>
 		</p>
-		<iframe src="play/election12.html" width="802" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 
@@ -284,20 +275,20 @@ THE SPOILER EFFECT
 
 	<p>So, now I've explained why strategic voting makes things tricky, I can explain my two favorite voting methods: star voting and 3-2-1 voting. </p>
 
+	</div>
+	<div class="target" id="ballot9">
+		
+	<div class="words">
 	<h1>Star voting</h1>
 
 	<p>"Star", or more precisely, "s+ar", stands for "score plus automatic runoff." In this method, voters use the same ballot as score voting. Between the two candidates with the highest scores, the winner is the one that comes higher on more ballots. Here's a one-voter star election. You can choose between three kinds of strategy: normalized, moderately strategic, and strongly strategic. The first and last kinds you've seen before. The third is almost like a strongly strategic voter, except that the ratings may be changed by one to avoid giving a frontrunner the same score as any other candidate. Here's a one-voter election:</p>
-
 	</div>
-	<div class="spacer" id="election12b"></div>
-	<div class="spacer" id="ballot9t"></div>
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Star Strong</h2>
 		<p class="ballot_caption">Keeps a space for the best.</p>
 
-		<iframe src="play/ballot9.html" width="655" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 
@@ -306,15 +297,14 @@ THE SPOILER EFFECT
 	<p>And here's the chicken dilemma you saw above:</p>
 
 	</div>
-	<div class="spacer" id="ballot9b"></div>
-	<div class="spacer" id="election13t"></div>
+	</div>
+	<div class="target" id="election13">
 	<div class="sim-test">
 
 		<p class="caption-test">
 		Chicken Star<br>
 		</p>
-		<iframe src="play/election13.html" width="802" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 
@@ -325,15 +315,14 @@ THE SPOILER EFFECT
 	<p>In 3-2-1 voting, voters rate each candidate "Good", "OK", or "Bad". To find the winner, you first narrow it down to three semifinalists, the candidates with the most "good" ratings. Then, narrow it further to two finalists, the candidates with the fewest "bad" ratings. Finally, the winner is the one preferred on more ballots. Here's a ballot to play with:</p>
 
 	</div>
-	<div class="spacer" id="election13b"></div>
-	<div class="spacer" id="ballot10t"></div>
+	</div>
+	<div class="target" id="ballot10">
 	<div class="sim-ballot">
 
 		<h2 class="ballot_title" style="margin-bottom: 0.15em;">321 Strategic</h2>
 		<p class="ballot_caption">Approval with an extra level.</p>
 
-		<iframe src="play/ballot10.html" width="655" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 
@@ -342,15 +331,14 @@ THE SPOILER EFFECT
 	<p>And here's the chicken dilemma. Note "moderately strategic" doesn't change the result from "normalized". So unlike in star voting, candidates wouldn't have to go negative against their nearby rivals in order to ensure that their voters would at least be moderately strategic and wouldn't just normalize.</p>
 
 	</div>
-	<div class="spacer" id="ballot10t"></div>
-	<div class="spacer" id="election14t"></div>
+	</div>
+	<div class="target" id="election14">
 	<div class="sim-test">
 
 		<p class="caption-test">
 		321 Chicken<br>
 		</p>
-		<iframe src="play/election14.html" width="802" height="380" scrolling="no"></iframe>
-
+		
 	</div>
 	<div class="words">
 
@@ -360,8 +348,8 @@ THE SPOILER EFFECT
 
 	</div>
 	
-	<div class="spacer" id="election14b"></div>
-	<div class="spacer" id="sandboxt"></div>
+	</div>
+</div>
 <!-- - - - - - - - -
 
 PART IV:
@@ -369,551 +357,10 @@ SANDBOX
 
 - - - - - - - - - -->
 
-<div id="sandbox">
+<div class="target" id="sandbox">
 	<div class="sim-sandbox">
 		<h1 class="caption-test" style="margin: 30px 0 15px 0;">SANDBOX MODE! <a href="sandbox">(link to <em>just</em> this)</a></h1>
 		<iframe src="sandbox/sandbox.html" width="802" height="960" scrolling="no"></iframe>
-	</div>
-	<div class="words">
-		<p>
-		One hope for Sandbox Mode is that readers can debate with me and each other <em>using</em> this tool!
-		Not just telling me I'm wrong, but <em>showing</em> me I'm wrong.
-		For example –
-		<a href="sandbox?m=%7B%22s%22%3A%22FPTP%22%2C%22v%22%3A%5B%5B54%2C147%5D%2C%5B54%2C72%5D%2C%5B249%2C109%5D%5D%2C%22c%22%3A%5B%5B54%2C227%5D%2C%5B249%2C106%5D%5D%2C%22d%22%3A%22This%20is%20the%20biggest%20challenge%20to%20Approval%2FScore%2C%20IMHO.%20Below%3A%202%2F3%20of%20voters%20dislike%20both%20candidates%2C%20but%20dislike%20Square%20slightly%20less.%20However%2C%201%2F3%20of%20voters%20LOVE%20Triangle%20and%20HATE%20Square.%20Under%20FPTP%2C%20IRV%20%26%20Condorcet%2C%20Square%20wins%2C%20coz%20a%20majority%20of%20voters%20barely%20prefer%20him.%20But%20under%20Approval%20%26%20Score%2C%20Triangle%20wins%2C%20coz%20she's%20intensely%20loved%20by%20her%20minority.%20Now%2C%20is%20this%20OKAY%3F%20Is%20this%20a%20betrayal%20of%20democracy%2C%20or%20actually%20*saving*%20democracy%20from%20a%20tyranny%20of%20the%20majority%3F%20This%20question's%20not%20just%20theoretical%2C%20it's%20*philosophical*.%22%7D">
-		here's a model I made in Sandbox Mode,
-		showing an interesting argument <em>against</em> Approval &amp; Score Voting</a>.
-		Granted, this tool is very limited – it doesn't handle strategic voting or imperfect information –
-		but I think it's a start, and may help improve our Democratic Discourse&trade;
-		</p>
-	</div>
-</div>
-	<div class="words">
-
-
-
-
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-	<p></p>
-
-
-
-
-</div>
-<div class="sim-intro">
-
-	<p class="caption" style="margin-top:30px">
-		<b><span style="font-size:2.5em;">click &amp; drag</span><br>the candidates and the voter:</b>
-	</p>
-	<iframe src="play/model1.html" width="305" height="360" scrolling="no"></iframe>
-
-</div>
-<div class="words">
-
-	<p>It's a tough choice. Triangle's got some sharp points, but Square understands more sides! Alas, in the end, you can only vote for one.</p>
-
-	<p>Of course, there's more than just one voter in an election. Let's simulate what an election would look like with 100+ voters.</p>
-
-</div>
-<div class="sim-intro">
-
-	<p class="caption">
-		<b>drag the candidates &amp; voter<span class="underline">s</span> around.<br>(to move voters, drag the <em>middle</em> of the crowd)<br>watch how that changes the election:</b>
-	</p>
-	<iframe src="play/model2.html" width="320" height="400" scrolling="no"></iframe>
-
-</div>
-<div class="words">
-
-	<p>Now let's consider a different election. Say Tracy Triangle is <em>already</em> beating Steven Square in the polls, and a third candidate, Henry Hexagon <img src="play/img/hexagon.png"/>, sees this. (Hexagon's supporters like how he tackles problems from more angles) Inspired by her success, Hexagon swoops in and takes a political position close to Triangle's.</p>
-
-	<p>Now, you'd think giving the voters more of what they want should result in a <em>better</em> choice, or at least, not result in a <em>worse</em> choice, right? Well...</p>
-
-</div>
-<div class="sim-intro">
-
-	<p class="caption">
-		<b>
-		at first, <img src="play/img/triangle.png"> beats <img src="play/img/square.png">.<br>
-		drag <img src="play/img/hexagon.png"> to <i>just under</i> <img src="play/img/triangle.png">,<br>
-		and see what happens:</b>
-	</p>
-	<iframe src="play/model3.html" width="320" height="460" scrolling="no"></iframe>
-
-</div>
-<div class="words">
-
-	<p>That's right. Steven Square, our <em>least</em> popular candidate, now wins! This is because when you have two good candidates, they "steal" votes from each other, letting a bad third candidate win.</p>
-
-	<p>This is called <strong>the spoiler effect.</strong> The most famous real-world example of this was in 2000, when Ralph Nader &quot;stole&quot; votes from Al Gore, letting George Bush win. And though the spoiler effect didn't play a big role in 2016, its impact could still be felt.</p>
-
-	<p>In the Republican primary, one anti-establishment nominee, Trump, ran against <em>sixteen</em> GOP establishment nominees, who all "stole" votes from each other, letting Trump grab the nomination, <em>easily</em>. As for the Democratic primary, fear of splitting the vote prevented Sanders from running as independent. And to cap it all off, there was always the worry that other candidates like Johnson, Stein, and McMullin could spoil the election.</p>
-
-	<p>But again, this is <em>not</em> about the 2016 U.S. election.</p>
-
-	<p><strong>This is about designing a democracy that people can <em>trust</em>.</strong></p>
-
-	<p>Despite so much hoopla around the 2016 election, a full <em>half</em> of Americans did not vote. Even of those who voted for Clinton/Trump, <a href="http://www.nytimes.com/interactive/2016/11/08/us/politics/election-exit-polls.html">20% of them said their candidates were untrustworthy</a>, <em>and voted for them anyway.</em> <a href="https://www.theatlantic.com/international/archive/2016/07/trust-institutions-trump-brexit/489554/">And around the world, people's trust in their governments</a> – or the trust<em>worthiness</em> of their governments – has never been lower. It's more than America at stake. It's <em>every democracy in the world.</em></p>
-
-	<p>...so yeah, no pressure.</p>
-
-	<p>Rebuilding trust is a complex problem with no easy solutions. But I think there <em>is</em> an easy first step. It's a step that could get rid of our “lesser of two evils” problem, and give us citizens more choices, <em>better</em> choices. And yet, it won't be as daunting as fixing campaign finance or gerrymandering or lack of proportional representation, no, it'd just require changing <em>a piece of paper</em>, and how we count those pieces of paper.</p>
-
-	<p>This idea is <em>not</em> the most important issue. It <em>won't</em> solve everything. But as a first step? It'd give us the biggest bang-for-buck.</p>
-
-	<p><strong>Let's talk about how to build a better ballot.</strong></p>
-
-</div>
-
-<!-- - - - - - - - -
-
-PART I:
-THE ALTERNATIVE BALLOTS
-
-- - - - - - - - - -->
-
-<div class="banner">
-	<img src="img/part1.png"/>
-</div>
-<div class="words">
-
-	<p>Now, some of you may have a couple objections!</p>
-
-	<p>First objection. Why would the people in power change the voting method that <em>got</em> them in power? Well, the spoiler effect has cost <em>both</em> Dems &amp; Reps a major election before. Getting rid of that glitch would be a win-win for major <em>and</em> minor parties! Also, voting reform is already picking up steam. Just last month, <a href="http://www.nytimes.com/2016/12/03/us/maine-ranked-choice-voting.html">Maine adopted Instant Runoff</a>, and Justin Trudeau, <a href="http://cdn.pinknews.co.uk/images/2016/02/justin_trudeau.jpg">Canada's <s>Cutie-In-Chief</s>Cynic-in-Chief</a>, will be moving his nation towards a better voting system in 2017. (UPDATE: actually, he <a href="https://www.theguardian.com/world/2017/feb/01/justin-trudeau-abandons-voter-reform-canada">didn't do that</a>.)</p>
-
-	<p>Second objection. Didn't some guy once prove that <em>all</em> voting methods will be unfair? Not quite. You're thinking of the infamous <a href="https://en.wikipedia.org/wiki/Arrow%27s_impossibility_theorem">Impossibility Theorem</a> by Kenneth Arrow, the mathematician in the 1950's who founded the whole study of voting methods.</p>
-
-	<p>Two answers to that: 1) some voting methods can still be <em>more</em> fair than others, even if none are perfect. And 2) Kenneth Arrow's proof <em>doesn't</em> apply to all voting methods! That's a misconception. It only applies to voting methods <em>where you rank candidates</em>. Later, we'll see some voting methods where you <em>don't</em> rank candidates – along with other alternatives to our current, glitchy voting method.</p>
-
-	<p>But first, let's take a closer look at the voting method we <em>do</em> have:</p>
-
-</div>
-<div class="sim-ballot">
-
-	<h2 class="ballot_title" style="margin-bottom: 0.2em;">FIRST PAST THE POST (FPTP)</h2>
-	<p class="ballot_caption">same as before. click &amp; drag<br>the candidates and voter</p>
-
-	<iframe src="play/ballot1.html" width="655" height="256" scrolling="no"></iframe>
-</div>
-<div class="words">
-
-	<p><strong>How To Count:</strong> Simply add up the votes. Whoever gets the most votes, wins.</p>
-
-	<p>Sounds logical enough. But as you saw earlier, it can lead to a weird glitch, where having two <em>good</em> candidates can make the election go to a third <em>bad</em> candidate. This is why some people vote &quot;strategically&quot;, voting not for their actual honest favorite, but voting for the lesser of two evils. And strategic voting is fine – but! – ask yourself this: <b>how can we expect our elected officials to be honest, when our voting method <em>itself</em> doesn't let us be honest?</b></p>
-
-	<p>So, to fix the spoiler effect, other voting methods have been suggested. Such as...</p>
-</div>
-<div class="sim-ballot">
-
-	<h2 class="ballot_title" style="margin-bottom: 0.15em;">RANKED VOTING</h2>
-	<p class="ballot_caption">again, click &amp; drag</p>
-
-	<iframe src="play/ballot2.html" width="655" height="256" scrolling="no"></iframe>
-
-</div>
-<div class="words">
-
-	<p><strong>How To Count:</strong> There's actually <em>several</em> different ways to count these kinds of ballots. Here, I'll just show you the top three:</p>
-
-	<p>
-	<strong>Instant Runoff Voting (IRV):</strong>
-	This one is <em>the</em> most popular alternative to First Past The Post (FPTP).
-	Australia and Ireland use it in national elections.
-	San Francisco, Minneapolis, and Portland, Maine use it in local elections.
-	And Justin Trudeau, <a href="https://queerty-prodweb.s3.amazonaws.com/wp/docs/2016/02/justintrudeautorontopride.jpg">Prime Man-ister of Canada</a>,
-	is leaning towards Instant Runoff, too.
-	</p>
-
-	<p>
-	(Note: Instant Runoff Voting is also called “Ranked Choice Voting”,
-	even though there's other ways to count ranked ballots.
-	IRV is also often just called “Alternative Vote”,
-	even though there's a flippin' dozen other voting methods.
-	Such selfish naming! Sheesh!)
-	</p>
-
-	<p>IRV is a bit more complicated than FPTP, but here's how it works:</p>
-
-	<ol>
-	<li>Count up the #1 choices.</li>
-	<li>If someone has more than 50%, they win! END.</li>
-	<li>If not, eliminate the last-place loser.</li>
-	<li>Run a new &quot;round&quot; of the election, minus that loser.</li>
-	<li>Repeat until someone has 50% or more.</li>
-	</ol>
-
-	<p>If that seems like too much, there <em>is</em> a much simpler method of counting ranked ballots...</p>
-
-	<p><strong>Borda Count:</strong> Simply add up the rank numbers. Like in golf, whoever has the <em>lowest</em> score, wins. Borda count is used in Slovenia and a bunch of tiny islands in Micronesia.</p>
-
-	<p>But if you want an even nerdier way of voting, you could try...</p>
-
-	<p><strong>Condorcet Method:</strong> Run a simulated &quot;election&quot; between every pair of candidates, using the info on voters' ballots. IF there's a candidate who beats all other candidates in one-on-one &quot;elections&quot;, that candidate wins the <em>real</em> election. However, that's a very big &quot;IF&quot;. (as we'll see later...) The upside is, when this method <em>does</em> pick a winner, it's always the “theoretically best” candidate! Currently, this method is not being used by any governments, and is only being used by neeerrrrrds.</p>
-
-	<p>So, those are the voting methods <em>where you rank candidates</em> – the ones that Kenneth Arrow proved would <em>always</em> be unfair in some big way! But what of voting methods where you <em>don't</em> rank candidates? They're less well-known, but now, at least <em>you'll</em> know 'em:</p>
-
-</div>
-<div class="sim-ballot">
-
-	<h2 class="ballot_title" style="margin-bottom: 0.15em;">APPROVAL VOTING</h2>
-	<p class="ballot_caption">yup, stiiiiill click &amp; drag</p>
-
-	<iframe src="play/ballot3.html" width="655" height="256" scrolling="no"></iframe>
-
-</div>
-<div class="words">
-
-	<p><strong>How To Count:</strong> Simply add up the approvals. Whoever gets the most approvals, wins.</p>
-
-	<p><em>Wait, picking more than one candidate? Doesn't that violate the one-vote-per-person rule?</em> I hear you ask. Well, your vote was never a single check mark, your vote was always <em>the whole ballot</em>. And on this ballot, you get to honestly express <em>all</em> the candidates you approve of, not just your favorite or strategic second-favorite.</p>
-
-	<p>But if you want a <em>more</em> expressive voting method, why not try...</p>
-
-</div>
-<div class="sim-ballot">
-
-	<h2 class="ballot_title" style="margin-bottom: 0.15em;">SCORE VOTING</h2>
-	<p class="ballot_caption">you guessed it</p>
-
-	<iframe src="play/ballot4.html" width="655" height="256" scrolling="no"></iframe>
-
-</div>
-<div class="words">
-
-	<p><strong>How To Count:</strong> Simply add up the ratings. Whoever has the highest average score, wins. Kind of like Amazon reviews, but with democracy. (Note: this is <em>not</em> a ranking method, because two candidates can have the <em>same</em> score.)</p>
-
-	<p>So there's our top 6 voting methods: the one we use, and five popular alternatives. But how can we tell if these alternatives are actually better? What glitches might <em>they</em> have? And which voting method – if any – can we say is &quot;the best&quot;?</p>
-
-	<p>Like before, let's simulate 'em.</p>
-
-</div>
-
-<!-- - - - - - - - -
-
-PART II:
-HOW DO THE ALTERNATIVES HOLD UP?
-
-- - - - - - - - - -->
-
-<div class="banner">
-	<img src="img/part2.png"/>
-</div>
-<div class="words">
-	<p>Remember that simulation of the spoiler effect from earlier? Well, here it is again, but now you can switch between the six different voting methods! Here's the &quot;spoiler effect&quot; simulation again. See how different voting methods deal with potential spoilers:</p>
-</div>
-<div class="sim-test">
-	<p class="caption-test">
-	drag <img src="play/img/hexagon.png"> to <em>just under</em> <img src="play/img/triangle.png"> to create a spoiler effect.<br>
-	then compare the 6 different voting methods:
-	<br>
-	<span style="font-weight:bold; font-size:0.8em">
-	(note: in the rare cases there's a tie, i just randomly pick a winner)
-	</span>
-	</p>
-
-	<iframe src="play/election1.html" width="802" height="380" scrolling="no"></iframe>
-</div>
-<div class="words">
-
-	<p>As you could see, <em>every</em> voting method except First Past The Post is immune to the spoiler effect. So, that's it, right? Ding dong, the glitch is dead? Just pick any other alternative voting method and be done with it?</p>
-
-	<p>But, alas. In getting rid of one glitch, some of these alternative voting methods create <em>other</em> glitches – for some, the cure is even worse than the disease.</p>
-
-	<p>For example, here's a sim of Instant Runoff Voting. In the beginning, Tracy Triangle <img src="play/img/triangle.png"/> is already winning, and you're going to move the voters even <em>closer</em> to her. Obviously, if a candidate is already winning an election, and becomes even <em>more</em> popular, they should <em>still</em> win afterwards, right?</p>
-
-	<p>You can probably guess where this is going...</p>
-</div>
-<div class="sim-test">
-
-	<p class="caption-test">
-	drag the voters <img src="play/img/voters.png"> <em>slowly</em> up towards <img src="play/img/triangle.png">:
-	</p>
-
-	<iframe src="play/election2.html" width="802" height="380" scrolling="no"></iframe>
-
-</div>
-<div class="words">
-
-	<p>What happened?
-	Originally, <img src="play/img/hexagon.png"/> is eliminated in the first round, so
-	<img src="play/img/triangle.png"/>
-	goes against a weaker <img src="play/img/square.png"/>, and wins.
-	But when you move the voters closer to <img src="play/img/triangle.png"/>,
-	the loser <em>changes!</em>
-	So now, <img src="play/img/square.png"/> is eliminated in the first round,
-	which means <img src="play/img/triangle.png"/> goes against a stronger <img src="play/img/hexagon.png"/>,
-	and <em>loses</em>.</p>
-
-	<p>Under Instant Runoff, it's possible for a winning candidate to lose, <em>by becoming more popular</em>. What a glitch!</p>
-
-	<p>How often does this actually happen in real life? <a href="https://en.wikipedia.org/wiki/Monotonicity_criterion#Real-life_monotonicity_violations">There's a couple confirmed examples</a>, and <a href="http://www.rangevoting.org/Monotone.html">mathematicians estimate this glitch would happen about 14.5% of the time</a>. But sadly, we can't know for sure, because governments usually <em>don't release enough info about the ballots</em> to reconstruct an IRV election &amp; double-check the results.</p>
-
-	<p>So, not only is Instant Runoff's glitch as undemocratic as First Past The Post's glitch, it's possibly <em>worse</em> – because while FPTP's counting method is simple and transparent, Instant Runoff is anything but. And a lack of transparency is an even deadlier sin nowadays, when our trust in government is already so low.</p>
-
-	<p>(But wait! We'll be talking about the risk of <em>strategic voting</em> later.
-	Can IRV can make a comeback? Stay tuned...)</p>
-
-	<p>So much for the most popular alternative. What about the second-most popular, Borda Count? In this next simulation, you move a losing candidate closer to <em>another</em> losing candidate. Under FPTP, the spoiler effect would split their votes, making both of them lose even more. But watch what happens under Borda Count instead...</p>
-
-</div>
-<div class="sim-test">
-
-	<p class="caption-test">
-	drag <img src="play/img/hexagon.png"> to <em>just slightly left</em> of <img src="play/img/square.png">:
-	</p>
-
-	<iframe src="play/election3.html" width="802" height="380" scrolling="no"></iframe>
-
-</div>
-<div class="words">
-
-	<p>Yup. Borda Count has a <em>reverse</em> spoiler effect. Instead of one good candidate hurting another good candidate by moving closer, with Borda Count, one bad candidate can <em>help</em> another bad candidate by moving closer.</p>
-
-	<p>Here's what happened: at first, some voters ranked
-	<img src="play/img/square.png"/>&gt;<img src="play/img/triangle.png"/>&gt;<img src="play/img/hexagon.png"/>,
-	but when you moved <img src="play/img/hexagon.png"/> closer to <img src="play/img/square.png"/>,
-	those voters then <em>swung</em> to ranking
-	<img src="play/img/square.png"/>&gt;<img src="play/img/hexagon.png"/>&gt;<img src="play/img/triangle.png"/>,
-	hurting <img src="play/img/triangle.png"/> enough
-	to make her lose to <img src="play/img/square.png"/>.</p>
-
-	<p>Still, Borda's not the worst, and at least it's simpler and more transparent than Instant Runoff. But how does Condorcet Method compare? When Condorcet picks a winner, it's always the “theoretically best” winner – but that's <em>when</em> it picks a winner.</p>
-
-	<p>So far, I've just been simulating voters as a <em>single</em> group, with a center and some spread. But seeing how polarized politics is nowadays, one could imagine <em>several</em> groups of voters, with totally different centers. Now, Condorcet tries to pick the candidate who beats all other candidates in one-on-one races. But with <em>polarized</em> voters, you could end up with a Rock-Paper-Scissors-like loop, where a majority of voters prefer A to B, B to C, <em>and</em> C to A.</p>
-
-	<p>In certain situations, the other voting methods just had glitches. In Condorcet, the voting method <em>crashes.</em> Try it out for yourself:</p>
-</div>
-<div class="sim-test">
-
-	<p class="caption-test">
-	create your own “condorcet cycle”!<br>
-	move the voters <img src="play/img/voters.png"> in such a way that NOBODY wins:
-	</p>
-
-	<iframe src="play/election4.html" width="802" height="380" scrolling="no"></iframe>
-
-</div>
-<div class="words">
-
-	<p>Now, in actual practice – not that any government actually uses this voting method – when Condorcet fails to find a winner, the election falls back to another method like Borda Count. But if you do that, it'll get the glitches of its backup method. So it goes.</p>
-
-	<p>First Past The Post. Instant Runoff. Borda Count. Condorcet Method. Those were all the voting methods that use <em>ranking</em> – the ones that our math boy, Kenneth Arrow, proved would <em>always</em> be unfair or glitchy in some big way. What about the voting methods that <em>don't</em> use ranking, like Approval &amp; Score voting? Well...</p>
-
-	<p>...I couldn't come up with a simulation to show their flaws. Because, <em>in theory</em>, they don't have many big flaws.</p>
-
-	<p>
-	But that's a really, really, really big <em>“in theory!”</em>
-	It may be that, in <em>practice</em>, strategic voters use Approval &amp; Score Voting exactly like First Past The Post –
-	only approving or giving 5 stars to their top candidate, and disapproving or giving 1 star to all others,
-	even if they actually <em>like</em> the others.
-	<a href="http://www.fairvote.org/why-approval-voting-is-unworkable-in-contested-elections">(See FairVote's critique of Approval Voting, and defense of Instant Runoff)</a>
-	</p>
-
-	<p>
-	Then again, even if Approval &amp; Score Voting disincentivize you from expressing an honest <em>second</em> choice,
-	FPTP and IRV punish you for expressing an honest <em>first</em> choice.
-	Besides, if Approval can be "gamed", then that goes double for IRV.
-	<a href="http://www.rangevoting.org/LNH.html">(See this mathematician's critique of FairVote's critique, and defense of Approval)</a>
-	So, in the end... [confused shrugging sounds]</p>
-
-	<p>
-	We're gonna need a hecka lot more simulations.
-	</p>
-
-	<p>
-	So, below is a chart
-	<a href="https://electology.org/tactical-voting-basics">(source)</a>,
-	showing the results of 2.2 <em>million</em> simulations.
-	A <i>huge</i> variety of scenarios were tested. All-honest voters.
-	All-strategic voters. Half-honest, half-strategic.
-	Voters who know each others' preferences.
-	Voters who <i>don't</i> know each others' preferences.
-	Voters who only sorta-know each others' preferences.
-	And so on.
-	You can tell that a <em>real</em> mathematician made this chart,
-	because it's makin' my eyes bleed:
-	</p>
-
-	<p><img class="real" src="img/comparison.png"></p>
-
-	<p>
-	Each voting method's results is shown as an ugly-blue bar.
-	The further to the right a voting method is, the more it "maximizes happiness" for the voters.
-	The higher up a voting method is, the simpler it is.
-	And a bar's width shows the range of a voting method's performance,
-	given different ratios of honest-to-strategic voters.
-	</p>
-
-	<p>
-	The first thing to note is that strategic voting makes voters <em>less happy</em> than honest voting
-	– in <em>all</em> voting methods! I was very surprised when I first learnt that.
-	(But it makes sense, if you think about, say, a crowded room full of people trying to talk. Any one person can be &quot;strategic&quot; by shouting over others, but if <em>everybody</em> is &quot;strategic&quot;, nobody can hear anybody, and all you're left with is sore throats and sad peeps.)</p>
-
-	<p>The other thing to note is which voting methods make people the happiest. If you have mostly honest voters, <em>Score Voting is best</em>. (with Borda Count a close second) And if you have mostly strategic voters, then <em>both Approval &amp; Score Voting are best</em>. (and with strategic voters, IRV does <em>just as bad</em> as FPTP)</p>
-
-	<p>However, those are still computer simulations. How would these different voting methods play out <em>in real life?</em> Well, we can't just get the DeLorean up to 88, go back in time before the 2016 election, change the voting method, and see what would happen...</p>
-
-	<p><em>...or can we?!</em></p>
-
-	<p>No, no we can't. But last month, researchers did something close enough.
-	<a href="http://www.vox.com/policy-and-politics/2016/11/25/13733322/instant-runoff-ranked-voting-2016">A polling study asked 1,000+ U.S. registered voters to rank &amp; rate the six presidential candidates</a>,
-	to simulate who would've won the (popular) vote under different voting methods!
-	(But keep in mind that if we had a different voting method in the primaries, we'd have different candidates <em>entirely</em>.
-	So take this study with a pillar of salt.)
-	The results: under Instant Runoff, Condorcet, and Approval Voting, the winner would've been Hillary Clinton. But under Score Voting, the winner would've been Donald Trump. And under Borda Count, the winner would've been... uh... <em>Gary Johnson?</em>
-	</p>
-
-	<p><em>?????</em></p>
-
-</div>
-<div class="sim-test">
-	<p class="caption-test">
-	a guesstimated model of the 2016 US election?...<br>
-	<span style="font-weight:100; font-size:0.85em">
-	how Clinton <img src="play/img/square.png"> wins IRV,
-	Trump <img src="play/img/hexagon.png"> wins Score,
-	and Johnson <img src="play/img/triangle.png"> wins Borda??
-	</span>
-	</p>
-	<iframe src="play/election5.html" width="802" height="380" scrolling="no"></iframe>
-</div>
-<div class="words">
-
-	<p>Anyway.</p>
-
-	<p>Before we wrap all this up – remember Kenneth Arrow? The infamous mathematician who founded the study of voting methods in the 1950's? Well, <a href="https://electology.org/podcasts/2012-10-06_kenneth_arrow">in an interview 60 years later</a>, Kenneth Arrow had this to say, about which voting method he likes most now:</p>
-
-	<p class="quote">
-	<em>“Well, I’m a little inclined to think that score methods</em> [like Approval &amp; Score Voting] <em>where you categorize in maybe three or four classes</em> [so, giving a score out of 3 or 4, not 10 or 100] <em>probably – in spite of what I said about manipulation</em> [strategic voting] <em>– is probably the best.”</em></p>
-
-	<p>That's as strong an endorsement as you'll ever squeeze out of a math-head.</p>
-</div>
-
-<!-- - - - - - - - -
-
-PART III:
-CONCLUSION. OPEN LETTER
-
-- - - - - - - - - -->
-
-<div class="banner">
-	<img src="img/part3.png"/>
-</div>
-<div class="words">
-
-	<p><em>ahem</em></p>
-
-	<p style="text-align:center">
-		<strong style="font-size:1.4em">DEAR JUSTIN <a href="http://www.newyorker.com/wp-content/uploads/2016/03/Borowitz-Justin-Trudeau.jpg">“TOTES ADORBZ”</a> TRUDEAU</strong><br>
-		<b style="font-size:0.93em">(and everyone else around the world pushing for voting reform)</b>
-	</p>
-
-	<p>Thank you for taking this small but powerful first step! We've known for way too long that our current voting method – First Past The Post – forces voters to be dishonest, creates a polarizing &quot;lesser of two evils&quot; scenario, and screws over both major <em>and</em> minor candidates.</p>
-
-	<p>
-	However, you're probably only considering Instant Runoff Voting.
-	Which, to be fair, <em>is</em> better than than First Past The Post,
-	and if it's a choice between just those two, <em>definitely</em> go for Instant Runoff.
-	But IRV still has a glitch as undemocratic as FPTP's –
-	and worse, in our age of distrust, Instant Runoff's lack of transparency may be deadly for democracy.
-	Yes, sure, IRV was the best voting method we could come up with...
-	<a href="https://en.wikipedia.org/wiki/History_and_use_of_instant-runoff_voting">in 1870</a>.
-	And since then, IRV has dominated the conversation,
-	unwittingly framing the whole voting reform debate as “simple vs expressive”.
-	</p>
-
-	<p>
-	<b>But that is a false choice.</b> Thanks to computer simulations, real-life studies, and a bunch of math nerds,
-	<b>we now know of voting methods that are both simple <i>and</i> expressive.</b>
-	</p>
-
-	<p>
-	<i>Personally</i>, I'm leaning towards Score Voting.
-	It's simple, very expressive, and already familiar to anyone who's seen Amazon's or Yelp's “five star” review method.
-	But that's just my humble opinion.
-	You could also make the case that Approval Voting is more <i>practical</i>,
-	because it's even simpler, and would <i>already work with existing voting machines!</i>
-	All you'd need to do is change the instructions from
-	“vote for the candidate you like” to “vote for the candidate<b class="underline">s</b> you like”.
-	</p>
-
-	<p>
-	<em>Or maybe I'm completely wrong about Instant Runoff Voting, and it's actually pretty okay.</em>
-	Heck, you could even go for Borda Count, as a hilarious prank.
-	</p>
-
-	<p>I won't claim to know which voting method is The Best&trade;. I shall keep open this discussion, just as long as we <em>have</em> this discussion. For three reasons:</p>
-
-	<p>1) If I claim one voting method is the best, end of story, all the social-choice-theory nerds will be on my butt, yelling, BUT NICKY WHAT ABOUT <a href="http://www.law.uchicago.edu/faculty/research/eric-posner-quadratic-vote-buying-efficient-corporate-governance/qanda">QUADRATIC VOTE BUYING</a></p>
-
-	<p>2) We still need to test these alternative voting methods with <em>actual experience</em>,
-	not just <span style="text-decoration:line-through">annoying internet flame wars between IRV advocates and Score Voting advocates</span> theory.
-	All the more reason for small towns, local states, and nations like Canada to be <em>pioneers</em>, to bravely experiment!</p>
-
-	<p>3) Keeping the discussion going is what democracy <em>is</em>.</p>
-
-	<p><a href="http://www.journalofdemocracy.org/article/danger-deconsolidation-democratic-disconnect">A recent study</a> found that in many Western countries – from Sweden to Australia to the United States – support for democracy has <em>plummeted</em> over the last several generations.
-	In 2011, almost <em>a full quarter</em> of young Americans said democracy was a &quot;bad&quot; or &quot;very bad&quot; way to run a country.
-	And <em>today</em>, one in six Americans say it'd be &quot;good&quot; or &quot;very good&quot; to be under <em>actual military rule</em>.
-	</p>
-
-	<p>Our age of distrust goes a <em>lot</em> deeper than the technical details of a voting method. There isn't gonna be One Weird Trick to fix democracy. But as a first step, a low-hanging fruit, a way to show that, <em>yes</em>, you will make the method respond to the needs and wants and pains and hopes and dreams of your people – well, fixing our voting method's a good start as any.</p>
-
-	<p>Because, this isn't just about trying to build a better ballot.</p>
-
-	<p>This is about trying to build a better <em>democracy</em>.</p>
-
-	<p><strong>&lt;3,</strong><br>
-	<b>~ Nicky Case</b></p>
-
-	<hr>
-
-	<p><strong>P.S:</strong> Since you've read &amp; played this all the way, here, have a bonus!
-	A “Sandbox Mode” of the election simulator, with up to <em>five</em> candidates.
-	You can also save &amp; share your very own custom election scenario with others. Happy simulating!</p>
-</div>
-
-
-<!-- - - - - - - - -
-
-PART IV:
-SANDBOX
-
-- - - - - - - - - -->
-
-<div id="sandbox">
-	<div class="sim-sandbox">
-		<h1 class="caption-test" style="margin: 30px 0 15px 0;">SANDBOX MODE! <a href="sandbox">(link to <em>just</em> this)</a></h1>
-		<iframe src="sandbox/sandbox.html" width="802" height="508" scrolling="no"></iframe>
 	</div>
 	<div class="words">
 		<p>
@@ -1250,6 +697,28 @@ PART V: THE END
 </div>
 
 </div>
+
+</section>
+<aside id="nav">
+	<nav>
+		<a href="#ballot4" class="active">Ballot 4</a>
+		<a href="#ballot5">Ballot 5</a>
+		<a href="#election7">Election 7</a>
+		<a href="#election8">Election 8</a>
+		<a href="#ballot8">Ballot 8</a>
+		<a href="#ballot11">Ballot 11</a>
+		<a href="#ballot12">Ballot 12</a>
+		<a href="#election10">Election 10</a>
+		<a href="#election11">Election 11</a>
+		<a href="#election12">Election 12</a>
+		<a href="#ballot9">Star Ballot 9</a>
+		<a href="#election13">Star Election 13</a>
+		<a href="#ballot10">321 Ballot 10</a>
+		<a href="#election14">321 Election 14</a>
+		<a href="#sandbox">Sandbox</a>
+	</nav>
+	<iframe id="fixedbox" src="sandbox/fixedbox.html" scrolling="yes"></iframe>
+</aside>
 
 </body>
 <script type="text/javascript" src="js/index.js"></script>

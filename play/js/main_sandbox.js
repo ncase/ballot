@@ -824,7 +824,7 @@ function main(config){
 			selectUI();
 
 		};
-		document.body.appendChild(resetDOM);
+		document.querySelector("#center").appendChild(resetDOM);
 
 
 		///////////////////////////
@@ -922,7 +922,7 @@ function main(config){
 			saveDOM.onclick = function(){
 				_saveModel();
 			};
-			document.body.appendChild(saveDOM);
+			document.querySelector("#center").appendChild(saveDOM);
 
 			// The share link textbox
 			linkText = document.createElement("input");
@@ -932,16 +932,7 @@ function main(config){
 			linkText.onclick = function(){
 				linkText.select();
 			};
-			if (config.sandboxsave) {
-				//skip
-			} else {
-				linkText.style.position = "absolute";
-				linkText.style.top = "340px";
-				linkText.style.left = "460px";
-				linkText.style.height = "30px";
-				linkText.style.width = "90px";
-			}
-			document.body.appendChild(linkText);
+			document.querySelector("#center").appendChild(linkText);
 
 			// Create a URL... (later, PARSE!)
 			// save... ?d={s:[system], v:[voterPositions], c:[candidatePositions], d:[description]}

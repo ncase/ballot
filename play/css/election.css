@@ -136,3 +136,13 @@ input[type=range]{
 	top: 340px;
 	left: 350px;
 }
+
+#savelink{
+	position: absolute;
+    top: 340px;
+    left: 460px;
+    width: 82px;
+    height: 15px;
+    padding: 8px;
+    font-size: 12px;
+}

@@ -138,7 +138,7 @@ function main(config){
 			selectUI();
 			console.log(initialConfig)
 		};
-		document.body.appendChild(resetDOM);
+		document.querySelector("#center").appendChild(resetDOM);
 		
 	};
 
