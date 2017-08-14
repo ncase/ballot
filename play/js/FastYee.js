@@ -438,7 +438,7 @@ for (var iv=0; iv<li*lv; iv++) {
 	
 		d1 = cube[civ]
 		if (d1 > m) {
-			m = d1 //min
+			m = d1 // max
 		}
 	}
 	if(runscript) right.innerHTML += "<br>"+m
