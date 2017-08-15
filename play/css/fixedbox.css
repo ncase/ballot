@@ -18,13 +18,13 @@
 
 #reset{
 	position:absolute;
-	top: 700px;
-	left: 00px;
+	top: 330px;
+	left: 0px;
 }
 
 #save{
 	position:absolute;
-	top: 700px;
+	top: 330px;
 	left: 110px;
 }
 
@@ -53,7 +53,7 @@ textarea, input{
 
 #savelink{
 	position: absolute;
-    top: 700px;
+    top: 330px;
     left: 220px;
     width: 82px;
     height: 15px;
