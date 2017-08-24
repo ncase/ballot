@@ -18,16 +18,14 @@ div.target  {
 }
 
 #nav {
-	position: absolute;
 	font-size: 10px;
 	top: 0%;
-	left: 340px;
-}
-
-#nav nav {
-	position: fixed;
-	width: 100px;
-	height: 20%;
+	
+/*	just for start*/
+	position: absolute;
+	top: 200%;
+	height: 100%;
+	left: 20px;
 }
 
 #nav a {
@@ -44,10 +42,14 @@ div.target  {
 	color: #fff;
 }
 
+#nav nav {
+	left: 340px;
+	width: 100px;
+	height: 20%;
+	position: absolute;
+}
+
 #fixedbox {
-	top: 0%;
-	left: 0%;
 	width: 500px;
 	height: 100%;
-	position: fixed;
 }
