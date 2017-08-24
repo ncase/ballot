@@ -7,6 +7,8 @@ var globalHtmlName = "ballot4.html"
 var exampleLoaded = null
 
 
+//$("#main").css("width","500px")
+
 $(window).on('scroll', function() {
 	var window_height = $(window).height();
 	$('.target').each(function() {
@@ -47,7 +49,8 @@ $(window).on('scroll', function() {
 	
 //	var sidebarheight = fb1.css("height")
 	// var sidebarheight = 1300
-	var sidebarheight = window_height
+	 var sidebarheight = 700
+//	var sidebarheight = window_height
 	
 	var belowbottomoflast = ( scrollTop + sidebarheight + 2*prejump > bottomoflast );
 	

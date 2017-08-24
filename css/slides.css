@@ -5,8 +5,8 @@ div.target  {
 
 #main {
 	left: 500px;
-	right: 0px;
-	position:absolute;
+	max-width: 700px;
+	position:relative;
 }
 
 #main div.target {
