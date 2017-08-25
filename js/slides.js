@@ -6,6 +6,7 @@ var old_div = null;
 var globalHtmlName = "ballot4.html"
 var exampleLoaded = null
 
+var read_fraction = .2
 
 //$("#main").css("width","500px")
 
@@ -13,24 +14,22 @@ var setshift = function() {
 	var window_height = $(window).height();
 	// link into middle
 	// only really need to do this when the window is resized
-	var shift = .5*window_height - 2
+	var shift = read_fraction*window_height - 70
 	$(".anchor").each(function(){
-		$(this).attr("height",shift)
-		$(this).attr("margin-top",-shift)	
+		$(this).css("height",shift)
+		$(this).css("margin-top",-shift)	
 	})
 }
 $(window).on('resize', setshift)
 $(window).on('load', setshift)
-$(window).load(setshift)
 $(document).ready(setshift)
 
 $(window).on('scroll', function() {
-	setshift()
 	
 	var window_height = $(window).height();
 	$('.target').each(function() {
 		// this function runs on each text box and checks to see if the middle of the page is inside the box.
-		var scrollMiddle = $(window).scrollTop() + (window_height/2);
+		var scrollMiddle = $(window).scrollTop() + (window_height * read_fraction);
 		elTop = $(this).offset().top;
 		elBtm = elTop + $(this).height();
 		var inView = elTop < scrollMiddle && elBtm > scrollMiddle;
