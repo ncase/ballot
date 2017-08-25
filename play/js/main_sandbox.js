@@ -37,7 +37,9 @@ function main(config){
 	var allnames = ["systems","voters","candidates","strategy","percentstrategy","unstrategic","frontrunners","poll","yee"]
 	var doms = {}  // for hiding menus, later
 	var stratsliders = [] // for hiding sliders, later
-	
+	var confighistory = {}
+	var config_name = null
+
 	var loadDefaults = function() {
 		// Defaults...
 		config = config || {};
@@ -672,18 +674,13 @@ function main(config){
 		var presetconfig = []
 		for (i in presetnames) presetconfig.push({name:presetnames[i],realname:presetdescription[i],htmlname:presethtmlnames[i],margin:4})
 
-		var onChoosepresetconfig = function(data){
-			var firstletter = data.htmlname[0]
+		var presethelper = function(config_name) {
+			var firstletter = config_name[0]
 			if (firstletter == 'e' || firstletter == 's' || firstletter == 'f') {
-				config = loadpreset(data.htmlname)
-				loadDefaults()
-				model.reset(true);
-				model.onInit();
-				setInPosition();
-				selectUI();
+				config = loadpreset(config_name)
 			} else if (firstletter == 'b') {
-				//document.location.replace(data.htmlname);
-				ballotconfig = loadpreset(data.htmlname)
+				//document.location.replace(config_name);
+				ballotconfig = loadpreset(config_name)
 				var systemTranslator = {Plurality:"FPTP",Ranked:"Condorcet",Approval:"Approval",Score:"Score",Three:"3-2-1"}
 				config = {}
 				config.system = systemTranslator[ballotconfig.system]
@@ -694,12 +691,33 @@ function main(config){
 				if (ballotconfig.showChoiceOfFrontrunners) {config.featurelist.push("frontrunners")}
 				if (ballotconfig.showChoiceOfStrategy) {config.featurelist.push("strategy")}
 				config.oneVoter = true
-				loadDefaults()
-				model.reset(true);
-				model.onInit();
-				setInPosition();
-				selectUI();
 			}
+			return config
+		}
+
+		var onChoosepresetconfig = function(data){
+			// first, save the current config for later
+			
+			// config_name is still old here... and we update  below
+			if (config_name != null) {
+				jsave(0) // Update the config so we can save it.  the 0 means don't output to console.
+				confighistory[config_name] = config // always update
+			}
+
+			// update the config name
+			config_name = data.htmlname
+			// now we load the new config
+			if ( Object.keys(confighistory).includes(config_name) ) {
+				// have we been here before?  If so, then get the last config
+				config = confighistory[config_name]
+			} else {
+				config = presethelper(config_name)
+			}
+			loadDefaults()
+			model.reset(true);
+			model.onInit();
+			setInPosition();
+			selectUI();
 		};
 		window.choosepresetconfig = new ButtonGroup({
 			label: "pick a preset:",
@@ -813,9 +831,11 @@ function main(config){
 		resetDOM.innerHTML = "reset";
 		resetDOM.onclick = function(){
 
-			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
-			config.frontrunnerSet = new Set(config.afrontrunnerArray); // stringify a set is not good
+			config = presethelper(config_name)
+			// config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
 			// Reset manually, coz update LATER.
+			
+			loadDefaults()
 			model.reset(true);
 			model.onInit();
 			setInPosition();

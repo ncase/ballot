@@ -487,7 +487,7 @@ kindayee: "can",
 
 
     }
-    return config
+    return config //JSON.parse(JSON.stringify(config))
 }
 
 
