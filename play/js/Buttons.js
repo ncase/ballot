@@ -53,7 +53,7 @@ function ButtonGroup(config){
 		if (self.isCheckbox) {
 			for (ibu in self.buttons) {
 				var bu = self.buttons[ibu]
-				if (propValue.has(bu.config[propName])) {
+				if (propValue.includes(bu.config[propName])) { // the propValue is an array of values
 					bu.turnOn();
 				}
 			}

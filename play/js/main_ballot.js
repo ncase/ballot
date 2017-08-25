@@ -3,12 +3,11 @@ function main(config){
 
 	ballotType = config.system;
 	config.strategy = config.strategy || "zero strategy. judge on an absolute scale.";
-	config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
+	config.preFrontrunnerIds = config.preFrontrunnerIds || ["square","triangle"];
 	config.showChoiceOfStrategy = config.showChoiceOfStrategy || false
 	config.showChoiceOfFrontrunners = config.showChoiceOfFrontrunners || false
 	
 	// make a copy of the config
-	config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 	var initialConfig = JSON.parse(JSON.stringify(config));
 	
 	// ONCE.
@@ -34,7 +33,7 @@ function main(config){
 			model.addCandidate("square", 41, 50);
 			model.addCandidate("triangle", 173, 95);
 			model.addCandidate("hexagon", 216, 216);
-			model.frontrunnerSet = config.frontrunnerSet;
+			model.preFrontrunnerIds = config.preFrontrunnerIds;
 			model.strategy = config.strategy;
 		};
 
@@ -93,11 +92,14 @@ function main(config){
 				// update config...
 				// no reset...
 				if (data.isOn) {
-					config.frontrunnerSet.add(data.realname)
+					if (!config.preFrontrunnerIds.includes(data.realname) ) {config.preFrontrunnerIds.push(data.realname)}
 				} else {
-					config.frontrunnerSet.delete(data.realname)
+					var index = config.preFrontrunnerIds.indexOf(data.realname);
+					if (index > -1) {
+						config.preFrontrunnerIds.splice(index, 1);
+					}
 				} 
-				model.frontrunnerSet = config.frontrunnerSet
+				model.preFrontrunnerIds = config.preFrontrunnerIds
 				model.update();
 				
 			};
@@ -113,7 +115,7 @@ function main(config){
 		
 		var selectUI = function(){
 			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.strategy);
-			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
+			if(window.chooseFrun) chooseFrun.highlight("realname", model.preFrontrunnerIds);
 		};
 		selectUI();
 		
@@ -128,7 +130,6 @@ function main(config){
 		resetDOM.onclick = function(){
 
 			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
-			config.frontrunnerSet = new Set(config.afrontrunnerArray); // stringify a set is not good
 			// Reset manually, coz update LATER.
 			model.reset(true);
 			model.onInit();
@@ -138,7 +139,7 @@ function main(config){
 			selectUI();
 			console.log(initialConfig)
 		};
-		document.body.appendChild(resetDOM);
+		document.querySelector("#center").appendChild(resetDOM);
 		
 	};
 

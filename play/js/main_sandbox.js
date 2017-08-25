@@ -29,7 +29,6 @@ function main(config){
 		var data = JSON.parse(modelData);
 
 		config = data;
-		config.frontrunnerSet = new Set(config.afrontrunnerArray) // stringify a set is not good
 
 	}
 
@@ -37,7 +36,9 @@ function main(config){
 	var allnames = ["systems","voters","candidates","strategy","percentstrategy","unstrategic","frontrunners","poll","yee"]
 	var doms = {}  // for hiding menus, later
 	var stratsliders = [] // for hiding sliders, later
-	
+	var confighistory = {}
+	var config_name = null
+
 	var loadDefaults = function() {
 		// Defaults...
 		config = config || {};
@@ -66,7 +67,7 @@ function main(config){
 		config.doFullStrategyConfig = undefined
 		config.hidegearconfig = config.hidegearconfig || false;
 		
-		config.frontrunnerSet = config.frontrunnerSet || new Set(["square"]);
+		config.preFrontrunnerIds = config.preFrontrunnerIds || ["square","triangle"]
 		config.voterStrategies = config.voterStrategies || []
 		config.description = config.description || ""
 		for (i in [0,1,2]) {
@@ -84,7 +85,6 @@ function main(config){
 		var filename = url.substring(url.lastIndexOf('/')+1);
 		config.filename = filename
 		config.presethtmlname = filename;
-		config.afrontrunnerArray = Array.from(config.frontrunnerSet)// stringify a set is not good
 		initialConfig = JSON.parse(JSON.stringify(config));
 
 	}
@@ -110,7 +110,7 @@ function main(config){
 			model.numOfVoters = config.voters;
 			model.votersRealName = voters.filter( function(x){return (x.num==config.voters && (x.snowman||false)==config.snowman && (x.oneVoter||false) == config.oneVoter) })[0].realname
 			model.system = config.system;
-			model.frontrunnerSet = config.frontrunnerSet;
+			model.preFrontrunnerIds = config.preFrontrunnerIds;
 			model.computeMethod = config.computeMethod;
 			var votingSystem = votingSystems.filter(function(system){
 				return(system.name==model.system);
@@ -144,7 +144,7 @@ function main(config){
 					type: model.voterType,
 					strategy: config.voterStrategies[i],
 					percentStrategy: config.voterPercentStrategy[i],
-					frontrunnerSet: config.frontrunnerSet,
+					preFrontrunnerIds: config.preFrontrunnerIds,
 					unstrategic: config.unstrategic,
 					vid: i,
 					snowman: config.snowman,
@@ -524,12 +524,14 @@ function main(config){
 
 			// update config...
 			// no reset...
+			var preFrontrunnerSet = new Set(config.preFrontrunnerIds)
 			if (data.isOn) {
-				config.frontrunnerSet.add(data.realname)
+				preFrontrunnerSet.add(data.realname)
 			} else {
-				config.frontrunnerSet.delete(data.realname)
-			} 
-			model.frontrunnerSet = config.frontrunnerSet
+				preFrontrunnerSet.delete(data.realname)
+			}
+			config.preFrontrunnerIds = Array.from(preFrontrunnerSet)
+			model.preFrontrunnerIds = config.preFrontrunnerIds
 			model.update();
 
 		};
@@ -554,17 +556,17 @@ function main(config){
 		var onChoosePoll = function(data){
 			if (data.name == "Poll") {
 				var won = model.winners
-				config.frontrunnerSet = new Set(won)
+				config.preFrontrunnerIds = won
 			} else {
 				model.dotop2 = true // not yet implemented
 				model.update()
 				model.dotop2 = false
-				config.frontrunnerSet = new Set(model.top2)
+				config.preFrontrunnerIds = model.top2
 				model.top2 = []
 			}
 			
-			model.frontrunnerSet = config.frontrunnerSet
-			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
+			model.preFrontrunnerIds = config.preFrontrunnerIds
+			if(window.chooseFrun) chooseFrun.highlight("realname", model.preFrontrunnerIds);
 			model.update();
 
 		};
@@ -672,36 +674,55 @@ function main(config){
 		var presetconfig = []
 		for (i in presetnames) presetconfig.push({name:presetnames[i],realname:presetdescription[i],htmlname:presethtmlnames[i],margin:4})
 
-		var onChoosepresetconfig = function(data){
-			if (data.isOn) {
-				var firstletter = data.htmlname[0]
-				if (firstletter == 'e' || firstletter == 's') {
-					config = loadpreset(data.htmlname)
-					loadDefaults()
-					model.reset(true);
-					model.onInit();
-					setInPosition();
-					selectUI();
-				} else if (firstletter == 'b') {
-					//document.location.replace(data.htmlname);
-					ballotconfig = loadpreset(data.htmlname)
-					var systemTranslator = {Plurality:"FPTP",Ranked:"Condorcet",Approval:"Approval",Score:"Score",Three:"3-2-1"}
-					config = {}
-					config.system = systemTranslator[ballotconfig.system]
-					var s = ballotconfig.strategy || "zero strategy. judge on an absolute scale."
-					config.voterStrategies = [s,s,s]
-					config.frontrunnerSet = ballotconfig.frontrunnerSet
-					config.featurelist = []
-					if (ballotconfig.showChoiceOfFrontrunners) {config.featurelist.push("frontrunners")}
-					if (ballotconfig.showChoiceOfStrategy) {config.featurelist.push("strategy")}
-					config.oneVoter = true
-					loadDefaults()
-					model.reset(true);
-					model.onInit();
-					setInPosition();
-					selectUI();
-				}
+		var presethelper = function(config_name) {
+			var firstletter = config_name[0]
+			if (firstletter == 'e' || firstletter == 's' || firstletter == 'f') {
+				config = loadpreset(config_name)
+			} else if (firstletter == 'b') {
+				//document.location.replace(config_name);
+				ballotconfig = loadpreset(config_name)
+				var systemTranslator = {Plurality:"FPTP",Ranked:"Condorcet",Approval:"Approval",Score:"Score",Three:"3-2-1"}
+				config = {}
+				config.system = systemTranslator[ballotconfig.system]
+				var s = ballotconfig.strategy || "zero strategy. judge on an absolute scale."
+				config.voterStrategies = [s,s,s]
+				config.preFrontrunnerIds = ballotconfig.preFrontrunnerIds || ["square","triangle"]
+				config.featurelist = []
+				if (ballotconfig.showChoiceOfFrontrunners) {config.featurelist.push("frontrunners")}
+				if (ballotconfig.showChoiceOfStrategy) {config.featurelist.push("strategy")}
+				config.oneVoter = true
+
+				// some defaults
+				config.candidatePositions = config.candidatePositions || [[41,50],[173,95],[216,216]]
+				config.voterPositions = config.voterPositions || [[81,92]]
+
 			}
+			return config
+		}
+
+		var onChoosepresetconfig = function(data){
+			// first, save the current config for later
+			
+			// config_name is still old here... and we update  below
+			if (config_name != null) {
+				jsave(0) // Update the config so we can save it.  the 0 means don't output to console.
+				confighistory[config_name] = config // always update
+			}
+
+			// update the config name
+			config_name = data.htmlname
+			// now we load the new config
+			if ( Object.keys(confighistory).includes(config_name) ) {
+				// have we been here before?  If so, then get the last config
+				config = confighistory[config_name]
+			} else {
+				config = presethelper(config_name)
+			}
+			loadDefaults()
+			model.reset(true);
+			model.onInit();
+			setInPosition();
+			selectUI();
 		};
 		window.choosepresetconfig = new ButtonGroup({
 			label: "pick a preset:",
@@ -714,6 +735,21 @@ function main(config){
 		
 		if(window.choosepresetconfig) choosepresetconfig.highlight("htmlname", config.presethtmlname);
 		// only do this once.  Otherwise it would be in SelectUI
+
+
+		// Also handle messages from the parent window
+		function bindEvent(element, eventName, eventHandler) {
+            if (element.addEventListener) {
+                element.addEventListener(eventName, eventHandler, false);
+            } else if (element.attachEvent) {
+                element.attachEvent('on' + eventName, eventHandler);
+            }
+        }
+        // Listen to messages from parent window
+        bindEvent(window, 'message', function (e) {
+			onChoosepresetconfig({htmlname:parent.globalHtmlName})
+        });
+
 
 
 		var computeMethod = [{name:"gpu",margin:4},{name:"js",margin:4},{name:"ez"}]
@@ -776,14 +812,14 @@ function main(config){
 				}
 			}
 			if(window.chooseVoterStrategyOff) chooseVoterStrategyOff.highlight("realname", model.voters[0].unstrategic);
-			if(window.chooseFrun) chooseFrun.highlight("realname", model.frontrunnerSet);
+			if(window.chooseFrun) chooseFrun.highlight("realname", model.preFrontrunnerIds);
 			if(stratsliders) {
 				for (i in stratsliders) {
 					stratsliders[i].value = config.voterPercentStrategy[i]
 				}
 			}
 			if(window.chooseyeeobject) chooseyeeobject.highlight("keyyee", config.keyyee);
-			if(window.choosegearconfig) choosegearconfig.highlight("realname", new Set(config.featurelist));
+			if(window.choosegearconfig) choosegearconfig.highlight("realname", config.featurelist);
 			if(window.chooseComputeMethod) chooseComputeMethod.highlight("name", config.computeMethod);
 			
 		};
@@ -798,13 +834,13 @@ function main(config){
 		var resetDOM = document.createElement("div");
 		resetDOM.id = "reset";
 		resetDOM.innerHTML = "reset";
-		resetDOM.style.top = "340px";
-		resetDOM.style.left = "350px";
 		resetDOM.onclick = function(){
 
-			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
-			config.frontrunnerSet = new Set(config.afrontrunnerArray); // stringify a set is not good
+			config = presethelper(config_name)
+			// config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
 			// Reset manually, coz update LATER.
+			
+			loadDefaults()
 			model.reset(true);
 			model.onInit();
 			setInPosition();
@@ -813,7 +849,7 @@ function main(config){
 			selectUI();
 
 		};
-		document.body.appendChild(resetDOM);
+		document.querySelector("#center").appendChild(resetDOM);
 
 
 		///////////////////////////
@@ -864,9 +900,7 @@ function main(config){
 			var logtext = ''
 			for (i in sofar) logtext += i + ": " +JSON.stringify(sofar[i]) + ',\n'
 			for (i in config) {
-				if (i == "frontrunnerSet"){
-					logtext += i + ": new Set(" +JSON.stringify(Array.from(config[i])) + '),\n'
-				} else if (i == "afrontrunnerArray" || i == "candidatePositions" || i == "voterPositions") {
+				if (i == "candidatePositions" || i == "voterPositions") {
 					// skip
 				} else {
 					logtext += i + ": " +JSON.stringify(config[i]) + ',\n'
@@ -903,29 +937,15 @@ function main(config){
 				// yay.
 				descText.value = initialConfig.description;
 			}
-			// Move that reset button
-			if (config.sandboxsave) {
-				resetDOM.style.top = "470px";
-				resetDOM.style.left = "235px";
-			} else {
-				resetDOM.style.top = "340px";
-				resetDOM.style.left = "245px";
-			}
 			// Create a "save" button
 			var saveDOM = document.createElement("div");
 			saveDOM.id = "save";
 			saveDOM.innerHTML = "save:";
-			if (config.sandboxsave) {
-				saveDOM.style.top = "470px";
-				saveDOM.style.left = "350px";
-			} else {
-				saveDOM.style.top = "340px";
-				saveDOM.style.left = "350px";
-			}
+			
 			saveDOM.onclick = function(){
 				_saveModel();
 			};
-			document.body.appendChild(saveDOM);
+			document.querySelector("#center").appendChild(saveDOM);
 
 			// The share link textbox
 			linkText = document.createElement("input");
@@ -935,16 +955,7 @@ function main(config){
 			linkText.onclick = function(){
 				linkText.select();
 			};
-			if (config.sandboxsave) {
-				//skip
-			} else {
-				linkText.style.position = "absolute";
-				linkText.style.top = "340px";
-				linkText.style.left = "460px";
-				linkText.style.height = "30px";
-				linkText.style.width = "90px";
-			}
-			document.body.appendChild(linkText);
+			document.querySelector("#center").appendChild(linkText);
 
 			// Create a URL... (later, PARSE!)
 			// save... ?d={s:[system], v:[voterPositions], c:[candidatePositions], d:[description]}
@@ -988,13 +999,11 @@ function main(config){
 		jsave(1)  // updates config with positions and gives a log of settings to copy and paste
 		
 		// URI ENCODE!
-		config.afrontrunnerArray = Array.from(config.frontrunnerSet); // stringify a set is not good
 		var uri = encodeURIComponent(JSON.stringify(config));
 
 		// ALSO TURN IT INTO INITIAL CONFIG. _parseModel
 		
 		initialConfig = JSON.parse(JSON.stringify(config)); // RESTORE IT!
-		initialConfig.frontrunnerSet = new Set(initialConfig.afrontrunnerArray); // stringify a set is not good
 		
 		// Put it in the save link box!
 		

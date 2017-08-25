@@ -105,7 +105,7 @@ var loadpreset = function(htmlname) {
 	voters: 2,
 	voterPositions: [[100,150],[300-100,150]],
 	voterStrategies: ["normalize","zero strategy. judge on an absolute scale."],
-	frontrunnerSet: new Set(["square","hexagon"])
+	preFrontrunnerIds: ["square","hexagon"]
 	*/
 	
 candidatePositions: [[50,150],[250,150]],
@@ -114,7 +114,7 @@ system: "Score",
 candidates: 2,
 voters: 2,
 voterStrategies: ["normalize","normalize","zero strategy. judge on an absolute scale."],
-frontrunnerSet: new Set(["square","hexagon"]),
+preFrontrunnerIds: ["square","hexagon"],
 featurelist: ["percentstrategy"],
 sandboxsave: false,
 hidegearconfig: false,
@@ -164,7 +164,7 @@ doFullStrategyConfig: undefined,
 						 [150,150+90]],
 	voterStrategies: ["normalize frontrunners only","normalize frontrunners only","normalize frontrunners only"],
 	voterPercentStrategy: [100,100,100],
-	frontrunnerSet: new Set(['square','triangle','hexagon']),
+	preFrontrunnerIds: ['square','triangle','hexagon'],
 	doFullStrategyConfig: true
 	*/
 	
@@ -175,7 +175,7 @@ candidates: 3,
 voters: 3,
 voterStrategies: ["best frontrunner","best frontrunner","best frontrunner"],
 voterPercentStrategy: ["100","100",100],
-frontrunnerSet: new Set(["square","triangle","hexagon"]),
+preFrontrunnerIds: ["square","triangle","hexagon"],
 featurelist: ["percentstrategy"],
 sandboxsave: false,
 hidegearconfig: false,
@@ -207,7 +207,7 @@ doFullStrategyConfig: undefined
 						 [150,150+90]],
 	voterStrategies: ["best frontrunner","best frontrunner","best frontrunner"],
 	voterPercentStrategy: [0,100,100],
-	frontrunnerSet: new Set(['square','triangle','hexagon']),
+	preFrontrunnerIds: ['square','triangle','hexagon'],
 	doFullStrategyConfig: true,
 	unstrategic: "normalize"
 	*/
@@ -219,7 +219,7 @@ candidates: 3,
 voters: 3,
 voterStrategies: ["best frontrunner","best frontrunner","best frontrunner"],
 voterPercentStrategy: ["100","100",100],
-frontrunnerSet: new Set(["square","triangle","hexagon"]),
+preFrontrunnerIds: ["square","triangle","hexagon"],
 featurelist: ["percentstrategy","systems"],
 sandboxsave: false,
 hidegearconfig: false,
@@ -252,7 +252,7 @@ doFullStrategyConfig: undefined
 						 [150,150+90]],
 	voterStrategies: ["normalize frontrunners only","normalize frontrunners only","normalize frontrunners only"],
 	voterPercentStrategy: [100,100,100],
-	frontrunnerSet: new Set(['square','triangle','hexagon'])
+	preFrontrunnerIds: ['square','triangle','hexagon']
 	*/
 	
 candidatePositions: [[145,155],[184,153],[106,157]],
@@ -262,7 +262,7 @@ candidates: 3,
 voters: 1,
 voterStrategies: ["zero strategy. judge on an absolute scale.","normalize frontrunners only","normalize frontrunners only"],
 voterPercentStrategy: ["100",100,100],
-frontrunnerSet: new Set(["square","triangle","hexagon"]),
+preFrontrunnerIds: ["square","triangle","hexagon"],
 featurelist: ["systems"],
 sandboxsave: false,
 hidegearconfig: false,
@@ -293,7 +293,7 @@ doFullStrategyConfig: undefined,
 						 [150,150+90]],
 	voterStrategies: ["starnormfrontrunners","starnormfrontrunners","starnormfrontrunners"],
 	voterPercentStrategy: [100,100,100],
-	frontrunnerSet: new Set(['square','triangle','hexagon'])
+	preFrontrunnerIds: ['square','triangle','hexagon']
 	*/
 	
 candidatePositions: [[121,149],[118,170],[194,159]],
@@ -303,7 +303,7 @@ candidates: 3,
 voters: 3,
 voterStrategies: ["best frontrunner","best frontrunner","best frontrunner"],
 voterPercentStrategy: ["100","100",100],
-frontrunnerSet: new Set(["square","triangle","hexagon"]),
+preFrontrunnerIds: ["square","triangle","hexagon"],
 featurelist: ["percentstrategy"],
 sandboxsave: false,
 hidegearconfig: false,
@@ -335,7 +335,7 @@ doFullStrategyConfig: undefined
 						 [150,150+90]],
 	voterStrategies: ["starnormfrontrunners","starnormfrontrunners","starnormfrontrunners"],
 	voterPercentStrategy: [100,100,100],
-	frontrunnerSet: new Set(['square','triangle','hexagon'])
+	preFrontrunnerIds: ['square','triangle','hexagon']
 	*/
 	
 candidatePositions: [[121,149],[118,170],[194,159]],
@@ -345,7 +345,7 @@ candidates: 3,
 voters: 3,
 voterStrategies: ["best frontrunner","best frontrunner","best frontrunner"],
 voterPercentStrategy: ["100","100",100],
-frontrunnerSet: new Set(["square","triangle","hexagon"]),
+preFrontrunnerIds: ["square","triangle","hexagon"],
 featurelist: ["percentstrategy"],
 sandboxsave: false,
 hidegearconfig: false,
@@ -373,7 +373,7 @@ doPercentFirst: undefined,
 featurelist: ["systems","voters","candidates","percentstrategy","strategy","percentstrategy","unstrategic","frontrunners","poll","yee"],
 sandboxsave: true,
 hidegearconfig: false,
-frontrunnerSet: new Set(["square"]),
+preFrontrunnerIds: ["square"],
 voterStrategies: ["zero strategy. judge on an absolute scale.","zero strategy. judge on an absolute scale.","zero strategy. judge on an absolute scale."],
 voterPercentStrategy: [0,0,0],
 snowman: false,
@@ -391,6 +391,15 @@ kindayee: "can",
 	voters: 1,
 	doFullStrategyConfig: true,
 	doPercentFirst: true
+}
+    } else if (htmlname == "fixedbox.html") {
+		config = 
+{
+	description: "",
+	features: 4,
+	system: "FPTP",
+	candidates: 5,
+	voters: 1,
 }
     } else if (htmlname == "ballot1.html") {
 		config = 
@@ -419,7 +428,7 @@ kindayee: "can",
 {
 	system: "Score",
 	strategy: "best frontrunner",
-	frontrunnerSet: new Set(["square","triangle"]),
+	preFrontrunnerIds: ["square","triangle"],
 	showChoiceOfFrontrunners: true,
 	showChoiceOfStrategy: true
 }
@@ -435,7 +444,7 @@ kindayee: "can",
 {
 	system: "Score",
 	strategy: "normalize frontrunners only",
-	frontrunnerSet: new Set(["square","triangle"]),
+	preFrontrunnerIds: ["square","triangle"],
 	showChoiceOfFrontrunners: true,
 	showChoiceOfStrategy: true
 }
@@ -444,7 +453,7 @@ kindayee: "can",
 {
 	system: "Score",
 	strategy: "starnormfrontrunners", // for now we are using an "off-menu" option.  We should make versions of each of hte strategies for star.
-	frontrunnerSet: new Set(["square","triangle"]),
+	preFrontrunnerIds: ["square","triangle"],
 	showChoiceOfFrontrunners: true
 }
     } else if (htmlname == "ballot10.html") {
@@ -452,7 +461,7 @@ kindayee: "can",
 {
 	system: "Three",
 	strategy: "starnormfrontrunners",
-	frontrunnerSet: new Set(["square","triangle"]),
+	preFrontrunnerIds: ["square","triangle"],
 	showChoiceOfFrontrunners: true
 }
     } else if (htmlname == "ballot11.html") {
@@ -460,7 +469,7 @@ kindayee: "can",
 {
 	system: "Score",
 	strategy: "best frontrunner",
-	frontrunnerSet: new Set(["square","triangle"]),
+	preFrontrunnerIds: ["square","triangle"],
 	showChoiceOfFrontrunners: true,
 	showChoiceOfStrategy: true
 }
@@ -469,7 +478,7 @@ kindayee: "can",
 {
 	system: "Score",
 	strategy: "not the worst frontrunner",
-	frontrunnerSet: new Set(["square","triangle"]),
+	preFrontrunnerIds: ["square","triangle"],
 	showChoiceOfFrontrunners: true,
 	showChoiceOfStrategy: true
 }
@@ -478,7 +487,7 @@ kindayee: "can",
 
 
     }
-    return config
+    return config //JSON.parse(JSON.stringify(config))
 }
 
 

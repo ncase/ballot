@@ -438,7 +438,7 @@ for (var iv=0; iv<li*lv; iv++) {
 	
 		d1 = cube[civ]
 		if (d1 > m) {
-			m = d1 //min
+			m = d1 // max
 		}
 	}
 	if(runscript) right.innerHTML += "<br>"+m
@@ -842,7 +842,7 @@ return winner3
 
 
 
-function fastyee(xc,yc,f,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method) {
+function fastyee(xc,yc,f,e,xv,yv,vg,xvcenter,yvcenter,movethisidx,whichtypetomove,method) {
 	// have not implemented frontrunners yet
 	lf = f.length
 	if (whichtypetomove == "voter"){
