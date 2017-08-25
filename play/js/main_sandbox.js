@@ -686,11 +686,16 @@ function main(config){
 				config.system = systemTranslator[ballotconfig.system]
 				var s = ballotconfig.strategy || "zero strategy. judge on an absolute scale."
 				config.voterStrategies = [s,s,s]
-				config.preFrontrunnerIds = ballotconfig.preFrontrunnerIds
+				config.preFrontrunnerIds = ballotconfig.preFrontrunnerIds || ["square","triangle"]
 				config.featurelist = []
 				if (ballotconfig.showChoiceOfFrontrunners) {config.featurelist.push("frontrunners")}
 				if (ballotconfig.showChoiceOfStrategy) {config.featurelist.push("strategy")}
 				config.oneVoter = true
+
+				// some defaults
+				config.candidatePositions = config.candidatePositions || [[41,50],[173,95],[216,216]]
+				config.voterPositions = config.voterPositions || [[81,92]]
+
 			}
 			return config
 		}
