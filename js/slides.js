@@ -9,7 +9,24 @@ var exampleLoaded = null
 
 //$("#main").css("width","500px")
 
+var setshift = function() {
+	var window_height = $(window).height();
+	// link into middle
+	// only really need to do this when the window is resized
+	var shift = .5*window_height - 2
+	$(".anchor").each(function(){
+		$(this).attr("height",shift)
+		$(this).attr("margin-top",-shift)	
+	})
+}
+$(window).on('resize', setshift)
+$(window).on('load', setshift)
+$(window).load(setshift)
+$(document).ready(setshift)
+
 $(window).on('scroll', function() {
+	setshift()
+	
 	var window_height = $(window).height();
 	$('.target').each(function() {
 		// this function runs on each text box and checks to see if the middle of the page is inside the box.
@@ -21,7 +38,7 @@ $(window).on('scroll', function() {
 		if(inView) {
 			var id = $(this).attr('id');
 			$('#nav nav a').removeClass('active');
-			$('#nav nav a[href=#'+ id +']').addClass('active');
+			$('#nav nav a[href=#a_'+ id +']').addClass('active');
 			$(this).css('background-color',"#ddddee");
 			if (id!=old_div) {
 				globalHtmlName = $(this).attr('id') + ".html"
@@ -71,4 +88,8 @@ $(window).on('scroll', function() {
 			n1.css("top",prejump+"px")
 		}
 	}
+	
 });
+
+// $("#nav a").attr("target","_self")  //maybe
+// $("#nav a").removeAttr("target")  //better?

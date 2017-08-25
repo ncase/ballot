@@ -56,3 +56,11 @@ div.target  {
 	width: 500px;
 	height: 100%;
 }
+
+.anchor {
+	display: block;
+	position: relative;
+	height: 400px;
+	margin-top: -400px;
+	visibility: hidden;
+}
