@@ -57,3 +57,19 @@ textarea, input{
     padding: 8px;
     font-size: 12px;
 }
+
+
+#left{
+	overflow-y: visible;
+	width: 230px;
+}
+
+
+#left{
+	margin-top: 0px;
+	padding-right: 10px;
+}
+#right{
+	margin-top: 0px;
+	margin-left: 20px;
+}

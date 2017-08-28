@@ -6,6 +6,7 @@ var old_div = null;
 var globalHtmlName = "ballot4.html"
 var exampleLoaded = null
 
+var read_fraction = .2
 
 //$("#main").css("width","500px")
 
@@ -13,32 +14,34 @@ var setshift = function() {
 	var window_height = $(window).height();
 	// link into middle
 	// only really need to do this when the window is resized
-	var shift = .5*window_height - 2
+	var shift = read_fraction*window_height - 70
 	$(".anchor").each(function(){
-		$(this).attr("height",shift)
-		$(this).attr("margin-top",-shift)	
+		$(this).css("height",shift)
+		$(this).css("margin-top",-shift)	
 	})
 }
 $(window).on('resize', setshift)
 $(window).on('load', setshift)
-$(window).load(setshift)
 $(document).ready(setshift)
 
 $(window).on('scroll', function() {
-	setshift()
 	
 	var window_height = $(window).height();
 	$('.target').each(function() {
 		// this function runs on each text box and checks to see if the middle of the page is inside the box.
-		var scrollMiddle = $(window).scrollTop() + (window_height/2);
+		var scrollMiddle = $(window).scrollTop() + (window_height * read_fraction);
 		elTop = $(this).offset().top;
 		elBtm = elTop + $(this).height();
 		var inView = elTop < scrollMiddle && elBtm > scrollMiddle;
 		// var inView = $(window).scrollTop() >= $(this).offset().top
 		if(inView) {
 			var id = $(this).attr('id');
-			$('#nav nav a').removeClass('active');
-			$('#nav nav a[href=#a_'+ id +']').addClass('active');
+			
+			$('#nav nav a[href="../newer.html#a_'+ id +'"]', $("#fixedbox").contents()).addClass('active');
+
+			$("#fixedbox").contents().find('#nav nav a').removeClass('active');
+			$('#nav nav a[href="../newer.html#a_'+ id +'"]', $("#fixedbox").contents()).addClass('active');
+			// $("#fixedbox").contents().find('#nav nav a[href="../newer.html#a_'+ id +'"]').addClass('active');
 			$(this).css('background-color',"#ddddee");
 			if (id!=old_div) {
 				globalHtmlName = $(this).attr('id') + ".html"
@@ -78,14 +81,22 @@ $(window).on('scroll', function() {
 			console.log("topper")
 			n1.css("position","absolute")
 			n1.css("top", topoffirst)
+			n1.css("margin-top","0")
 		} else if (belowbottomoflast) {
 			console.log("bottomer")
 			n1.css("position","absolute")
 			n1.css("top",bottomoflast-sidebarheight+"px")
+			n1.css("margin-top","0")
 		} else { // sticky
 			console.log("sticky")
 			n1.css("position","fixed")
-			n1.css("top",prejump+"px")
+			if (window_height > 770) {
+				n1.css("top","50%")
+				n1.css("margin-top","-385px")
+			} else {
+				n1.css("top","0")
+				n1.css("margin-top","0")
+			}
 		}
 	}
 	

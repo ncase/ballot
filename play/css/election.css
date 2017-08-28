@@ -11,17 +11,18 @@ Election/Sandbox design:
 	height: 320px;
 }
 #left{
-	width:220px;
-	padding-right: 20px;
+	margin-top: 20px;
+	width:230px;
 	height: 371px;
+	overflow-y: auto;
 }
 #center{
 	width:320px;
 	height: 370px;
 }
 #right{
+	margin-top: 20px;
 	width: 220px;
-	padding-left: 20px;
 	overflow-y: auto;
 }
 #caption{
