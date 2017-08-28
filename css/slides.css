@@ -7,9 +7,9 @@ div.target  {
 }
 
 #main {
-	margin-left: 540px;
+	margin-left: 500px;
 	position:relative;
-	right: 10px;
+	right: 20px;
 }
 
 #main div.target {
@@ -46,14 +46,14 @@ div.target  {
 }
 
 #nav nav {
-	left: 340px;
+	left: 0;
 	width: 100px;
 	height: 20%;
 	position: absolute;
 }
 
 #fixedbox {
-	width: 500px;
+	width: 458px;
 	height: 100%;
 }
 
