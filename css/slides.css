@@ -7,9 +7,9 @@ div.target  {
 }
 
 #main {
-	left: 540px;
-	max-width: 700px;
+	margin-left: 540px;
 	position:relative;
+	right: 10px;
 }
 
 #main div.target {
