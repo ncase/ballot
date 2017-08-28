@@ -36,8 +36,12 @@ $(window).on('scroll', function() {
 		// var inView = $(window).scrollTop() >= $(this).offset().top
 		if(inView) {
 			var id = $(this).attr('id');
-			$('#nav nav a').removeClass('active');
-			$('#nav nav a[href=#a_'+ id +']').addClass('active');
+			
+			$('#nav nav a[href="../newer.html#a_'+ id +'"]', $("#fixedbox").contents()).addClass('active');
+
+			$("#fixedbox").contents().find('#nav nav a').removeClass('active');
+			$('#nav nav a[href="../newer.html#a_'+ id +'"]', $("#fixedbox").contents()).addClass('active');
+			// $("#fixedbox").contents().find('#nav nav a[href="../newer.html#a_'+ id +'"]').addClass('active');
 			$(this).css('background-color',"#ddddee");
 			if (id!=old_div) {
 				globalHtmlName = $(this).attr('id') + ".html"
@@ -77,14 +81,22 @@ $(window).on('scroll', function() {
 			console.log("topper")
 			n1.css("position","absolute")
 			n1.css("top", topoffirst)
+			n1.css("margin-top","0")
 		} else if (belowbottomoflast) {
 			console.log("bottomer")
 			n1.css("position","absolute")
 			n1.css("top",bottomoflast-sidebarheight+"px")
+			n1.css("margin-top","0")
 		} else { // sticky
 			console.log("sticky")
 			n1.css("position","fixed")
-			n1.css("top",prejump+"px")
+			if (window_height > 770) {
+				n1.css("top","50%")
+				n1.css("margin-top","-385px")
+			} else {
+				n1.css("top","0")
+				n1.css("margin-top","0")
+			}
 		}
 	}
 	

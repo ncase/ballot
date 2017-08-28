@@ -70,3 +70,34 @@ textarea, input{
 }
 
 
+#nav {
+	font-size: 10px;
+	top: 0%;
+	
+/*	just for start*/
+	position: absolute;
+	line-height: 1em;
+}
+
+#nav a {
+	border-bottom: 1px solid #666;
+	color: #333;
+	display: block;
+	padding: 1px;
+	text-align: center;
+	text-decoration: none;
+}
+
+#nav a:hover, #nav a.active {
+	background: #666;
+	color: #fff;
+}
+
+#nav nav {
+	left: 0;
+	width: 100px;
+	height: 20%;
+	position: absolute;
+}
+
+
