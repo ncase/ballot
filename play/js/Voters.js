@@ -672,7 +672,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 			var y = self.y + p[1];
 
 			var r1 = (1861*i) % 100;
-			if (r1 <= self.percentStrategy) {
+			if (r1 < self.percentStrategy) {
 				var strategy = self.strategy // yes
 			} else {
 				var strategy = self.unstrategic; // no e.g. "zero strategy. judge on an absolute scale."
