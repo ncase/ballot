@@ -14,7 +14,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,preFrontrunnerIds,
 			dist2a.push(dist2)
 			scores[c.id] = getScore(dist2);
 		}
-		
+
 		var radiusFirst = radiusStep * (minscore + .5)
 		var radiusLast = radiusStep * (maxscore - .5)
 		var scoresfirstlast = {scores:scores, radiusFirst:radiusFirst , radiusLast:radiusLast, dottedCircle:dottedCircle}
@@ -55,7 +55,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,preFrontrunnerIds,
 		for (var i = 0; i < ls; i++) {
 			var index = canAid.indexOf(preFrontrunnerIds[i])
 			if (index > -1) {shortlist.push(index)}
-		}	
+		}
 	}
 
 	// find min and max of shortlist
@@ -63,7 +63,7 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,preFrontrunnerIds,
 	var n=Infinity
 	var mi=null
 	var ni=null
-	for (var i = 0; i < ls; i++) {	
+	for (var i = 0; i < ls; i++) {
 		var d1 = dista[shortlist[i]]
 		if (d1 > m) {
 			m = d1 // max
@@ -96,17 +96,17 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,preFrontrunnerIds,
 		}
 		scores[canAid[i]] = score
 	}
-	
+
 	// boundary condition correction
 	// scores[canAid[mi]] = minscore
 	scores[canAid[ni]] = maxscore
 
-	// if there's just one frontrunner than set him last 
+	// if there's just one frontrunner than set him last
 	// unless he's the closest to you
-	if (lf==1 && strategy != "normalize") { 
+	if (lf==1 && strategy != "normalize") {
 		var n1 = n
 		var n1i = ni
-		for (var i = 0; i < lc; i++) {	
+		for (var i = 0; i < lc; i++) {
 			var d1 = dista[i]
 			if (d1 < n1) {
 				n1 = d1 //min
@@ -128,14 +128,14 @@ function dostrategy(x,y,minscore,maxscore,rangescore,strategy,preFrontrunnerIds,
 		// find best candidate and make sure that only he gets the best score
 		var n1 = n
 		var n1i = ni
-		for (var i = 0; i < lc; i++) {	
+		for (var i = 0; i < lc; i++) {
 			var d1 = dista[i]
 			if (d1 < n1) {
 				n1 = d1 //min
 				n1i = i
 			}
 		}
-		for (var i = 0; i < lc; i++) {	
+		for (var i = 0; i < lc; i++) {
 			var c = canAid[i]
 			if (scores[c]==maxscore && i!=n1i) {
 				scores[c]=maxscore-1;
@@ -170,15 +170,15 @@ function ScoreVoter(model){
 
 	self.getBallot = function(x, y, strategy){
 
-		
+
 		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
-		
+
 		self.radiusFirst = scoresfirstlast.radiusFirst
 		self.radiusLast = scoresfirstlast.radiusLast
 		self.dottedCircle = scoresfirstlast.dottedCircle
 		var scores = scoresfirstlast.scores
 		return scores
-		
+
 	};
 
 	self.drawBG = function(ctx, x, y, ballot){
@@ -250,15 +250,15 @@ function ThreeVoter(model){
 
 	self.getBallot = function(x, y, strategy){
 
-		
+
 		var scoresfirstlast = dostrategy(x,y,minscore,maxscore,scorearray,strategy,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
-		
+
 		self.radiusFirst = scoresfirstlast.radiusFirst
 		self.radiusLast = scoresfirstlast.radiusLast
 		self.dottedCircle = scoresfirstlast.dottedCircle
 		var scores = scoresfirstlast.scores
 		return scores
-		
+
 	};
 
 	self.drawBG = function(ctx, x, y, ballot){
@@ -324,8 +324,8 @@ function ApprovalVoter(model){
 	};
 
 	self.getBallot = function(x, y, strategy){
-		
-		
+
+
 		var scoresfirstlast = dostrategy(x,y,0,1,[0,1],strategy,self.model.preFrontrunnerIds,self.model.candidates,self.radiusStep,self.getScore)
 		var scores = scoresfirstlast.scores
 		self.drawApprovalRadius = (scoresfirstlast.radiusFirst + scoresfirstlast.radiusLast) * .5
@@ -568,9 +568,9 @@ var _drawSlices = function(ctx, x, y, size, slices, totalSlices){
 		startingAngle = endingAngle;
 
 	}
-	
+
 	if (self.model.yeeon) {
-		// Just draw a circle.		
+		// Just draw a circle.
 		ctx.strokeStyle = 'rgb(0,0,0)';
 		ctx.lineWidth = 1; // border
 		ctx.beginPath();
@@ -605,7 +605,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 	self.setType = function(newType){
 		self.type = new newType(self.model);
 	};
-	
+
 	self.percentStrategy = config.percentStrategy
 	self.strategy = config.strategy
 	self.unstrategic = config.unstrategic
@@ -632,7 +632,7 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 	} else if (self.num==3){
 		spacings = [0, 10, 11, 12, 15, 20, 30, 50, 100];
 	}
-	
+
 	// Create 100+ points, in a Gaussian-ish distribution!
 	var points = [[0,0]];
 	self.points = points;
@@ -665,23 +665,19 @@ function GaussianVoters(config){ // this config comes from addVoters in main_san
 	self.ballots = [];
 	self.update = function(){
 		self.ballots = [];
-		
-		//randomly assign voter strategy based on percentages, but using the same seed each time
-		// from http://davidbau.com/encode/seedrandom.js
-		Math.seedrandom('hi');
-		
+
 		for(var i=0; i<points.length; i++){
 			var p = points[i];
 			var x = self.x + p[0];
 			var y = self.y + p[1];
-			
-			var r1 = Math.random() * 100;
-			if (r1 < self.percentStrategy) { 
+
+			var r1 = (1861*i) % 100;
+			if (r1 <= self.percentStrategy) {
 				var strategy = self.strategy // yes
 			} else {
 				var strategy = self.unstrategic; // no e.g. "zero strategy. judge on an absolute scale."
 			}
-			
+
 			var ballot = self.type.getBallot(x, y, strategy);
 			self.ballots.push(ballot);
 		}
@@ -729,7 +725,7 @@ function SingleVoter(config){
 	self.img = new Image();
 	self.img.src = "img/voter_face.png";
 
-	
+
 	self.points = [[0,0]];
 
 	// UPDATE!
