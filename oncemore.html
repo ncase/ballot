@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+	<!-- Meta -->
+	<title>To Build an Even Better Ballot?</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+	<meta charset="utf-8">
+	<link rel="icon" type="image/png" href="favicon.png">
+
+	<!-- Schema.org markup for Google+ -->
+	<meta itemprop="name" content="To Build an Even Better Ballot">
+	<meta itemprop="description" content="an addendum to ncase's interactive guide to alternative voting methods">
+	<meta itemprop="image" content="http://ncase.me/ballot/social/thumbnail.png">
+
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@bettercount_us">
+	<meta name="twitter:title" content="To Build an Even Better Ballot">
+	<meta name="twitter:description" content="an addendum to @ncasenmare's interactive guide to alternative voting methods">
+	<meta name="twitter:creator" content="@bettercount_us">
+	<meta name="twitter:image" content="http://ncase.me/ballot/social/thumbnail.png">
+
+	<!-- Open Graph data -->
+	<meta property="og:title" content="To Build an Even Better Ballot">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="http://ncase.me/ballot/">
+	<meta property="og:image" content="http://ncase.me/ballot/social/thumbnail.png">
+	<meta property="og:description" content="an addendum to ncase's interactive guide to alternative voting methods">
+
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<!-- <base target="_blank"> not sure about this -->
+
+	<link rel="stylesheet" type="text/css" href="css/slides.css">
+	<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
+	<script type="text/javascript" src="js/slides.js"></script>
+</head>
+<body>
+
+<!-- - - - - - - - -
+
+SPLASH!
+
+- - - - - - - - - -->
+
+
+
+	<div id="splash" class="banner">
+		<iframe id="splash_iframe" src="splash/splash.html" width="1500" height="400" scrolling="no"></iframe>
+		<img src="img/logo.png"/>
+	</div>
+
+
+	<!-- - - - - - - - -
+
+	INTRODUCTION:
+	THE SPOILER EFFECT
+
+	- - - - - - - - - -->
+
+	<div id="content">
+	<div class="words">
+
+	<p>I wanted to start this voting exploration off with a topical joke about how it relates to the latest election travesty. But if I do that, it will seem dated as soon as the next election travesty comes along. So instead I'll use something that <code>totally won't</code> seem dated 20 years from now: a Twitter feed.</p>
+
+ <a class="twitter-timeline"  href="https://twitter.com/hashtag/topicaljoke" data-widget-id="906153153116110848">#topicaljoke Tweets</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+	<p>Never fear. I have two more voting methods to teach you about, and I hope I can convince you that they're the best yet.</p>
+
+	<p>Who's "me"? I'm Jameson Quinn, a statistics student at Harvard and a board member of the Center for Election Science. I'm not as good a designer or interactive programmer
+	as Nicky, as you can see from the title above. But I have spent a lot of time thinking about voting methods.</p>
+
+	<p>I'm also not as cool as Nicky, but I'm going to pretend to be. If my pale imitation of their chatty tone puts you off, then... well, I guess you can wait for my peer-reviewed paper.</p>
+
+	<p>So, the story so far: FPTP voting is horrible. There's all kinds of other voting methods that would be better. We're looking for the one that's best. Some activists think that's Instant Runoff Voting (IRV), but Nicky and I both disagree; it can prematurely eliminate centrists, and requires centralized counting. Nicky says they lean towards score voting, and I can see why: it's easy to understand, and in all the simulations Nicky built, it does a great job of satisfying all the little dot-on-screen voters.</p>
+
+	<p>By the end of this interactive, you're going to understand the three methods I consider the best. One of them Nicky already showed you: approval voting, which is great because it's so simple and because it has absolutely no downsides versus FPTP. The other two are newer, but they use similar basic ideas to what you've already seen. I hope you like all three methods.</p>
+
+	<p>But before I show you the new methods, I have to show you why score voting isn't already the greatest method possible. So I have to explain strategic voting.</p>
+
+	<h1 id="postmedian>">Unstrategic voting</h1>
+
+	<p>Remember how Nicky's voters worked in Score Voting? They just gave each candidate a number based on the absolute distance. Like this:</p>
+
+
+	</div>
+
+<section id="main">
+	<span class="anchor" id="a_ballot4"></span>
+	<div class="target" id="ballot4">
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
+		<p class="ballot_caption">Judge, don't choose.</p>
+
+
+	</div>
+	<div class="words">
+		<p><em>Description: this should just be an unstrategic score voter, as in ncase's thing. Allow ballot picture to show 0 scores.</em></p>
+
+	<p>But notice something about that ballot? For many positions of the voter and candidate, the ballot doesn't include a score of 5 or a score of 0. If you actually voted like that, you'd be giving up on some of your voting power. Say Triangle is your favorite, and you give them a score of 3, which also happens to be their average score. If Square wins with a score of 3.2, you're going to feel very silly for not giving a triangle a 5, in order to pull their average up as high as you can.</p>
+
+	<h1>Digression: median systems</h1>
+
+	<a href="#postmedian">skip this digression</a>
+
+	<p>Ever watched the Olympics? In events like figure skating, there are a number of Olympic judges from different countries. In order to prevent any one judge from having too much influence, they use a "trimmed mean": they throw away the highest and lowest scores before they take the average. </p>
+
+	<p>Olympic judges are supposedly supposed to be unbiased. But for voters, there's nothing wrong with having political opinions. (I mean, obviously your opinions, dear reader, are the best, and everybody else should just listen to you. But much as I'd like to, I can't force them to.) So let's imagine voting used the olympic system.</p>
+
+	<p>Throwing away just one highest and lowest score, with thousands or millions of voters, obviously wouldn't make an appreciable difference. So we'd have to throw away some more scores. And, why not? Let's throw away a few more while we're at it.</p>
+
+	<p>When should we stop? When there's just 1 or 2 scores left to take the average. But if you do that, most people wouldn't called that a "trimmed mean" anymore; they'd just call it the median, the middle number.</p>
+
+	<p>There are several voting methods that use the median to find the winner. (It turns out that can lead to a lot of ties, so you need a tiebreaker system to avoid that.) In the 1910s, over a dozen US cities, starting with Grand Junction, CO, used "Bucklin voting", a median-based system using a hybrid ranked/rated ballot. More recently, voting theorists Balinski and Laraki have proposed Majority Judgment, a median-based method using a rated ballot that's now been used in a number of competitions.</p>
+
+	<p>Using the median reduces the incentives for a single voter to strategize. After all, unless you happen to be the exact median rating for a candidate, the only thing that matters about the rating you gave them is whether it's above or below the median.</p>
+
+	<p>Still, large groups of voters can still get a strategic advantage. The larger the voting bloc, the greater the chance is that the median rating for a given candidate happens to be a voter in that bloc.</p>
+
+	<p>I used to think that median voting methods were the best. But then I did the simulations I'll talk about below, and they were merely OK; not much better outcomes than approval voting, but without the simplicity. I still think they're hugely better than FPTP and a bit better than IRV, but I'm not sold enough on them for it to be worth my time programming them in to Nicky's simulator.</p>
+
+
+	<h1 id="postmedian>">Lightly-strategic voting: "normalization"</h1>
+
+	<p>As I suggested above, in the real world, in score voting and similar methods, most voters will want to make sure that their ballot contains at least one candidate each at the top rating and at the bottom rating. The simplest way to do that (even though the name sounds complicated and math-y) is "normalization". That just means that you set the top and bottom ratings to be however good your favorite and least-favorite candidates are, and then spread the rest of the ratings evenly between that.</p>
+
+	<p>Here's an example of a "normalizing" voter for you to play with:</p>
+
+	</div>
+
+	</div>
+	<span class="anchor" id="a_ballot5"></span>
+	<div class="target" id="ballot5">
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Normalizing Voter</h2>
+		<p class="ballot_caption">Best is 5. Worst is 1.</p>
+
+
+	</div>
+
+	<div class="words">
+		<p><em>Description: this should be like ncase's "drag the voter" examples, with a normalizing score voter. This voter should have a series of circles, where the closest one intersects the closest candidate and the farthest one the farthest candidate. Thus, as you moved the voter or candidates the circles would change size.</em></p>
+
+	<p>As soon as voters are using strategy in score voting — even a very slight amount of strategy, such as normalization — it is no longer fully exempt from impossibility theorems like Arrow's theorem. In particular, it no longer obeys independence of irrelevant alternatives (IIA); adding or removing a losing candidate can change how voters normalize, and thus change who wins. For instance, in the simulation below, try moving the losing yellow traingle candidate, and see what happens.</p>
+
+	</div>
+	</div>
+	<span class="anchor" id="a_election7"></span>
+	<div class="target" id="election7">
+	<div class="sim-test">
+
+		<p class="caption-test">
+		non-optimal<br>
+		</p>
+
+	</div>
+	<div class="words">
+		<p><em>This should be a score voting scenario with 100% normalizing voters. the voter median around (0,0), and candidates square (3,0), triangle (-2,0), pentagon (-4,0). Pentagon voters are not enthusiastic enough about triangle so square wins, even though triangle is higher utility. Removing penta fixes the problem.  </em></p>
+
+
+	</div>
+	</div>
+	<span class="anchor" id="a_election8"></span>
+	<div class="target" id="election8">
+
+	<div class="words">
+	<p>But a bigger problem than IIA violation, which in the real world is relatively hard to engineer or take advantage of, is the issue of differential voting power. In the following election, one of the groups of voters normalizes, and the other one doesn't. The two groups are the same size, but the normalizing group gets a candidate they like a lot better.</p>
+
+	</div>
+	<div class="sim-test">
+
+		<p class="caption-test">
+		Strategists win<br>
+		</p>
+
+	</div>
+	<div class="words">
+		<p><em>groups of voters at (-4,0)non-normalizing and (4,0)normalizing. Cands at (-2.5,.5), (-2,0), (0,0), (2,0), (2.5,.5). (2,0) wins. </em></p>
+
+	<p>Is that kind of thing realistic? Perhaps not in the form above; few voters would be so unstrategic as not to normalize. But actually, normalizing as above is a pretty weak strategy. To strategize even more strongly, voters could somehow assess which two candidates were the frontrunners, and use them as the endpoints for normalization. Mostly, this means casting an approval-like ballot that gives every candidate either a 5 or a 0. For instance, in the election below, the voter believes that the red hexagon and the blue square are the frontrunners. Compare the strongly strategic voter below with the normalized voter in the second example above.</p>
+
+
+	</div>
+	</div>
+	<span class="anchor" id="a_ballot8"></span>
+	<div class="target" id="ballot8">
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Strong Strategic Voter</h2>
+		<p class="ballot_caption">Almost like strategic approval.</p>
+
+
+	</div>
+	<div class="words">
+
+			<p><em>Single-voter example with 3 candidates and a voter who normalizes based on only the  2 of them.</em></p>
+
+	<p>Just as normalized voters can have more voting power than naive voters, strongly strategic voters can have more than normalized voters (as long as they are not too far off in guessing the frontrunners). This is a potential weakness of score voting.</p>
+
+	<p> Even stronger strategic voters could only choose the best of the frontrunners.</p>
+
+	</div>
+	</div>
+	<span class="anchor" id="a_ballot11"></span>
+	<div class="target" id="ballot11">
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Best Frontrunner</h2>
+		<p class="ballot_caption">And everybody you like better.</p>
+
+
+	</div>
+	<div class="words">
+
+	<p> A more risk-averse, safe strategic voter could avoid the worst frontrunner by voting for everyone better.</p>
+
+		</div>
+
+	</div>
+	<span class="anchor" id="a_ballot12"></span>
+	<div class="target" id="ballot12">
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Not the Worst Frontrunner</h2>
+		<p class="ballot_caption">Just everybody you like better.</p>
+
+
+	</div>
+	<div class="words">
+	<p> These two strategies are really just different extremes of the strong strategic voter.</p>
+
+	<p>Is approval voting immune to this kind of voting strategy? No; in fact, in the early seventies, mathematicians Gibbard and Satterthwaite both independently proved the theorem which bears their names, showing that no non-dictatorial voting method with more than 2 options is entirely immune to strategy. Unlike Arrow's theorem, which Nicky discussed, this one goes for any kind of voting method — ranked, rated, or whatever. So yes, approval voting is more resistant to strategy than score; but not immune.</p>
+
+	<p>(Note: advocates for IRV sometimes garble this point by saying that in approval voting the best strategy is to "bullet vote" for only your favorite candidate, and that this would lead it to devolve back to FPTP. That's just wrong; if voters are strategically voting for somebody other than their favorite in FPTP, then there's no way it would make sense for them to bullet vote in approval. Approval voting isn't perfect, but it simply does <strong>not</strong> break down to FPTP.)</p>
+
+	<p>One scenario where approval becomes a factor is called the "chicken dilemma". Imagine 3 groups of voters, with 25%, 30%, and 45% of the vote respectively. Say that the first two groups both prefer each other over the third, so that either of them could beat that third opponent by 55% to 45%. Whichever of the first two groups strategically gives fewer approvals to its rival will win... unless neither of them gives enough, in which case the opponent will win. This is called a "chicken dilemma" because it's like a game of chicken between the voters for the two similar rivals: they can "swerve" and let their second-favorite win, or they can "drive straight" and either win (if the other side swerves) or crash (if the other side doesn't).</p>
+
+	<p>Here's that scenario in sandbox form. The slider on the right controls the percent of the smallest group that is strongly strategic between triangle and square; all the rest of the voters use normalized strategy (that is, approve any candidate better than the average of their favorite and least-favorite).</p>
+
+
+	</div>
+	</div>
+	<span class="anchor" id="a_election10"></span>
+	<div class="target" id="election10">
+	<div class="sim-test">
+
+		<p class="caption-test">
+		Playing Chicken<br>
+		</p>
+
+	</div>
+	<div class="words">
+
+			<p><em>Clumps of voters at (x,y,size): (-2,1,6); (-2,-1,4)slider; (3,0,10). </em></p>
+
+
+	<p>The "chicken dilemma" is a genuinely tough situation for almost any voting method. The motivations for the two rival factions to vote strategically are hard to minimize safely. Voting methods that go too far out of their way to punish strategic voters in this scenario tend to get the wrong answer in other, more-common scenarios like center squeeze. Look at how these various methods deal with both of these situations:</p>
+
+
+
+	</div>
+	</div>
+	<span class="anchor" id="a_election11"></span>
+	<div class="target" id="election11">
+	<div class="sim-test">
+
+		<p class="caption-test">
+		Playing Chicken with Different Methods<br>
+		</p>
+
+	</div>
+	</div>
+	<span class="anchor" id="a_election12"></span>
+	<div class="target" id="election12">
+	<div class="sim-test">
+
+		<p class="caption-test">
+		Center Squeeze<br>
+		</p>
+
+	</div>
+	<div class="words">
+
+			<p><em>two different sandboxes. One repeats chicken dilemma case from above but also lets you switch voting methods (plurality, IRV, approval, score). The other one has center squeeze.</em></p>
+
+	<p>So, now I've explained why strategic voting makes things tricky, I can explain my two favorite voting methods: star voting and 3-2-1 voting. </p>
+
+	</div>
+	</div>
+	<span class="anchor" id="a_ballot9"></span>
+	<div class="target" id="ballot9">
+
+	<div class="words">
+	<h1>Star voting</h1>
+
+	<p>"Star", or more precisely, "s+ar", stands for "score plus automatic runoff." In this method, voters use the same ballot as score voting. Between the two candidates with the highest scores, the winner is the one that comes higher on more ballots. Here's a one-voter star election. You can choose between three kinds of strategy: normalized, moderately strategic, and strongly strategic. The first and last kinds you've seen before. The third is almost like a strongly strategic voter, except that the ratings may be changed by one to avoid giving a frontrunner the same score as any other candidate. Here's a one-voter election:</p>
+	</div>
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">Star Strong</h2>
+		<p class="ballot_caption">Keeps a space for the best.</p>
+
+
+	</div>
+	<div class="words">
+
+			<p><em>one-voter star election</em></p>
+
+	<p>And here's the chicken dilemma you saw above:</p>
+
+	</div>
+	</div>
+	<span class="anchor" id="a_election13"></span>
+	<div class="target" id="election13">
+	<div class="sim-test">
+
+		<p class="caption-test">
+		Chicken Star<br>
+		</p>
+
+	</div>
+	<div class="words">
+
+			<p><em>chicken dilemma with star</em></p>
+
+	<h1>3-2-1 voting</h1>
+
+	<p>In 3-2-1 voting, voters rate each candidate "Good", "OK", or "Bad". To find the winner, you first narrow it down to three semifinalists, the candidates with the most "good" ratings. Then, narrow it further to two finalists, the candidates with the fewest "bad" ratings. Finally, the winner is the one preferred on more ballots. Here's a ballot to play with:</p>
+
+	</div>
+	</div>
+	<span class="anchor" id="a_ballot10"></span>
+	<div class="target" id="ballot10">
+	<div class="sim-ballot">
+
+		<h2 class="ballot_title" style="margin-bottom: 0.15em;">321 Strategic</h2>
+		<p class="ballot_caption">Approval with an extra level.</p>
+
+
+	</div>
+	<div class="words">
+
+			<p><em>one-voter 3-2-1</em></p>
+
+	<p>And here's the chicken dilemma. Note "moderately strategic" doesn't change the result from "normalized". So unlike in star voting, candidates wouldn't have to go negative against their nearby rivals in order to ensure that their voters would at least be moderately strategic and wouldn't just normalize.</p>
+
+	</div>
+	</div>
+	<span class="anchor" id="a_election14"></span>
+	<div class="target" id="election14">
+	<div class="sim-test">
+
+		<p class="caption-test">
+		321 Chicken<br>
+		</p>
+
+	</div>
+	<div class="words">
+
+			<p><em>chicken dilemma with 3-2-1</em></p>
+
+	</div>
+		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	</div>
+
+</section>
+
+<div class="words">
+<p>Putting it all together, here's a sandbox for you to try out all the different systems and to make your own scenarios:</p>
+</div>
+
+</div>
+
+
+<aside id="nav">
+	<iframe id="fixedbox" src="sandbox/fixedbox.html" scrolling="yes"></iframe>
+</aside>
+
+
+
+
+<!-- - - - - - - - -
+
+PART IV:
+SANDBOX
+
+- - - - - - - - - -->
+
+<div id="sandbox">
+	<div class="sim-sandbox">
+		<h1 class="caption-test" style="margin: 30px 0 15px 0;">SANDBOX MODE! <a href="sandbox">(link to <em>just</em> this)</a></h1>
+		<iframe src="sandbox/sandbox.html" width="802" height="960" scrolling="no"></iframe>
+	</div>
+	<div class="words">
+		<p>
+		One hope for Sandbox Mode is that readers can debate with me and each other <em>using</em> this tool!
+		Not just telling me I'm wrong, but <em>showing</em> me I'm wrong.
+		For example –
+		<a href="sandbox?m=%7B%22s%22%3A%22FPTP%22%2C%22v%22%3A%5B%5B54%2C147%5D%2C%5B54%2C72%5D%2C%5B249%2C109%5D%5D%2C%22c%22%3A%5B%5B54%2C227%5D%2C%5B249%2C106%5D%5D%2C%22d%22%3A%22This%20is%20the%20biggest%20challenge%20to%20Approval%2FScore%2C%20IMHO.%20Below%3A%202%2F3%20of%20voters%20dislike%20both%20candidates%2C%20but%20dislike%20Square%20slightly%20less.%20However%2C%201%2F3%20of%20voters%20LOVE%20Triangle%20and%20HATE%20Square.%20Under%20FPTP%2C%20IRV%20%26%20Condorcet%2C%20Square%20wins%2C%20coz%20a%20majority%20of%20voters%20barely%20prefer%20him.%20But%20under%20Approval%20%26%20Score%2C%20Triangle%20wins%2C%20coz%20she's%20intensely%20loved%20by%20her%20minority.%20Now%2C%20is%20this%20OKAY%3F%20Is%20this%20a%20betrayal%20of%20democracy%2C%20or%20actually%20*saving*%20democracy%20from%20a%20tyranny%20of%20the%20majority%3F%20This%20question's%20not%20just%20theoretical%2C%20it's%20*philosophical*.%22%7D">
+		here's a model I made in Sandbox Mode,
+		showing an interesting argument <em>against</em> Approval &amp; Score Voting</a>.
+		Granted, this tool is very limited – it doesn't handle strategic voting or imperfect information –
+		but I think it's a start, and may help improve our Democratic Discourse&trade;
+		</p>
+	</div>
+</div>
+
+
+
+<!-- - - - - - - - -
+
+PART V: THE END
+- What Can I Do?
+- Social Sharing
+- Credits
+- Stay In Touch
+
+- - - - - - - - - -->
+
+<div id="end">
+	<div id="credits">
+
+		<!-- Public Domain -->
+		<div id="uncopyright">
+			<img src="img/public_domain.png" width="180">
+			<div style="float:right; width:750px; font-size:20px; color:#999;">
+				<div style="font-size:91px; height:97px; color:#fff; position: relative; left: -5px; line-height: 1em;"><b>PUBLIC DOMAIN</b></div>
+				<a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">Zero rights reserved.</a>
+				I'm giving away
+				all my art/code/words,
+				so that you
+				teachers, mathematicians, hobbyists, activists, and policy wonks
+				can use them however you like!
+				This is for you.
+				<a href="https://github.com/ncase/ballot" target="_blank">Get my source code on GitHub!</a>
+			</div>
+		</div>
+
+		<div id="appendix_container">
+
+			<!-- Further Reading -->
+			<div id="further_reading">
+
+				<div class="appendix_title" style="font-size:50px; line-height:50px">“BUT WHAT CAN <em>I</em> DO?”</div>
+
+				<p>
+				<b>For citizens:</b> Remember, <i>think global, but act local</i>.
+				Change from the bottom-up lasts longer.
+				If you're in the US,
+				<a href="http://www.house.gov/representatives/find/">find your representative</a>
+				and badger 'em.
+				If you're in Canada,
+				<a href="http://www.lop.parl.gc.ca/ParlInfo/compilations/houseofcommons/memberbypostalcode.aspx">find your Member of Parliament</a>
+				and badger 'em.
+				Also if you're Canadian,
+				<a href="https://www.mydemocracy.ca/">fill out the MyDemocracy.ca survey before the end of 2016!</a>
+				This survey has a few questions specifically about voting reform!
+				(sadly, the question is <i>still</i> framed as "simple vs expressive".
+				<i>that</i> is why i've been so gung-ho about Approval &amp; Score,
+				and maybe a bit too mean towards IRV)
+				</p>
+
+				<p>
+				<b>For learners:</b>
+				Watch CGP Grey's <a href="https://www.youtube.com/playlist?list=PL7679C7ACE93A5638"><i>Politics in the Animal Kingdom</i></a> series!
+				It's charming, and covers more ground than I did here – it explains
+				gerrymandering, proportional representation, and more.
+				Also, read <a href="https://www.amazon.com/Gaming-Vote-Elections-Arent-About/dp/0809048922"><i>Gaming The Vote</i></a> by
+				William Poundstone.
+				It's a thrilling read,
+				with dramatic human stories of crooks &amp; conmen trying to game our glitchy voting systems –
+				and sometimes, succeeding.
+				</p>
+
+				<p>
+				<b>For teachers:</b>
+				This entire "explorable explanation" is public domain, copyright-free,
+				meaning you <i>already</i> have permission to use this freely in your classes!
+				You can even use the <a href="sandbox">Sandbox Mode</a> to create your own material,
+				or as a tool for students to make something on their own.
+				</p>
+
+				<p>
+				<b>For coders:</b>
+				This is all open source!
+				So you can <a href="https://github.com/ncase/ballot">get my code on GitHub</a>, and remix it to your heart's content.
+				(sorry in advance for my messy code)
+				</p>
+
+				<p>
+				<b>Check out these organizations:</b>
+				Though they may differ on what voting method they like best,
+				they all have a common goal: to reform the one we have.
+				<a href="https://electology.org/">Electology</a> likes Approval Voting most,
+				<a href="http://www.fairvote.org/">FairVote</a> likes Instant Runoff most,
+				and <a href="http://rangevoting.org/">RangeVoting.org</a> likes Score Voting most.
+				</p>
+
+				<div class="appendix_title" style="font-size:36px; line-height:50px; margin-top:35px;">ON THE SHOULDERS OF GIANTS</div>
+				<p>
+				This "explorable explanation" was directly inspired by these two projects:
+				</p>
+				<img src="img/zesty.png" style="width:100%"/>
+				<p>
+				<a href="http://zesty.ca/voting/sim/">Voting Sim Visualization</a> by Ka-Ping Yee (2005)
+				was a real eye-opener.
+				(hat tip to <a href="https://twitter.com/worrydream/status/781324328054951936">Bret Victor</a> for sharing it with me!)
+				I've heard lots of written debate over FPTP vs IRV vs Condorcet vs Approval vs blah blah blah,
+				but I'd never seen their difference <i>visualized</i> so clearly!
+				It gave me instant insight.
+				And it actually changed my mind – I used to think IRV was pretty good,
+				but after seeing IRV's <i>messiness</i> (as shown above), I realized it's actually kinda stinky cheese.
+				</p>
+				<p>
+				However, even <i>this</i> brilliant visualization was still too abstract.
+				And since it wasn't interactive, I couldn't test the many questions &amp; scenarios that came to mind.
+				So that's why my second inspiration was...
+				</p>
+				<img src="img/ladder.png" style="width:100%"/>
+				<p>
+				<a href="http://worrydream.com/LadderOfAbstraction/">Up and Down the Ladder of Abstraction</a>
+				by Bret Victor (2011).
+				It's one of the web's earliest "explorable explanations" (also a term Bret coined)
+				and it is <i>gorgeous</i>.
+				Obviously, I borrowed the format of mixing words &amp; "games" to explain things,
+				but I also followed the formula of starting concrete – one voter –
+				then moving up to the more abstract – a whole election.
+				</p>
+				<p>
+				<a href="http://explorableexplanations.com/">
+				You can learn more about Explorable Explanations here.</a>
+				</p>
+				<p>
+				And last but not least, thank you to all the math &amp; policy nerds
+				who spent way too much time thinking about all this.
+				</p>
+
+				<div class="appendix_title" style="font-size:47px; line-height:50px; margin-top:35px;">
+				STAY IN TOUCH, MAYBE?</div>
+				<p>
+				Every once in a while, I'll fall into an endless rabbithole –
+				like this one on voting methods – and slowly crawl my way out, bloodied and bruised,
+				with a new interactive thing for you!
+				If you wanna find out
+				when I finally get around to making new shtuff, you can...
+				</p>
+				<ul>
+					<li>
+					<a href="https://twitter.com/ncasenmare">Follow me on Twitter</a>
+					</li>
+					<li>
+					<a href="https://www.patreon.com/ncase">Buy me a hot chocolate via Patreon</a>
+					</li>
+					<li>
+					<a href="http://us11.campaign-archive2.com/home/?u=07d288de26e77b8126d33e2d6&id=5c3178c4cb">I also have a mailing list???</a>
+					</li>
+				</ul>
+				<p>
+				And if you wanna see more of my past projects,
+				<a href="http://ncase.me/">check out my wobsite!</a>
+				</p>
+				<p>
+				See you again soon! Have a Happy New Year 2017, or try to, anyway.
+				</p>
+
+			</div>
+
+			<!-- Supporters and Special Thanks -->
+			<div id="supporters">
+				<div class="appendix_title" style="text-align:center; height:22px">A BIG THANKS TO ALL MY</div>
+				<div class="appendix_title" style="text-align:center; font-size: 46px; margin: 10px 0 15px 0;">SUPPORTERS</div>
+				<a href="https://www.patreon.com/ncase" target="_blank">
+					<img src="img/patreon.png" width="320">
+				</a>
+				<div id="supporter_drawings">
+					<div><img src="rewards/aimee.png"><div>aimee jarboe</div></div>
+					<div><img src="rewards/frank.png"><div>frank leon rose</div></div>
+					<div><img src="rewards/jared.png"><div>jared cosulich</div></div>
+					<div><img src="rewards/louis_jean.png"><div>louis-jean teitelbaum</div></div>
+					<div><img src="rewards/matt.png"><div>matt hughes</div></div>
+					<div><img src="rewards/micah.png"><div>micah cowan</div></div>
+					<div><img src="rewards/michael.png"><div>michael alan huff</div></div>
+					<div><img src="rewards/natalie.png"><div>natalie sun</div></div>
+					<div><img src="rewards/noel.png"><div>noel lehmann</div></div>
+					<div><img src="rewards/phil.png"><div>phil dougherty</div></div>
+					<div><img src="rewards/tom_c.png"><div>tom cascio</div></div>
+					<div><img src="rewards/tom_k.png"><div>tom knowles</div></div>
+				</div>
+				<div style="overflow:hidden; clear:both">
+					<div style="margin-bottom:25px; text-align:center; overflow:hidden;">
+						<div style="width:160px; float:left">
+							Adam M. Smith<br>
+							Alex Dytrych<br>
+							Andrew <br>
+							Andy <br>
+							Artemiy Solopov<br>
+							Aschelon <br>
+							ben fei<br>
+							Benjamin Riggs<br>
+							Bob Wise<br>
+							Brandon <br>
+							Brent Werness<br>
+							Brian Wu<br>
+							Bruno Guerrero<br>
+							Buster Benson<br>
+							Casey Ross<br>
+							Charlie McIlwain<br>
+							Christopher <br>
+							Colin <br>
+							Colin <br>
+							Cort Stratton<br>
+							Craig Steele<br>
+							Daniel Horowitz<br>
+							Daniel Shiffman<br>
+							Dave Tu<br>
+							David Smit<br>
+							Dylan Meconis<br>
+							Fahrstuhl <br>
+							Feiya Wang<br>
+							Forrest Oliphant<br>
+							Frank Leon Rose<br>
+							Henry Reich<br>
+							Iñaki <br>
+							J. Hu<br>
+							Jacob Christian Munch-Andersen<br>
+							Jacques Frechet<br>
+							James Hogan<br>
+							Janusz Leidgens<br>
+							John_Ca <br>
+							Johnny Owens<br>
+							Joseph Perry<br>
+							Joshua Horowitz<br>
+							Julia Karmo<br>
+							Karen Cooper<br>
+							Kat Suricata<br>
+							Kate Fractal<br>
+							Kathryn Long<br>
+							Kevin <br>
+							Kevin Wang<br>
+						</div>
+						<div style="width:160px; float:left">
+							Klemen Slavic<br>
+							kuerqing1024 <br>
+							Linda Booth Sweeney<br>
+							Maic Lopez Saenz<br>
+							Matt "Kupo" Roszak<br>
+							Matt Warren<br>
+							May-Li Khoe<br>
+							Mekki MacAulay<br>
+							Micah Cowan<br>
+							Michael Duke<br>
+							Michelle Brown<br>
+							Michelle Kelly<br>
+							Milan Pingel<br>
+							Monika Denes<br>
+							Mustafa Alic<br>
+							Nick Schrag<br>
+							Nikita<br>
+							Noah Swartz<br>
+							Pablo Lopez Soriano<br>
+							Pat Mächler<br>
+							Peter McEvoy<br>
+							Philip Tibitoski<br>
+							Piotr Migdal<br>
+							Rachel Nabors<br>
+							Raphael D'Amico<br>
+							Richard Hackathorn<br>
+							Rob Napier<br>
+							Roland Tanglao<br>
+							Ryan Barker<br>
+							Sam Anderson<br>
+							Sam Maynard<br>
+							Samira Nedungadi<br>
+							Sarah Barbour<br>
+							sarah mathys<br>
+							SB Sigma<br>
+							Seanny123 <br>
+							Serguei Filimonov<br>
+							Sigpipe <br>
+							Sylvain Francis<br>
+							Syria Carys Sirlay<br>
+							T_Caramel <br>
+							TisGood <br>
+							Tony Onodi<br>
+							Traci Lawson<br>
+							Yona <br>
+							Yu-Han Kuo<br>
+							Zach Smith<br>
+							Zoe Bogner
+						</div>
+					</div>
+				</div>
+				<div class="appendix_title" style="text-align:center;">AND SPECIAL THANKS TO</div>
+				<div style="margin-top:15px; text-align:center;">
+					<div style="width:160px; float:left">
+						Alex Dytrych<br>
+						Alex Jaffe<br>
+						Brian Bucklew<br>
+						Chris Walker<br>
+						Christine Zhang<br>
+						Dan Zajdband<br>
+						Daniel Cook<br>
+						Droqen<br>
+						Jason Grinblat<br>
+					</div>
+					<div style="width:160px; float:left">
+						Jessie Salz<br>
+						Lisa Charlotte Rost<br>
+						Martin Shelton<br>
+						Patrick Dubroy<br>
+						Pietro Passarelli<br>
+						Sandhya Kambhampati<br>
+						Tanya Short <br>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div style="text-align:center; color:#fff;">
+	sharing is caring!
+	<ul class="share-buttons">
+		<li><a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fncase.me%2Fballot%2F&t=To%20Build%20a%20Better%20Ballot" title="Share on Facebook" target="_blank"><img alt="Share on Facebook" src="social/Facebook.png"></a></li>
+		<li><a href="https://twitter.com/intent/tweet?source=http%3A%2F%2Fncase.me%2Fballot%2F&text=Woah%2C%20check%20out%20this%20interactive%20guide%20to%20alternative%20voting%20systems!%20To%20Build%20a%20Better%20Ballot%3A%20http%3A%2F%2Fncase.me%2Fballot%2F&via=ncasenmare" target="_blank" title="Tweet"><img alt="Tweet" src="social/Twitter.png"></a></li>
+		<li><a href="mailto:?subject=To%20Build%20a%20Better%20Ballot&body=An%20interactive%20guide%20to%20alternative%20voting%20systems:%20http%3A%2F%2Fncase.me%2Fballot%2F" target="_blank" title="Send email"><img alt="Send email" src="social/Email.png"></a></li>
+	</ul>
+	</div>
+</div>
+
+
+</body>
+<script type="text/javascript" src="js/index.js"></script>
+</html>
+<script type="text/javascript" src="js/ScrollMagic.js"></script>
+<script type="text/javascript" src="js/scrolltrigger.js"></script>
