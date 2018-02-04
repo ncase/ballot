@@ -1,7 +1,7 @@
 var loadpreset = function(htmlname) {
-    if (htmlname == "election1.html") {
+    if (htmlname == "2pb.html") {
         config = {
-	
+
 	system: "FPTP",
 
 	candidates: 3,
@@ -13,7 +13,7 @@ var loadpreset = function(htmlname) {
 }
     } else if (htmlname == "election2.html") {
         config = {
-	
+
 	features:1,
 	system: "IRV",
 
@@ -26,9 +26,9 @@ var loadpreset = function(htmlname) {
 }
     } else if (htmlname == "election3.html") {
         config = {
-	
+
 	features:1,
-	
+
 	system: "Borda",
 
 	candidates: 3,
@@ -49,7 +49,7 @@ var loadpreset = function(htmlname) {
 	voters: 3
 }
     } else if (htmlname == "election5.html") {
-        config = 
+        config =
 {
 
 	features:2,
@@ -57,7 +57,7 @@ var loadpreset = function(htmlname) {
 
 	candidates: 3,
 	candidatePositions: [[40,115+10],[177,185+10],[224,118+10]],
-	
+
 	voters: 2,
 	voterPositions: [[75,120+10],[225,120+10]]
 
@@ -76,23 +76,23 @@ var loadpreset = function(htmlname) {
 
 }
     } else if (htmlname == "election7.html") {
-		config = 
+		config =
 {
 	featurelist: ["percentstrategy"],
 	voterPercentStrategy: [100,0,0],
-	
+
 	system: "Score",
 
 	candidates: 3,
 	candidatePositions: [[150-30,150],[150+130,150],[150+50,150]],
-	
+
 	voters: 1,
 	voterPositions: [[150,150]],
 	voterStrategies: ["normalize"]
-	
+
 }
     } else if (htmlname == "election8.html") {
-		config = 
+		config =
 {
 
 	/*
@@ -101,13 +101,13 @@ var loadpreset = function(htmlname) {
 
 	candidates: 3,
 	candidatePositions: [[100,150],[150,150+100],[300-100,150]],
-	
+
 	voters: 2,
 	voterPositions: [[100,150],[300-100,150]],
 	voterStrategies: ["normalize","zero strategy. judge on an absolute scale."],
 	preFrontrunnerIds: ["square","hexagon"]
 	*/
-	
+
 candidatePositions: [[50,150],[250,150]],
 voterPositions: [[100,150],[200,150]],
 system: "Score",
@@ -126,10 +126,10 @@ keyyee: "off",
 features: undefined,
 doPercentFirst: undefined,
 doFullStrategyConfig: undefined,
-	
+
 }
     } else if (htmlname == "election9.html") {
-		config = 
+		config =
 {
 
 	features:3,
@@ -137,16 +137,16 @@ doFullStrategyConfig: undefined,
 	system: "Score",
 
 	candidates: 3,
-	
+
 	voters: 2,
 	voterPositions: [[200,160],[100,160]],
 	voterStrategies: ["normalize","normalize"],
 	voterPercentStrategy: [50,50],
 	doFullStrategyConfig: true
-	
+
 }
     } else if (htmlname == "election10.html") {
-		config = 
+		config =
 {
 /*
 	features:3,
@@ -157,7 +157,7 @@ doFullStrategyConfig: undefined,
 	candidatePositions: [[150-25,150-20],
 						 [150+20,150-20],
 						 [150,150+75]],
-	
+
 	voters: 3,
 	voterPositions: [[150,150-70],
 						 [150,150+10],
@@ -167,7 +167,7 @@ doFullStrategyConfig: undefined,
 	preFrontrunnerIds: ['square','triangle','hexagon'],
 	doFullStrategyConfig: true
 	*/
-	
+
 candidatePositions: [[121,149],[118,170],[194,159]],
 voterPositions: [[116,121],[116,184],[195,155]],
 system: "Approval",
@@ -189,7 +189,7 @@ doPercentFirst: undefined,
 doFullStrategyConfig: undefined
 }
     } else if (htmlname == "election11.html") {
-		config = 
+		config =
 {
 /*
 	features:1,
@@ -200,7 +200,7 @@ doFullStrategyConfig: undefined
 	candidatePositions: [[150-25,150-20],
 						 [150+20,150-20],
 						 [150,150+75]],
-	
+
 	voters: 3,
 	voterPositions: [[150,150-70],
 						 [150,150+10],
@@ -211,7 +211,7 @@ doFullStrategyConfig: undefined
 	doFullStrategyConfig: true,
 	unstrategic: "normalize"
 	*/
-	
+
 candidatePositions: [[121,149],[118,170],[194,159]],
 voterPositions: [[116,121],[116,184],[195,155]],
 system: "Approval",
@@ -233,7 +233,7 @@ doPercentFirst: undefined,
 doFullStrategyConfig: undefined
 }
     } else if (htmlname == "election12.html") {
-		config = 
+		config =
 {
 /*
 	features:3,
@@ -245,7 +245,7 @@ doFullStrategyConfig: undefined
 						 [150+20,150-20],
 						 [150,150+75],
 						 [150+0,150+10]],
-	
+
 	voters: 3,
 	voterPositions: [[150,150-70],
 						 [150,150+10],
@@ -254,7 +254,7 @@ doFullStrategyConfig: undefined
 	voterPercentStrategy: [100,100,100],
 	preFrontrunnerIds: ['square','triangle','hexagon']
 	*/
-	
+
 candidatePositions: [[145,155],[184,153],[106,157]],
 voterPositions: [[150,150]],
 system: "IRV",
@@ -275,7 +275,7 @@ doPercentFirst: undefined,
 doFullStrategyConfig: undefined,
 }
     } else if (htmlname == "election13.html") {
-		config = 
+		config =
 {
 /*
 	features:3,
@@ -286,7 +286,7 @@ doFullStrategyConfig: undefined,
 	candidatePositions: [[150-25,150-20],
 						 [150+20,150-20],
 						 [150,150+75]],
-	
+
 	voters: 3,
 	voterPositions: [[150,150-70],
 						 [150,150+10],
@@ -295,7 +295,7 @@ doFullStrategyConfig: undefined,
 	voterPercentStrategy: [100,100,100],
 	preFrontrunnerIds: ['square','triangle','hexagon']
 	*/
-	
+
 candidatePositions: [[121,149],[118,170],[194,159]],
 voterPositions: [[116,121],[116,184],[195,155]],
 system: "STAR",
@@ -317,7 +317,7 @@ doPercentFirst: undefined,
 doFullStrategyConfig: undefined
 }
     } else if (htmlname == "election14.html") {
-		config = 
+		config =
 {
 /*
 	features:3,
@@ -328,7 +328,7 @@ doFullStrategyConfig: undefined
 	candidatePositions: [[150-25,150-20],
 						 [150+20,150-20],
 						 [150,150+75]],
-	
+
 	voters: 3,
 	voterPositions: [[150,150-70],
 						 [150,150+10],
@@ -337,7 +337,7 @@ doFullStrategyConfig: undefined
 	voterPercentStrategy: [100,100,100],
 	preFrontrunnerIds: ['square','triangle','hexagon']
 	*/
-	
+
 candidatePositions: [[121,149],[118,170],[194,159]],
 voterPositions: [[116,121],[116,184],[195,155]],
 system: "3-2-1",
@@ -359,7 +359,7 @@ doPercentFirst: undefined,
 doFullStrategyConfig: undefined
 }
     } else if (htmlname == "election15.html") {
-		config = 
+		config =
 {
 	candidatePositions: [[92,69],[210,70],[245,182],[149,250],[55,180]],
 voterPositions: [[150,150]],
@@ -382,7 +382,7 @@ keyyee: "pentagon",
 kindayee: "can",
 }
     } else if (htmlname == "sandbox.html") {
-		config = 
+		config =
 {
 	description: "[type a description for your model here. for example...]\n\nLook, it's the whole shape gang! Steven Square, Tracy Triangle, Henry Hexagon, Percival Pentagon, and last but not least, Bob.",
 	features: 4,
@@ -393,7 +393,7 @@ kindayee: "can",
 	doPercentFirst: true
 }
     } else if (htmlname == "fixedbox.html") {
-		config = 
+		config =
 {
 	description: "",
 	features: 4,
@@ -401,30 +401,55 @@ kindayee: "can",
 	candidates: 5,
 	voters: 1,
 }
-    } else if (htmlname == "ballot1.html") {
-		config = 
-{system: "Plurality"}
+    } else if (htmlname == "2pb.html") {
+
+		config =
+{
+ candidatePositions: [[48,115],[250,150]],
+voterPositions: [[149,129]],
+features: undefined,
+system: "FPTP",
+candidates: 2,
+voters: 1,
+snowman: false,
+oneVoter: true,
+featurelist: ["voters","systems","candidates"],
+sandboxsave: false,
+doPercentFirst: undefined,
+doFullStrategyConfig: undefined,
+hidegearconfig: false,
+preFrontrunnerIds: ["square","triangle"],
+voterStrategies: ["zero strategy. judge on an absolute scale.","zero strategy. judge on an absolute scale.","zero strategy. judge on an absolute scale."],
+description: "",
+voterPercentStrategy: [0,0,0],
+unstrategic: "zero strategy. judge on an absolute scale.",
+keyyee: "off",
+computeMethod: "ez",
+filename: "fixedbox.html",
+presethtmlname: "fixedbox.html",
+
+}
 
     } else if (htmlname == "ballot2.html") {
-		config = 
+		config =
 {system: "Ranked"}
 
     } else if (htmlname == "ballot3.html") {
-		config = 
+		config =
 {system: "Approval"}
 
     } else if (htmlname == "ballot4.html") {
-		config = 
+		config =
 {system: "Score"}
 
     } else if (htmlname == "ballot5.html") {
-		config = 
+		config =
 {
 	system: "Score",
 	strategy: "normalize"
 }
     } else if (htmlname == "ballot6.html") {
-		config = 
+		config =
 {
 	system: "Score",
 	strategy: "best frontrunner",
@@ -433,14 +458,14 @@ kindayee: "can",
 	showChoiceOfStrategy: true
 }
     } else if (htmlname == "ballot7.html") {
-		config = 
+		config =
 {
 	system: "Score",
 	strategy: "not the worst frontrunner",
 	showChoiceOfFrontrunners: true
 }
     } else if (htmlname == "ballot8.html") {
-		config = 
+		config =
 {
 	system: "Score",
 	strategy: "normalize frontrunners only",
@@ -449,7 +474,7 @@ kindayee: "can",
 	showChoiceOfStrategy: true
 }
     } else if (htmlname == "ballot9.html") {
-		config = 
+		config =
 {
 	system: "Score",
 	strategy: "starnormfrontrunners", // for now we are using an "off-menu" option.  We should make versions of each of hte strategies for star.
@@ -457,7 +482,7 @@ kindayee: "can",
 	showChoiceOfFrontrunners: true
 }
     } else if (htmlname == "ballot10.html") {
-		config = 
+		config =
 {
 	system: "Three",
 	strategy: "starnormfrontrunners",
@@ -465,7 +490,7 @@ kindayee: "can",
 	showChoiceOfFrontrunners: true
 }
     } else if (htmlname == "ballot11.html") {
-		config = 
+		config =
 {
 	system: "Score",
 	strategy: "best frontrunner",
@@ -473,17 +498,34 @@ kindayee: "can",
 	showChoiceOfFrontrunners: true,
 	showChoiceOfStrategy: true
 }
-    } else if (htmlname == "ballot12.html") {
-		config = 
+    } else if (htmlname == "epb3.html") {
+		config =
 {
-	system: "Score",
-	strategy: "not the worst frontrunner",
-	preFrontrunnerIds: ["square","triangle"],
-	showChoiceOfFrontrunners: true,
-	showChoiceOfStrategy: true
+candidatePositions: [[52,46],[200,85],[234,238]],
+voterPositions: [[139,179]],
+description: "",
+features: undefined,
+system: "FPTP",
+candidates: 3,
+voters: 1,
+snowman: false,
+oneVoter: true,
+featurelist: ["candidates"],
+sandboxsave: true,
+doPercentFirst: undefined,
+doFullStrategyConfig: undefined,
+hidegearconfig: false,
+preFrontrunnerIds: ["square","triangle"],
+voterStrategies: ["zero strategy. judge on an absolute scale.","zero strategy. judge on an absolute scale.","zero strategy. judge on an absolute scale."],
+voterPercentStrategy: [0,0,0],
+unstrategic: "zero strategy. judge on an absolute scale.",
+keyyee: "off",
+computeMethod: "ez",
+filename: "fixedbox.html",
+presethtmlname: "fixedbox.html",
 }
     // } else if (htmlname == "election.html") {
-	// 	config = 
+	// 	config =
 
 
     }

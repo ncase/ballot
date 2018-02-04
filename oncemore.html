@@ -63,44 +63,45 @@ SPLASH!
 	<div id="content">
 	<div class="words">
 
-	<p>I wanted to start this voting exploration off with a topical joke about how it relates to the latest election travesty. But if I do that, it will seem dated as soon as the next election travesty comes along. So instead I'll use something that <code>totally won't</code> seem dated 20 years from now: a Twitter feed.</p>
+	<p>I wanted to start this voting exploration off with a topical joke about how this isn't just about the latest election travesty. But if I do that, it will seem dated as soon as the next election travesty comes along. So instead I'll just put a twitter feed here, which will always have a new topical joke. Because of course a twitter feed totally will <code>not</code> seem dated a few years from now.</p>
 
  <a class="twitter-timeline"  href="https://twitter.com/hashtag/topicaljoke" data-widget-id="906153153116110848">#topicaljoke Tweets</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
+<p>As the joke(s) above hopefully conveyed, voting (at least in places like Canada, the US, and the UK) is broken on a level far deeper than just the latest travesty. That's because in these places, we use the worst voting method imaginable. This method is called by various names: Americans usually call it "plurality", Brits call it "first past the post" (FPTP or FPP), and some voting geeks like me call it "choose-one plurality" to focus attention on its worst feature, the ballot that restricts you to choosing just one candidate.</p>
 
-	<p>Never fear. I have two more voting methods to teach you about, and I hope I can convince you that they're the best yet.</p>
+<p>(Note: throughout this exploration, when I say "you", I'll be talking about you as a voter.)</p>
 
-	<p>Who's "me"? I'm Jameson Quinn, a statistics student at Harvard and a board member of the Center for Election Science. I'm not as good a designer or interactive programmer
-	as Nicky, as you can see from the title above. But I have spent a lot of time thinking about voting methods.</p>
+  <h1 id="postmedian>">Choose-one ballot</h1>
 
-	<p>I'm also not as cool as Nicky, but I'm going to pretend to be. If my pale imitation of their chatty tone puts you off, then... well, I guess you can wait for my peer-reviewed paper.</p>
-
-	<p>So, the story so far: FPTP voting is horrible. There's all kinds of other voting methods that would be better. We're looking for the one that's best. Some activists think that's Instant Runoff Voting (IRV), but Nicky and I both disagree; it can prematurely eliminate centrists, and requires centralized counting. Nicky says they lean towards score voting, and I can see why: it's easy to understand, and in all the simulations Nicky built, it does a great job of satisfying all the little dot-on-screen voters.</p>
-
-	<p>By the end of this interactive, you're going to understand the three methods I consider the best. One of them Nicky already showed you: approval voting, which is great because it's so simple and because it has absolutely no downsides versus FPTP. The other two are newer, but they use similar basic ideas to what you've already seen. I hope you like all three methods.</p>
-
-	<p>But before I show you the new methods, I have to show you why score voting isn't already the greatest method possible. So I have to explain strategic voting.</p>
-
-	<h1 id="postmedian>">Unstrategic voting</h1>
-
-	<p>Remember how Nicky's voters worked in Score Voting? They just gave each candidate a number based on the absolute distance. Like this:</p>
-
+ <p>To illustrate how broken choose-one plurality is, I'm going to get to an election with three candidates: Steven Square <img src="play/img/square.png"/>, Tracy Triangle <img src="play/img/triangle.png"/>, and Hana Hexagon <img src="play/img/hexagon.png"/>. But before we have a full election, lets look at a world where you are the only voter. In this world, there are exactly two political axes (for example, &ldquo;left vs. right&rdquo; and &ldquo;globalist vs. nationalist&rdquo;), and everybody cares equally about both. So you'll prefer candidates who are closer to them on both axes combined.</p>
 
 	</div>
 
 <section id="main">
-	<span class="anchor" id="a_ballot4"></span>
-	<div class="target" id="ballot4">
+	<span class="anchor" id="a_coballot"></span>
+	<div class="target" id="coballot">
 	<div class="sim-ballot">
-
-		<h2 class="ballot_title" style="margin-bottom: 0.15em;">UNSTRATEGIC BALLOT</h2>
-		<p class="ballot_caption">Judge, don't choose.</p>
-
-
 	</div>
 	<div class="words">
-		<p><em>Description: this should just be an unstrategic score voter, as in ncase's thing. Allow ballot picture to show 0 scores.</em></p>
+
+<p>Go ahead; play around with this. You can drag the voter (that is, you) and the candidates around the "issue space", and see how your ballot and thus the winner changes.</p>
+
+<p>OK, done now? You probably got bored pretty quickly. Just picking the closest candidate isn't much of a choice.</p>
+
+<p>Let's see how this works out when you have more than one voter and more than 2 candidates.</p>
+
+
+
+
+
+
+
+
+
+
+
+
 
 	<p>But notice something about that ballot? For many positions of the voter and candidate, the ballot doesn't include a score of 5 or a score of 0. If you actually voted like that, you'd be giving up on some of your voting power. Say Triangle is your favorite, and you give them a score of 3, which also happens to be their average score. If Square wins with a score of 3.2, you're going to feel very silly for not giving a triangle a 5, in order to pull their average up as high as you can.</p>
 
