@@ -11,8 +11,9 @@ Election/Sandbox design:
 	height: 320px;
 }
 #left{
-	width:220px;
+	width:227px;
 	padding-right: 20px;
+	overflow-y: scroll;
 }
 #center{
 	width:320px;
@@ -58,7 +59,7 @@ Election/Sandbox design:
     text-align: center;
     margin-bottom: 5px;
     padding: 2px 0;
-    
+
     position: relative;
     top:0;
 

@@ -266,7 +266,7 @@ Election.irv = function(model, options){
 
 		// And repeat!
 		roundNum++;
-	
+
 	}
 
 	// END!
@@ -317,6 +317,79 @@ Election.plurality = function(model, options){
 
 };
 
+Election.star = function(model, options){
+
+	var text = "";
+	text += "<span class='small'>";
+
+	var candidates = [];
+	for(var i=0; i<model.candidates.length; i++){
+		candidates.push(model.candidates[i].id);
+	}
+
+	text += "<b>round 1:</b><br>";
+	text += "who are the top two choices?<br>";
+
+	// Tally the approvals & get the top two!
+	var tally = _tally(model, function(tally, ballot){
+		for(var candidate in ballot){
+			tally[candidate] += ballot[candidate];
+		}
+	});
+	for(var candidate in tally){
+		tally[candidate] /= model.getTotalVoters();
+	}
+	var topTwo = _countTopN(tally, 2); // [firstPlace, secondPlace]
+
+	// Say 'em...
+	for(var i=0; i<topTwo.length; i++){
+		var c = topTwo[i];
+		text += _icon(c)+"'s score: "+(tally[c].toFixed(2))+" out of 5.00<br>";
+	}
+
+	// Determine winner
+	text += "<b>round 2:</b><br>";
+	text += "who is ranked higher (ties excluded)?<br>";
+
+	var firstPlace = topTwo[0];
+	var secondPlace = topTwo[1];
+
+	var ballots = model.getBallots();
+
+	var firstWins = 0;
+	var secondWins = 0;
+	for(var i=0; i<ballots.length; i++){
+		if(ballots[i][firstPlace]>ballots[i][secondPlace]){
+			firstWins++;
+		}else if(ballots[i][firstPlace]<ballots[i][secondPlace]){
+			secondWins++;
+		}
+	}
+
+	// WINNER?
+	var winner = (firstWins>secondWins) ? firstPlace : secondPlace;
+
+	// Text
+	var by,to;
+	if(winner==firstPlace){
+		by = firstWins;
+		to = secondWins;
+	}else{
+		by = secondWins;
+		to = firstWins;
+	}
+	text += _icon(firstPlace)+" vs "+_icon(secondPlace)+": "+_icon(winner)+" wins by "+by+" to "+to+"<br>";
+
+
+	// END!
+	var color = _colorWinner(model, winner);
+	text += "</span>";
+	text += "<br>";
+	text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+	model.caption.innerHTML = text;
+
+};
+
 var _tally = function(model, tallyFunc){
 
 	// Create the tally
@@ -328,7 +401,7 @@ var _tally = function(model, tallyFunc){
 	for(var i=0; i<ballots.length; i++){
 		tallyFunc(tally, ballots[i]);
 	}
-	
+
 	// Return it.
 	return tally;
 
@@ -351,6 +424,12 @@ var _countWinner = function(tally){
 
 	return winner;
 
+}
+
+// Returns the n highest scoring candidates
+var _countTopN = function(tally, n){
+	var sorted = Object.keys(tally).sort(function(a,b){return tally[b]-tally[a]});
+	return sorted.slice(0, n);
 }
 
 var _countLoser = function(tally){

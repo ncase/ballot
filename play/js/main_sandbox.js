@@ -122,7 +122,7 @@ function main(config){
 		var setInPosition = function(){
 
 			var positions;
-			
+
 			// CANDIDATE POSITIONS
 			positions = config.candidatePositions;
 			if(positions){
@@ -162,7 +162,8 @@ function main(config){
 			{name:"Borda", voter:RankedVoter, election:Election.borda, margin:4},
 			{name:"Condorcet", voter:RankedVoter, election:Election.condorcet},
 			{name:"Approval", voter:ApprovalVoter, election:Election.approval, margin:4},
-			{name:"Score", voter:ScoreVoter, election:Election.score}
+			{name:"Score", voter:ScoreVoter, election:Election.score},
+			{name:"STAR", voter:ScoreVoter, election:Election.star, margin:4}
 		];
 		var onChooseSystem = function(data){
 
@@ -279,14 +280,14 @@ function main(config){
 		resetDOM.style.top = "340px";
 		resetDOM.style.left = "350px";
 		resetDOM.onclick = function(){
-			
+
 			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
 
 			// Reset manually, coz update LATER.
 			model.reset(true);
 			model.onInit();
 			setInPosition();
-			
+
 			// Back to ol' UI
 			selectUI();
 
@@ -383,7 +384,7 @@ function main(config){
 			// save... ?d={s:[system], v:[voterPositions], c:[candidatePositions], d:[description]}
 
 		}
-		
+
 
 	};
 
@@ -410,7 +411,7 @@ function main(config){
 		// Positions...
 		var positions = save(true);
 		data.v = positions.voterPositions;
-		data.c = positions.candidatePositions; 
+		data.c = positions.candidatePositions;
 
 		// Description
 		var description = document.getElementById("description_text");
