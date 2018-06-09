@@ -339,7 +339,7 @@ Election.star = function(model, options){
 	for(var candidate in tally){
 		tally[candidate] /= model.getTotalVoters();
 	}
-	var topTwo = _countTopTwo(tally); // [frontRunner, runnerUp]
+	var topTwo = _countTopTwo(tally); // [firstPlace, secondPlace]
 
 	// Say 'em...
 	for(var i=0; i<topTwo.length; i++){
@@ -353,24 +353,23 @@ Election.star = function(model, options){
 	text += "<b>round 2:</b><br>";
 	text += "who is ranked higher?<br>";
 
-	var highestScore = topTwo[0];
-	var secondHighest = topTwo[1];
+	var firstPlace = topTwo[0];
+	var secondPlace = topTwo[1];
 
 	var ballots = model.getBallots();
 
 	var firstWins = 0;
 	var secondWins = 0;
 	for(var i=0; i<ballots.length-1; i++){
-		var rank = ballots[i].rank;
-		if(rank.indexof(highestScore.id)<rank.indexOf(secondHighest.id)){
+		if(ballots[i][firstPlace]>ballots[i][secondPlace]){
 			firstWins++;
-		}else{
+		}else if(ballots[i][firstPlace]<ballots[i][secondPlace]){
 			secondWins++;
 		}
 	}
 
 	// WINNER?
-	var winner = (firstWins>secondWins) ? highestScore : secondHighest;
+	var winner = (firstWins>secondWins) ? firstPlace : secondPlace;
 
 	// END!
 	var color = _colorWinner(model, winner);
@@ -422,17 +421,21 @@ var _countTopTwo = function(tally){
 
 	// TO DO: TIES as an array?!?!
 
-	var highScore = -1
+	var highestScore = -1
+	var secondHighest = -1;
 	var firstPlace = null;
 	var secondPlace = null;
 
 	for(var candidate in tally){
 		var score = tally[candidate];
-		if(score>firstPlace){
-			secondPlace = firstPlace;
-			firstPlace = score;
-		}else if(score>secondPlace){
-			secondPlace = score;
+		if(score>highestScore){
+			secondHighest = highestScore;
+			secondPlace = candidate;
+			highestScore = score;
+			firstPlace = candidate;
+		}else if(score>secondHighest){
+			secondHighest = score;
+			secondPlace = candidate;
 		}
 	}
 
