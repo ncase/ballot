@@ -339,7 +339,7 @@ Election.star = function(model, options){
 	for(var candidate in tally){
 		tally[candidate] /= model.getTotalVoters();
 	}
-	var topTwo = _countTopTwo(tally); // [firstPlace, secondPlace]
+	var topTwo = _countTopN(tally, 2); // [firstPlace, secondPlace]
 
 	// Say 'em...
 	for(var i=0; i<topTwo.length; i++){
@@ -426,31 +426,10 @@ var _countWinner = function(tally){
 
 }
 
-// Returns the two highest scoring candidates
-var _countTopTwo = function(tally){
-
-	// TO DO: TIES as an array?!?!
-
-	var highestScore = -1
-	var secondHighest = -1;
-	var firstPlace = null;
-	var secondPlace = null;
-
-	for(var candidate in tally){
-		var score = tally[candidate];
-		if(score>highestScore){
-			secondHighest = highestScore;
-			secondPlace = candidate;
-			highestScore = score;
-			firstPlace = candidate;
-		}else if(score>secondHighest){
-			secondHighest = score;
-			secondPlace = candidate;
-		}
-	}
-
-	return [firstPlace, secondPlace];
-
+// Returns the n highest scoring candidates
+var _countTopN = function(tally, n){
+	var sorted = Object.keys(tally).sort(function(a,b){return tally[b]-tally[a]});
+	return sorted.slice(0, n);
 }
 
 var _countLoser = function(tally){
