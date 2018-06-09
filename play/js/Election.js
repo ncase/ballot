@@ -344,10 +344,8 @@ Election.star = function(model, options){
 	// Say 'em...
 	for(var i=0; i<topTwo.length; i++){
 		var c = topTwo[i];
-		text += _icon(c)+":"+tally[c];
-		if(i<topTwo.length-1) text+=", ";
+		text += _icon(c)+"'s score: "+(tally[c].toFixed(2))+" out of 5.00<br>";
 	}
-	text += "<br>";
 
 	// Determine winner
 	text += "<b>round 2:</b><br>";
@@ -370,6 +368,18 @@ Election.star = function(model, options){
 
 	// WINNER?
 	var winner = (firstWins>secondWins) ? firstPlace : secondPlace;
+
+	// Text
+	var by,to;
+	if(winner==firstPlace){
+		by = firstWins;
+		to = secondWins;
+	}else{
+		by = secondWins;
+		to = firstWins;
+	}
+	text += _icon(firstPlace)+" vs "+_icon(secondPlace)+": "+_icon(winner)+" wins by "+by+" to "+to+"<br>";
+
 
 	// END!
 	var color = _colorWinner(model, winner);
