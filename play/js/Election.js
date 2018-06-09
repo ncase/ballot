@@ -349,7 +349,7 @@ Election.star = function(model, options){
 
 	// Determine winner
 	text += "<b>round 2:</b><br>";
-	text += "who is ranked higher?<br>";
+	text += "who is ranked higher (ties excluded)?<br>";
 
 	var firstPlace = topTwo[0];
 	var secondPlace = topTwo[1];
@@ -358,7 +358,7 @@ Election.star = function(model, options){
 
 	var firstWins = 0;
 	var secondWins = 0;
-	for(var i=0; i<ballots.length-1; i++){
+	for(var i=0; i<ballots.length; i++){
 		if(ballots[i][firstPlace]>ballots[i][secondPlace]){
 			firstWins++;
 		}else if(ballots[i][firstPlace]<ballots[i][secondPlace]){
