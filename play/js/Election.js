@@ -266,7 +266,7 @@ Election.irv = function(model, options){
 
 		// And repeat!
 		roundNum++;
-	
+
 	}
 
 	// END!
@@ -317,6 +317,70 @@ Election.plurality = function(model, options){
 
 };
 
+Election.star = function(model, options){
+
+	var text = "";
+	text += "<span class='small'>";
+
+	var candidates = [];
+	for(var i=0; i<model.candidates.length; i++){
+		candidates.push(model.candidates[i].id);
+	}
+
+	text += "<b>round 1:</b><br>";
+	text += "who are the top two choices?<br>";
+
+	// Tally the approvals & get the top two!
+	var tally = _tally(model, function(tally, ballot){
+		for(var candidate in ballot){
+			tally[candidate] += ballot[candidate];
+		}
+	});
+	for(var candidate in tally){
+		tally[candidate] /= model.getTotalVoters();
+	}
+	var topTwo = _countTopTwo(tally); // [frontRunner, runnerUp]
+
+	// Say 'em...
+	for(var i=0; i<topTwo.length; i++){
+		var c = topTwo[i];
+		text += _icon(c)+":"+tally[c];
+		if(i<topTwo.length-1) text+=", ";
+	}
+	text += "<br>";
+
+	// Determine winner
+	text += "<b>round 2:</b><br>";
+	text += "who is ranked higher?<br>";
+
+	var highestScore = topTwo[0];
+	var secondHighest = topTwo[1];
+
+	var ballots = model.getBallots();
+
+	var firstWins = 0;
+	var secondWins = 0;
+	for(var i=0; i<ballots.length-1; i++){
+		var rank = ballots[i].rank;
+		if(rank.indexof(highestScore.id)<rank.indexOf(secondHighest.id)){
+			firstWins++;
+		}else{
+			secondWins++;
+		}
+	}
+
+	// WINNER?
+	var winner = (firstWins>secondWins) ? highestScore : secondHighest;
+
+	// END!
+	var color = _colorWinner(model, winner);
+	text += "</span>";
+	text += "<br>";
+	text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+	model.caption.innerHTML = text;
+
+};
+
 var _tally = function(model, tallyFunc){
 
 	// Create the tally
@@ -328,7 +392,7 @@ var _tally = function(model, tallyFunc){
 	for(var i=0; i<ballots.length; i++){
 		tallyFunc(tally, ballots[i]);
 	}
-	
+
 	// Return it.
 	return tally;
 
@@ -350,6 +414,29 @@ var _countWinner = function(tally){
 	}
 
 	return winner;
+
+}
+
+// Returns the two highest scoring candidates
+var _countTopTwo = function(tally){
+
+	// TO DO: TIES as an array?!?!
+
+	var highScore = -1
+	var firstPlace = null;
+	var secondPlace = null;
+
+	for(var candidate in tally){
+		var score = tally[candidate];
+		if(score>firstPlace){
+			secondPlace = firstPlace;
+			firstPlace = score;
+		}else if(score>secondPlace){
+			secondPlace = score;
+		}
+	}
+
+	return [firstPlace, secondPlace];
 
 }
 
