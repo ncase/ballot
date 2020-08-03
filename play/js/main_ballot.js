@@ -1,6 +1,15 @@
 window.ONLY_ONCE = false;
-function main(ballotType){
+function main(config){
 
+	ballotType = config.system;
+	config.strategy = config.strategy || "zero strategy. judge on an absolute scale.";
+	config.preFrontrunnerIds = config.preFrontrunnerIds || ["square","triangle"];
+	config.showChoiceOfStrategy = config.showChoiceOfStrategy || false
+	config.showChoiceOfFrontrunners = config.showChoiceOfFrontrunners || false
+	
+	// make a copy of the config
+	var initialConfig = JSON.parse(JSON.stringify(config));
+	
 	// ONCE.
 	if(ONLY_ONCE) return;
 	ONLY_ONCE=true;
@@ -17,11 +26,15 @@ function main(ballotType){
 			model.addVoters({
 				dist: SingleVoter,
 				type: VoterType,
+				strategy: config.strategy,
+				frontrunners: config.frontrunners,
 				x:81, y:92
 			});
 			model.addCandidate("square", 41, 50);
-			model.addCandidate("triangle", 153, 95);
+			model.addCandidate("triangle", 173, 95);
 			model.addCandidate("hexagon", 216, 216);
+			model.preFrontrunnerIds = config.preFrontrunnerIds;
+			model.strategy = config.strategy;
 		};
 
 		// CREATE A BALLOT
@@ -31,9 +44,103 @@ function main(ballotType){
 			ballot.update(model.voters[0].ballot);
 		};
 
+
+		
 		// Init!
 		model.init();
+		
+		if(config.showChoiceOfStrategy) {
+			
+			var strategyOn = [
+				{name:"O", realname:"zero strategy. judge on an absolute scale.", margin:4},
+				{name:"N", realname:"normalize", margin:4},
+				{name:"F", realname:"normalize frontrunners only", margin:4},
+				{name:"B", realname:"best frontrunner", margin:4},
+				{name:"W", realname:"not the worst frontrunner"}
+			];
+			// old ones
+			// {name:"FL", realname:"justfirstandlast", margin:4},
+			// {name:"T", realname:"threshold"},
+			// {name:"SNTF", realname:"starnormfrontrunners"}
+			var onChooseVoterStrategyOn = function(data){
+				config.strategy = data.realname; 
+				model.strategy = config.strategy; 
+				model.update();
+				
+			};
+			window.chooseVoterStrategyOn = new ButtonGroup({
+				label: "which strategy?",
+				width: 42,
+				data: strategyOn,
+				onChoose: onChooseVoterStrategyOn
+			});
+			document.body.appendChild(chooseVoterStrategyOn.dom);
+		}
+			
+		if(config.showChoiceOfFrontrunners) {
+			
+			var h1 = function(x) {return "<span class='buttonshape'>"+_icon(x)+"</span>";};
+			var frun = [
+				{name:h1("square"),realname:"square",margin:4},
+				{name:h1("triangle"),realname:"triangle",margin:4},
+				{name:h1("hexagon"),realname:"hexagon",margin:4},
+				//{name:h1("pentagon"),realname:"pentagon",margin:4},
+				//{name:h1("bob"),realname:"bob"}
+			];
+			var onChooseFrun = function(data){
+				
+				// update config...
+				// no reset...
+				if (data.isOn) {
+					if (!config.preFrontrunnerIds.includes(data.realname) ) {config.preFrontrunnerIds.push(data.realname)}
+				} else {
+					var index = config.preFrontrunnerIds.indexOf(data.realname);
+					if (index > -1) {
+						config.preFrontrunnerIds.splice(index, 1);
+					}
+				} 
+				model.preFrontrunnerIds = config.preFrontrunnerIds
+				model.update();
+				
+			};
+			window.chooseFrun = new ButtonGroup({
+				label: "who are the frontrunners?",
+				width: 42,
+				data: frun,
+				onChoose: onChooseFrun,
+				isCheckbox: true
+			});
+			document.body.appendChild(chooseFrun.dom);
+		}
+		
+		var selectUI = function(){
+			if(window.chooseVoterStrategyOn) chooseVoterStrategyOn.highlight("realname", model.strategy);
+			if(window.chooseFrun) chooseFrun.highlight("realname", model.preFrontrunnerIds);
+		};
+		selectUI();
+		
+		//////////////////////////
+		//////// RESET... ////////
+		//////////////////////////
 
+		// CREATE A RESET BUTTON
+		var resetDOM = document.createElement("div");
+		resetDOM.id = "reset";
+		resetDOM.innerHTML = "reset";
+		resetDOM.onclick = function(){
+
+			config = JSON.parse(JSON.stringify(initialConfig)); // RESTORE IT!
+			// Reset manually, coz update LATER.
+			model.reset(true);
+			model.onInit();
+			//setInPosition();
+			model.update()
+			// Back to ol' UI
+			selectUI();
+			console.log(initialConfig)
+		};
+		document.querySelector("#center").appendChild(resetDOM);
+		
 	};
 
 	Loader.load([
