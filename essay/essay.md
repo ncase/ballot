@@ -129,7 +129,7 @@ What happened? At first, (Hexagon) is eliminated in the first round, so (Triangl
 
 Under Instant Runoff, it's possible for a winning candidate to lose, *by becoming more popular*. What a glitch.
 
-How often does this happen in real life? [There are a couple examples](https://en.wikipedia.org/wiki/Monotonicity_criterion#Real-life_monotonicity_violations), and [mathematicians estimate this glitch would happen about 14.5% of the time](http://www.rangevoting.org/Monotone.html). But sadly, we can't know for sure, because governments usually *don't even release enough info about the ballots* to reconstruct an IRV election, and double-check the results.
+How often does this happen in real life? [There are a couple examples](https://en.wikipedia.org/wiki/Monotonicity_criterion#Real-life_monotonicity_violations), and [mathematicians estimate this glitch would happen at least 15% of the time](http://www.rangevoting.org/Monotone.html). But sadly, we can't know for sure, because governments usually *don't even release enough info about the ballots* to reconstruct an IRV election, and double-check the results.
 
 So, not only is Instant Runoff's glitch as undemocratic as First Past The Post's glitch, it's possibly *worse* – because while FPTP's counting method is simple and transparent, Instant Runoff is anything but. And a lack of transparency is even deadlier nowadays, when our trust in government is already so low.
 
