@@ -18,8 +18,76 @@ Election.score = function(model, options){
 	for(var candidate in tally){
 		tally[candidate] /= model.getTotalVoters();
 	}
-	var winner = _countWinner(tally);
-	var color = _colorWinner(model, winner);
+	var winners = _countWinner(tally);
+	var color = _colorWinner(model, winners);
+
+	if (options.sidebar) {
+
+		// Caption
+		var winner = winners[0];
+		var text = "";
+		text += "<span class='small'>";
+		text += "<b>highest average score wins</b><br>";
+		for(var i=0; i<model.candidates.length; i++){
+			var c = model.candidates[i].id;
+			text += _icon(c)+"'s score: "+(tally[c].toFixed(2))+" out of 5.00<br>";
+		}
+		if(!winner | winners.length>=2){
+			// NO WINNER?! OR TIE?!?!
+			text += _tietext(winners);
+		} else {
+			text += "<br>";
+			text += _icon(winner)+" has the highest score, so...<br>";
+			text += "</span>";
+			text += "<br>";
+			text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+		}
+
+		model.caption.innerHTML = text;
+	}
+	
+	if (model.dotop2) model.top2 = _sortTally(tally).slice(0,2)
+};
+
+Election.star = function(model, options){
+
+	// Tally the approvals & get winner!
+	var tally = _tally(model, function(tally, ballot){
+		for(var candidate in ballot){
+			tally[candidate] += ballot[candidate];
+		}
+	});
+	for(var candidate in model.candidatesById){
+		tally[candidate] /= model.getTotalVoters();
+	}
+	var frontrunners = [];
+
+	for (var i in tally) {
+	   frontrunners.push(i);
+	}
+	frontrunners.sort(function(a,b){return tally[b]-tally[a]})
+
+	var ballots = model.getBallots();
+	var aWins = 0;
+	var bWins = 0;
+	for(var k=0; k<ballots.length; k++){
+		var ballot = ballots[k];
+		if(ballot[frontrunners[0]]>ballot[frontrunners[1]]){
+			aWins++; // a wins!
+		} else if(ballot[frontrunners[0]]<ballot[frontrunners[1]]){
+			bWins++; // b wins!
+		}
+	}
+
+	var winner = frontrunners[0]
+	if (bWins > aWins) {
+		winner = frontrunners[1]
+	}
+	var color = _colorWinner(model, [winner]);
+
+	if (model.dotop2) model.top2 = frontrunners.slice(0,2)
+
+	if (!options.sidebar) return
 
 	// NO WINNER?! OR TIE?!?!
 	if(!winner){
@@ -32,13 +100,86 @@ Election.score = function(model, options){
 		// Caption
 		var text = "";
 		text += "<span class='small'>";
-		text += "<b>highest average score wins</b><br>";
+		text += "<b>pairwise winner of two highest average scores wins</b><br>";
 		for(var i=0; i<model.candidates.length; i++){
 			var c = model.candidates[i].id;
 			text += _icon(c)+"'s score: "+(tally[c].toFixed(2))+" out of 5.00<br>";
 		}
 		text += "<br>";
-		text += _icon(winner)+" has the highest score, so...<br>";
+		text += _icon(frontrunners[0])+" and "+_icon(frontrunners[1]) +" have the highest score, and...<br>";
+		text += "...their pairwise counts are "+aWins+" to "+bWins+", so...<br>";
+		text += "</span>";
+		text += "<br>";
+		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+		model.caption.innerHTML = text;
+
+	}
+
+};
+
+Election.three21 = function(model, options){
+
+	var ballots = model.getBallots();
+	// Tally the approvals & get winner!
+	var tallies = _tallies(model, 3);
+
+	var semifinalists = [];
+
+	for (var i in model.candidatesById) {
+	   semifinalists.push(i);
+	}
+	semifinalists.sort(function(a,b){return tallies[2][b]-tallies[2][a]})
+
+	var finalists = semifinalists.slice(0,3);
+	finalists.sort(function(a,b){return tallies[0][a]-tallies[0][b]})
+
+	var ballots = model.getBallots();
+	var aWins = 0;
+	var bWins = 0;
+	for(var k=0; k<ballots.length; k++){
+		var ballot = ballots[k];
+		if(ballot[finalists[0]]>ballot[finalists[1]]){
+			aWins++; // a wins!
+		} else if(ballot[finalists[0]]<ballot[finalists[1]]){
+			bWins++; // b wins!
+		}
+	}
+
+	var winner = finalists[0]
+	if (bWins > aWins) {
+		winner = finalists[1]
+	}
+	var color = _colorWinner(model, [winner]);
+	
+	if (model.dotop2) model.top2 = finalists.slice(0,2)
+
+	if (!options.sidebar) return
+
+	// NO WINNER?! OR TIE?!?!
+	if(!winner){
+
+		var text = "<b>NOBODY WINS</b>";
+		model.caption.innerHTML = text;
+
+	}else{
+
+		// Caption
+		var text = "";
+		text += "<span class='small'>";
+		text += "<b>Semifinalists: 3 most good. Finalists: 2 least bad. Winner: more preferred.</b><br>";
+		text += "<b>Semifinalists:</b><br>";
+		for(var i=0; i<semifinalists.length; i++){
+			var c = semifinalists[i];
+			text += _icon(c)+"'s 'good': "+tallies[2][c]+"<br>";
+		}
+		text += "<b>Finalists:</b><br>";
+		for(var i=0; i<finalists.length; i++){
+			var c = finalists[i];
+			text += _icon(c)+"'s 'bad': "+tallies[0][c]+"<br>";
+		}
+		text += "<b>Winner:</b><br>";
+
+		text += _icon(finalists[0])+": "+aWins+"; "+_icon(finalists[1]) +": "+bWins+", so...<br>";
 		text += "</span>";
 		text += "<br>";
 		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
@@ -55,34 +196,34 @@ Election.approval = function(model, options){
 		var approved = ballot.approved;
 		for(var i=0; i<approved.length; i++) tally[approved[i]]++;
 	});
-	var winner = _countWinner(tally);
-	var color = _colorWinner(model, winner);
+	var winners = _countWinner(tally);
 
-	// NO WINNER?! OR TIE?!?!
-	if(!winner){
+	var color = _colorWinner(model, winners);
+	
+	if (model.dotop2) model.top2 = _sortTally(tally).slice(0,2)
 
-		var text = "<b>NOBODY WINS</b>";
-		model.caption.innerHTML = text;
+	if (!options.sidebar) return
 
-	}else{
-
-		// Caption
-		var text = "";
-		text += "<span class='small'>";
-		text += "<b>most approvals wins</b><br>";
-		for(var i=0; i<model.candidates.length; i++){
-			var c = model.candidates[i].id;
-			text += _icon(c)+" got "+tally[c]+" approvals<br>";
-		}
+	// Caption
+	var winner = winners[0];
+	var text = "";
+	text += "<span class='small'>";
+	text += "<b>most approvals wins</b><br>";
+	for(var i=0; i<model.candidates.length; i++){
+		var c = model.candidates[i].id;
+		text += _icon(c)+" got "+tally[c]+" approvals<br>";
+	}
+	if(!winner | winners.length>=2){
+		// NO WINNER?! OR TIE?!?!
+		text += _tietext(winners);
+	} else {
 		text += "<br>";
 		text += _icon(winner)+" is most approved, so...<br>";
 		text += "</span>";
 		text += "<br>";
 		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
-		model.caption.innerHTML = text;
-
 	}
-
+	model.caption.innerHTML = text;
 };
 
 Election.condorcet = function(model, options){
@@ -117,40 +258,56 @@ Election.condorcet = function(model, options){
 
 			// WINNER?
 			var winner = (aWins>bWins) ? a : b;
-			tally[winner.id]++;
+			if (aWins != bWins) {
+				tally[winner.id]++;
 
-			// Text.
-			var by,to;
-			if(winner==a){
-				by = aWins;
-				to = bWins;
-			}else{
-				by = bWins;
-				to = aWins;
+				// Text.
+				var by,to;
+				if(winner==a){
+					by = aWins;
+					to = bWins;
+				}else{
+					by = bWins;
+					to = aWins;
+				}
+				text += _icon(a.id)+" vs "+_icon(b.id)+": "+_icon(winner.id)+" wins by "+by+" to "+to+"<br>";
+			} else { //tie
+				tally[a.id]++;
+				tally[b.id]++;
+				text += _icon(a.id)+" vs "+_icon(b.id)+": "+"TIE"+"<br>";
 			}
-			text += _icon(a.id)+" vs "+_icon(b.id)+": "+_icon(winner.id)+" wins by "+by+" to "+to+"<br>";
-
 		}
 	}
 
 	// Was there one who won all????
-	var topWinner = null;
+	var topWinners = [];
+	
 	for(var id in tally){
 		if(tally[id]==model.candidates.length-1){
-			topWinner = id;
+			topWinners.push(id);
 		}
 	}
-
+	// probably it would be better to find the smith set but this is okay for now
+	topWinners = _countWinner(tally);
+	var color = _colorWinner(model, topWinners);
+	if (model.dotop2) model.top2 = _sortTally(tally).slice(0,2)
+	if (!options.sidebar) return
+	
+	var topWinner = topWinners[0];
 	// Winner... or NOT!!!!
 	text += "<br>";
-	if(topWinner){
-		var color = _colorWinner(model, topWinner);
+	if (topWinners.length == 1) {
 		text += _icon(topWinner)+" beats all other candidates in one-on-one races.<br>";
 		text += "</span>";
 		text += "<br>";
 		text += "<b style='color:"+color+"'>"+topWinner.toUpperCase()+"</b> WINS";
-	}else{
-		model.canvas.style.borderColor = "#000"; // BLACK.
+	}else if (topWinners.length >= 2) {
+		for(var i=0; i<model.candidates.length; i++){
+			var c = model.candidates[i].id;
+			text += _icon(c)+" got "+tally[c]+" wins<br>";
+		}
+		text += _tietext(topWinners);
+	} else {
 		text += "NOBODY beats everyone else in one-on-one races.<br>";
 		text += "</span>";
 		text += "<br>";
@@ -173,34 +330,31 @@ Election.borda = function(model, options){
 			tally[candidate] += i; // the rank!
 		}
 	});
-	var winner = _countLoser(tally); // LOWER score is best!
-	var color = _colorWinner(model, winner);
+	var winners = _countLoser(tally); // LOWER score is best!
+	var color = _colorWinner(model, winners);
+	if (model.dotop2) model.top2 = _sortTallyRev(tally).slice(0,2)
+	if (!options.sidebar) return
 
-	// NO WINNER?! OR TIE?!?!
-	if(!winner){
-
-		var text = "<b>NOBODY WINS</b>";
-		model.caption.innerHTML = text;
-
+	// Caption
+	var text = "";
+	text += "<span class='small'>";
+	text += "<b>lower score is better</b><br>";
+	for(var i=0; i<model.candidates.length; i++){
+		var c = model.candidates[i].id;
+		text += _icon(c)+"'s total score: "+tally[c]+"<br>";
+	}
+	if(winners.length>=2){
+		// NO WINNER?! OR TIE?!?!
+		text += _tietext(winners);
 	}else{
-
-		// Caption
-		var text = "";
-		text += "<span class='small'>";
-		text += "<b>lower score is better</b><br>";
-		for(var i=0; i<model.candidates.length; i++){
-			var c = model.candidates[i].id;
-			text += _icon(c)+"'s total score: "+tally[c]+"<br>";
-		}
+		var winner = winners[0];
 		text += "<br>";
 		text += _icon(winner)+" has the <i>lowest</i> score, so...<br>";
 		text += "</span>";
 		text += "<br>";
 		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
-		model.caption.innerHTML = text;
-
 	}
-
+	model.caption.innerHTML = text;
 };
 
 Election.irv = function(model, options){
@@ -208,15 +362,15 @@ Election.irv = function(model, options){
 	var text = "";
 	text += "<span class='small'>";
 
-	var finalWinner = null;
+	var resolved = null;
 	var roundNum = 1;
 
 	var candidates = [];
 	for(var i=0; i<model.candidates.length; i++){
 		candidates.push(model.candidates[i].id);
 	}
-
-	while(!finalWinner){
+	var loserslist = []
+	while(!resolved){
 
 		text += "<b>round "+roundNum+":</b><br>";
 		text += "who's voters' #1 choice?<br>";
@@ -243,39 +397,67 @@ Election.irv = function(model, options){
 		text += "<br>";
 
 		// Do they have more than 50%?
-		var winner = _countWinner(tally);
+		var winners = _countWinner(tally);
+		var winner = winners[0];
 		var ratio = tally[winner]/model.getTotalVoters();
-		if(ratio>=0.5){
-			finalWinner = winner;
+		if(ratio>0.5){
+			if (winners.length >= 2) {	// won't happen bc ratio > .5	
+				resolved = "tie"; 
+				break;
+			}
+			resolved = "done";
 			text += _icon(winner)+" has more than 50%<br>";
 			break;
 		}
 
 		// Otherwise... runoff...
-		var loser = _countLoser(tally);
-		text += "nobody's more than 50%. ";
-		text += "eliminate loser, "+_icon(loser)+". next round!<br><br>";
+		var losers = _countLoser(tally);
+		var loser = losers[0];
+		if (losers.length >= candidates.length) {
+			resolved = "tie"; 
+			break;
+		}
+		loserslist = loserslist.concat(losers)
 
 		// ACTUALLY ELIMINATE
-		candidates.splice(candidates.indexOf(loser), 1); // remove from candidates...
-		var ballots = model.getBallots();
-		for(var i=0; i<ballots.length; i++){
-			var rank = ballots[i].rank;
-			rank.splice(rank.indexOf(loser), 1); // REMOVE THE LOSER
+		
+		text += "nobody's more than 50%. ";
+		for (var li = 0; li < losers.length ; li++ ) {
+			loser = losers[li];
+			text += "eliminate loser, "+_icon(loser)+". next round!<br>";
+			candidates.splice(candidates.indexOf(loser), 1); // remove from candidates...
+			var ballots = model.getBallots();
+			for(var i=0; i<ballots.length; i++){
+				var rank = ballots[i].rank;
+				rank.splice(rank.indexOf(loser), 1); // REMOVE THE LOSER
+			}
+			// And repeat!
+			roundNum++;
 		}
-
-		// And repeat!
-		roundNum++;
+		text += "<br>"
 	
 	}
+	if (model.dotop2) {
+		loserslist = loserslist.concat(_sortTallyRev(tally))
+		var ll = loserslist.length
+		model.top2 = loserslist.slice(ll-1,ll).concat(loserslist.slice(ll-2,ll-1))
+	}
+	
+	
+	var color = _colorWinner(model, winners);
 
-	// END!
-	var color = _colorWinner(model, finalWinner);
-	text += "</span>";
-	text += "<br>";
-	text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+	if (!options.sidebar) return
+
+	if (resolved == "tie") {
+		text += _tietext(winners);
+	} else {
+		// END!
+		text += "</span>";
+		text += "<br>";
+		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";	
+	}
+
 	model.caption.innerHTML = text;
-
 
 };
 
@@ -287,34 +469,33 @@ Election.plurality = function(model, options){
 	var tally = _tally(model, function(tally, ballot){
 		tally[ballot.vote]++;
 	});
-	var winner = _countWinner(tally);
-	var color = _colorWinner(model, winner);
+	var winners = _countWinner(tally);
+	var color = _colorWinner(model, winners);
+	if (model.dotop2) model.top2 = _sortTally(tally).slice(0,2)
+	if (!options.sidebar) return
 
 	// Caption
+	var winner = winners[0];
 	var text = "";
 	text += "<span class='small'>";
-	if(options.sidebar){
-		text += "<b>most votes wins</b><br>";
-	}
+	text += "<b>most votes wins</b><br>";
 	for(var i=0; i<model.candidates.length; i++){
 		var c = model.candidates[i].id;
+		text += _icon(c)+" got "+tally[c]+" votes<br>";
+	}
+	// Caption text for winner, or tie
+	if (winners.length == 1) {
 		if(options.sidebar){
-			text += _icon(c)+" got "+tally[c]+" votes<br>";
-		}else{
-			text += c+": "+tally[c];
-			if(options.verbose) text+=" votes";
-			if(i<model.candidates.length-1) text+=", ";
+			text += "<br>";
+			text += _icon(winner)+" has most votes, so...<br>";
 		}
-	}
-	if(options.sidebar){
+		text += "</span>";
 		text += "<br>";
-		text += _icon(winner)+" has most votes, so...<br>";
+		text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
+	} else {
+		text += _tietext(winners);
 	}
-	text += "</span>";
-	text += "<br>";
-	text += "<b style='color:"+color+"'>"+winner.toUpperCase()+"</b> WINS";
 	model.caption.innerHTML = text;
-
 };
 
 var _tally = function(model, tallyFunc){
@@ -328,29 +509,80 @@ var _tally = function(model, tallyFunc){
 	for(var i=0; i<ballots.length; i++){
 		tallyFunc(tally, ballots[i]);
 	}
-	
+
 	// Return it.
 	return tally;
 
 }
 
-var _countWinner = function(tally){
+var _tallies = function(model, levels){
 
-	// TO DO: TIES as an array?!?!
+	// Create the tally
+	var tallies = [];
+	for (var level=0; level<levels; level++) {
+		var tally = {};
+		for(var candidateID in model.candidatesById) tally[candidateID] = 0;
+		tallies.push(tally)
+	}
 
-	var highScore = -1;
-	var winner = null;
-
-	for(var candidate in tally){
-		var score = tally[candidate];
-		if(score>highScore){
-			highScore = score;
-			winner = candidate;
+	// Count 'em up
+	var ballots = model.getBallots();
+	for(var i=0; i<ballots.length; i++){
+		var ballot = ballots[i]
+		for(var candidate in ballot){
+			tallies[ballot[candidate]][candidate] += 1;
 		}
 	}
 
-	return winner;
+	// Return it.
+	return tallies;
 
+}
+
+var _countWinner = function(tally){
+
+	// TO DO: TIES as an array?!?! // attempted
+
+	var highScore = -1;
+	var winners = [];
+
+	for(var candidate in tally){
+		var score = tally[candidate];
+		if(score>highScore) {
+			winners = [];
+		}
+		if(score>=highScore){
+			highScore = score;
+			winners.push(candidate);
+		}
+	}
+
+	return winners;
+
+}
+
+var _sortTally = function(tally){
+	
+	var frontrunners = [];
+
+	for (var i in tally) {
+	   frontrunners.push(i);
+	}
+	frontrunners.sort(function(a,b){return tally[b]-tally[a]})
+	
+	return frontrunners
+}
+
+var _sortTallyRev = function(tally){
+	
+	var frontrunners = [];
+
+	for (var i in tally) {
+	   frontrunners.push(i);
+	}
+	frontrunners.sort(function(a,b){return -tally[b]+tally[a]})
+	
+	return frontrunners
 }
 
 var _countLoser = function(tally){
@@ -362,18 +594,46 @@ var _countLoser = function(tally){
 
 	for(var candidate in tally){
 		var score = tally[candidate];
-		if(score<lowScore){
+		if(score<lowScore) {
+			winners = [];
+		}
+		if(score<=lowScore){
 			lowScore = score;
-			winner = candidate;
+			winners.push(candidate);
 		}
 	}
-
-	return winner;
-
+	return winners;
 }
 
-var _colorWinner = function(model, winner){
-	var color = (winner) ? Candidate.graphics[winner].fill : "";
+var _colorWinner = function(model, winners){
+	if (winners.length > 1) {
+		var color = "#ccc"; // grey
+		var colors = []
+		for (i in winners) {
+			var c1 = (winners[i]) ? Candidate.graphics[winners[i]].fill : "";
+			colors.push(c1)
+		}
+		model.colors = colors;
+	} else {
+		var color = (winners[0]) ? Candidate.graphics[winners[0]].fill : "";
+	}
 	model.canvas.style.borderColor = color;
+	model.winners = winners;
+	model.color = color;
 	return color;
+}
+
+function _tietext(winners) {
+	text = "";
+	for ( var i=0; i < winners.length; i++) {
+		if(i) {
+			text += " and ";
+		} 
+		text += _icon(winners[i]); 
+	}
+	text += " tie<br>";
+	text += "</span>";
+	text += "<br>";	
+	text += "<b>TIE</b>";
+	return text;
 }
