@@ -69,7 +69,7 @@ THE SPOILER EFFECT
 	<br><br>
 	<a href="https://github.com/ncase/ballot">Full source code here!</a>
 </div>
-<div class="words">
+<div class="words" id="intro">
 	
 	<p>
 		<i>(<b>NOTE: This interactive article was written in 2016!</b>
@@ -87,7 +87,7 @@ THE SPOILER EFFECT
 	Let's say there's two candidates, Steven Square <img src="play/img/square.png"/> and Tracy Triangle <img src="play/img/triangle.png"/>, on a couple political axes. (for example, &ldquo;left vs. right&rdquo; and &ldquo;globalist vs. nationalist&rdquo;) Let's also say there's a voter <img src="play/img/voter.png"/> who simply votes for whoever's political position is closest. What would that look like?</p>
 
 </div>
-<div class="sim-intro">
+<div class="sim-intro" id="click-drag-candidates-voter">
 
 	<p class="caption" style="margin-top:30px">
 		<b><span style="font-size:2.5em;">click &amp; drag</span><br>the candidates and the voter:</b>
@@ -102,7 +102,7 @@ THE SPOILER EFFECT
 	<p>Of course, there's more than just one voter in an election. Let's simulate what an election would look like with 100+ voters.</p>
 
 </div>
-<div class="sim-intro">
+<div class="sim-intro" id="drag-candidates-voters">
 
 	<p class="caption">
 		<b>drag the candidates &amp; voter<span class="underline">s</span> around.<br>(to move voters, drag the <em>middle</em> of the crowd)<br>watch how that changes the election:</b>
@@ -117,7 +117,7 @@ THE SPOILER EFFECT
 	<p>Now, you'd think giving the voters more of what they want should result in a <em>better</em> choice, or at least, not result in a <em>worse</em> choice, right? Well...</p>
 
 </div>
-<div class="sim-intro">
+<div class="sim-intro" id="triangle-vs-square">
 
 	<p class="caption">
 		<b>
@@ -162,7 +162,7 @@ THE ALTERNATIVE BALLOTS
 <div class="banner">
 	<img src="img/part1.png"/>
 </div>
-<div class="words">
+<div class="words" id="the-alternative-ballots">
 
 	<p>Now, some of you may have a couple objections!</p>
 
@@ -179,7 +179,7 @@ THE ALTERNATIVE BALLOTS
 	<p>But first, let's take a closer look at the voting system we <em>do</em> have:</p>
 
 </div>
-<div class="sim-ballot">
+<div class="sim-ballot" id="fptp">
 
 	<h2 class="ballot_title" style="margin-bottom: 0.2em;">FIRST PAST THE POST (FPTP)</h2>
 	<p class="ballot_caption">same as before. click &amp; drag<br>the candidates and voter</p>
@@ -194,7 +194,7 @@ THE ALTERNATIVE BALLOTS
 
 	<p>So, to fix the spoiler effect, other voting systems have been suggested. Such as...</p>
 </div>
-<div class="sim-ballot">
+<div class="sim-ballot" id="rcv">
 
 	<h2 class="ballot_title" style="margin-bottom: 0.15em;">RANKED VOTING</h2>
 	<p class="ballot_caption">again, click &amp; drag</p>
@@ -244,7 +244,7 @@ THE ALTERNATIVE BALLOTS
 	<p>So, those are the voting systems <em>where you rank candidates</em> – the ones that Kenneth Arrow proved would <em>always</em> be unfair in some big way! But what of voting systems where you <em>don't</em> rank candidates? They're less well-known, but now, at least <em>you'll</em> know 'em:</p>
 
 </div>
-<div class="sim-ballot">
+<div class="sim-ballot" id="approval">
 
 	<h2 class="ballot_title" style="margin-bottom: 0.15em;">APPROVAL VOTING</h2>
 	<p class="ballot_caption">yup, stiiiiill click &amp; drag</p>
@@ -261,7 +261,7 @@ THE ALTERNATIVE BALLOTS
 	<p>But if you want a <em>more</em> expressive voting system, why not try...</p>
 
 </div>
-<div class="sim-ballot">
+<div class="sim-ballot" id="score">
 
 	<h2 class="ballot_title" style="margin-bottom: 0.15em;">SCORE VOTING</h2>
 	<p class="ballot_caption">you guessed it</p>
@@ -289,7 +289,7 @@ HOW DO THE ALTERNATIVES HOLD UP?
 <div class="banner">
 	<img src="img/part2.png"/>
 </div>
-<div class="words">
+<div class="words" id="how-are-the-alternatives">
 	<p>Remember that simulation of the spoiler effect from earlier? Well, here it is again, but now you can switch between the six different voting systems! Here's the &quot;spoiler effect&quot; simulation again. See how different voting systems deal with potential spoilers:</p>
 </div>
 <div class="sim-test">
@@ -314,7 +314,7 @@ HOW DO THE ALTERNATIVES HOLD UP?
 
 	<p>You can probably guess where this is going...</p>
 </div>
-<div class="sim-test">
+<div class="sim-test" id="drag-voters-towards">
 
 	<p class="caption-test">
 	drag the voters <img src="play/img/voters.png"> <em>slowly</em> up towards <img src="play/img/triangle.png">:
@@ -347,7 +347,7 @@ HOW DO THE ALTERNATIVES HOLD UP?
 	<p>So much for the most popular alternative. What about the second-most popular, Borda Count? In this next simulation, you move a losing candidate closer to <em>another</em> losing candidate. Under FPTP, the spoiler effect would split their votes, making both of them lose even more. But watch what happens under Borda Count instead...</p>
 
 </div>
-<div class="sim-test">
+<div class="sim-test" id="borda-count-spoiler">
 
 	<p class="caption-test">
 	drag <img src="play/img/hexagon.png"> to <em>just slightly left</em> of <img src="play/img/square.png">:
@@ -374,7 +374,7 @@ HOW DO THE ALTERNATIVES HOLD UP?
 
 	<p>In certain situations, the other voting systems just had glitches. In Condorcet, the voting system <em>crashes.</em> Try it out for yourself:</p>
 </div>
-<div class="sim-test">
+<div class="sim-test" id="create-condorcet-cycle">
 
 	<p class="caption-test">
 	create your own “condorcet cycle”!<br>
@@ -457,7 +457,7 @@ HOW DO THE ALTERNATIVES HOLD UP?
 	<p><em>?????</em></p>
 
 </div>
-<div class="sim-test">
+<div class="sim-test" id="2016-election">
 	<p class="caption-test">
 	a guesstimated model of the 2016 US election?...<br>
 	<span style="font-weight:100; font-size:0.85em">
@@ -490,7 +490,7 @@ CONCLUSION. OPEN LETTER
 <div class="banner">
 	<img src="img/part3.png"/>
 </div>
-<div class="words">
+<div class="words" id="open-letter">
 
 	<p><em>ahem</em></p>
 
