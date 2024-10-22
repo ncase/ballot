@@ -12,7 +12,7 @@ a{ color: hsl(240,80%,70%); }
 a:hover{ color: hsl(240,80%,80%); }
 #content{}
 .words{
-	width: 670px;
+	max-width: 670px;
 	margin: 0 auto;
 }
 #content p{
@@ -60,7 +60,7 @@ li{
 	margin-top: 0;
     font-size: 0.8em;
     text-align: center;
-    width: 260px;
+    max-width: 260px;
     line-height: 1.2em;
 }
 #content p.caption-test{
@@ -72,14 +72,14 @@ li{
 	margin: 0 auto;
 }
 .sim-intro{
-	width: 600px;
+	max-width: 600px;
 }
 .sim-ballot{
-	width: 670px;
+	max-width: 670px;
 	margin: 35px auto 50px auto;
 }
 .sim-test{
-	width: 800px;
+	max-width: 800px;
 	margin: 50px auto 40px auto;
 }
 #content p.quote{

@@ -1,0 +1,66 @@
+/*todo: fix horizontal scrolling
+*/
+
+div.target  {
+	margin: 0;
+	padding: 0;
+}
+
+#main {
+	margin-left: 500px;
+	position:relative;
+	right: 20px;
+}
+
+#main div.target {
+	background: #ccc;
+}
+
+#main div.target:nth-child(even) {
+	background: #eee;
+}
+
+#nav {
+	font-size: 10px;
+	top: 0%;
+	
+/*	just for start*/
+	position: absolute;
+	top: 200%;
+	height: 100%;
+	left: 20px;
+}
+
+#nav a {
+	border-bottom: 1px solid #666;
+	color: #333;
+	display: block;
+	padding: 1px;
+	text-align: center;
+	text-decoration: none;
+}
+
+#nav a:hover, #nav a.active {
+	background: #666;
+	color: #fff;
+}
+
+#nav nav {
+	left: 0;
+	width: 100px;
+	height: 20%;
+	position: absolute;
+}
+
+#fixedbox {
+	width: 458px;
+	height: 100%;
+}
+
+.anchor {
+	display: block;
+	position: relative;
+	height: 400px;
+	margin-top: -400px;
+	visibility: hidden;
+}

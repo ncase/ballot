@@ -7,6 +7,7 @@ BALLOT DESIGN
 	width: 375px;
 	height: 250px;
 	margin-left: 20px;
+	margin-bottom: 10px;
 
 	overflow: hidden;
 	float:left;
@@ -18,9 +19,26 @@ BALLOT DESIGN
 	border: 2px solid #fff;
 
 	position: relative;
+	
 
 }
 #ballot .ballot_sprite{
 	position: absolute;
 	background-size: 100% auto;
+}
+
+.button-group{
+	margin-left: 0px;
+	float:left;
+	clear:both;
+}
+
+#reset {
+	top: 270px;
+	left: 275px
+}
+
+.model {
+	height:260px;
+	margin-bottom: 10px;
 }
